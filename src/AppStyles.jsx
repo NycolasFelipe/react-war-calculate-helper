@@ -14,7 +14,7 @@ export const Container = styled.div`
   position: relative;
 `;
 
-export const ContainerGameSettings = styled.div`
+export const ContainerMain = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

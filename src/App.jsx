@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import DataContext from "./contexts/DataContext";
 import * as C from "./AppStyles";
-import ContainerTerritories from "./components/ContainerTerritories";
+import ContainerSettings from "./components/ContainerSettings";
 
 class Territories {
   constructor() {
@@ -11,55 +11,37 @@ class Territories {
         territory: "UK",
         continent: "Europe",
         owner: "none",
-        selected: {
-          sideTerritories: false,
-          addTerritories: false,
-        },
+        selected: false,
       },
       {
         territory: "Germany",
         continent: "Europe",
         owner: "none",
-        selected: {
-          sideTerritories: false,
-          addTerritories: false,
-        },
+        selected: false,
       },
       {
         territory: "France",
         continent: "Europe",
         owner: "none",
-        selected: {
-          sideTerritories: false,
-          addTerritories: false,
-        },
+        selected: false,
       },
       {
         territory: "Sweden",
         continent: "Europe",
         owner: "none",
-        selected: {
-          sideTerritories: false,
-          addTerritories: false,
-        },
+        selected: false,
       },
       {
         territory: "Norway",
         continent: "Europe",
         owner: "none",
-        selected: {
-          sideTerritories: false,
-          addTerritories: false,
-        },
+        selected: false,
       },
       {
         territory: "Portugal",
         continent: "Europe",
         owner: "player",
-        selected: {
-          sideTerritories: false,
-          addTerritories: false,
-        },
+        selected: false,
       },
     ];
     //#endregion
@@ -138,16 +120,12 @@ function App() {
   return (
     <C.Container>
       <DataContext.Provider value={providerValue}>
-        <C.ContainerGameSettings>
-          <ContainerTerritories />
-        </C.ContainerGameSettings>
+        <C.ContainerMain>
+          <ContainerSettings />
+        </C.ContainerMain>
       </DataContext.Provider>
     </C.Container>
   );
 }
 
 export default App;
-
-// const availableTerritories = territories.territoriesList.filter((item) => {
-//   return item.owner !== "none";
-// });
