@@ -8,7 +8,7 @@ export const Input = styled.input`
   border-radius: 5px;
   border: none;
   background: #313131;
-  padding-left: 5px;
+  padding-left: ${(props) => props.paddingleft};
 
   ${(props) => {
     if (props.alignCenter) {

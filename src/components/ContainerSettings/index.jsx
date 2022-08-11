@@ -32,19 +32,20 @@ function ContainerSettings() {
     // Depois de um tempo, esconde o alerta novamente
     setTimeout(() => setShowInputAlert(false), 5000);
   };
-  //#endregion
 
   //Delete is active at the current moment
   const [deleteItemActive, setDeleteItemActive] = useState(false);
 
   //Delete territory
-  const deleteTerritory = (territory) => {
+  const deleteTerritory = (territory, continent) => {
     if (deleteItemActive) {
       territories.deleteTerritory(territory);
       //Update territories list
       setTerritoriesList(territories.territoriesList);
+      setBonusSettings(continent);
     }
   };
+  //#endregion
 
   //#region Add Territory
   const [territoryName, setTerritoryName] = useState("");
@@ -63,69 +64,86 @@ function ContainerSettings() {
       setShowAddAlert(true);
       //Depois de um tempo, esconde o alerta novamente
       setTimeout(() => setShowAddAlert(false), 3000);
+      setBonusSettings(territoryContinent);
     }
-    //#endregion
   };
+  //#endregion
   //#endregion
 
   //#region Bonus Settings
-  const territoriesCount = (continent) => {
-    return territoriesList.filter((item) => item.continent === continent)
-      .length;
+  const { settings } = useContext(DataContext);
+
+  const setBonusSettings = (territoryContinent) => {
+    let totalValue = territories.territoriesList.filter((item) => {
+      if (item.continent === territoryContinent) return item;
+    }).length;
+
+    settings.setTotalValue(territoryContinent, totalValue);
+    setTotalBonus(settings.getTotalBonus());
   };
 
-  const minBonus = [
-    ["Africa", 4, 2],
-    ["Asia", 7, 4],
-    ["Europe", 4, 2],
-    ["North America", 5, 3],
-    ["Oceania", 2, 1],
-    ["South America", 2, 1],
-  ];
-  const [minBonusActive, setMinBonusActive] = useState(false);
+  //Min Bonus Settings
+  const [minBonus, setMinBonus] = useState(settings.getMinBonus());
+  const [minBonusActive, setMinBonusActive] = useState(
+    settings.minBonusActive()
+  );
 
-  const totalBonus = [
-    ["Africa", territoriesCount("Africa"), 3],
-    ["Asia", territoriesCount("Asia"), 7],
-    ["Europe", territoriesCount("Europe"), 5],
-    ["North America", territoriesCount("North America"), 5],
-    ["Oceania", territoriesCount("Oceania"), 2],
-    ["South America", territoriesCount("South America"), 2],
-  ];
+  //Total Bonus Settings
+  const [totalBonus, setTotalBonus] = useState(settings.getTotalBonus());
 
-  const inputItem = (type, value, bonus, text, lockValue) => {
-    let array;
-    switch (type) {
-      case "minBonus":
-        array = minBonus;
-        break;
-      case "totalBonus":
-        array = totalBonus;
-        break;
-    }
-    if (lockValue) {
+  //#region Input Item model
+  const inputItem = (type, subtype, index, text) => {
+    if (type === "totalBonus") {
+      if (subtype === "value") {
+        return (
+          <Input
+            value={totalBonus[index].value}
+            readOnly={true}
+            text={text}
+            type={"number"}
+            lockValue={true}
+            borderRadius={"0"}
+          />
+        );
+      } else if (subtype === "bonus") {
+        return (
+          <Input
+            defaultValue={totalBonus[index].bonus}
+            text={text}
+            type={"number"}
+            borderRadius={"0"}
+            onChange={(e) =>
+              changeBonus(
+                "totalBonus",
+                totalBonus[index].continent,
+                e.target.value
+              )
+            }
+          />
+        );
+      }
+    } else if (type === "minBonus") {
       return (
         <Input
-          value={territoriesCount(array[value][0])}
-          readOnly={true}
-          alignCenter={true}
+          defaultValue={minBonus[index][subtype]}
           text={text}
-          lockValue={lockValue}
+          type={"number"}
           borderRadius={"0"}
-        />
-      );
-    } else {
-      return (
-        <Input
-          defaultValue={array[value][bonus]}
-          alignCenter={true}
-          text={text}
-          borderRadius={"0"}
+          onChange={(e) =>
+            changeBonus(
+              type,
+              minBonus[index].continent,
+              e.target.value,
+              subtype
+            )
+          }
         />
       );
     }
   };
+  //#endregion
 
+  //Territory item
   const territoryItem = (continent) => {
     return (
       <TerritoryItem
@@ -134,6 +152,64 @@ function ContainerSettings() {
         continent={continent}
       />
     );
+  };
+
+  //Changing input values
+  const changeBonus = (type, continent, input, subtype) => {
+    const inputValue = input ? parseInt(input) : "";
+    if (type === "totalBonus") {
+      for (let item in totalBonus) {
+        if (totalBonus[item].continent === continent) {
+          totalBonus[item].bonus = inputValue;
+        }
+      }
+    }
+    if (type === "minBonus") {
+      for (let item in minBonus) {
+        if (minBonus[item].continent === continent) {
+          minBonus[item][subtype] = inputValue;
+        }
+      }
+    }
+    setSaveSettingsActive(true);
+  };
+
+  //Settings button and warning flags
+  const [saveSettingsActive, setSaveSettingsActive] = useState(false);
+  const [saveSettingsWarning, setSaveSettingsWarning] = useState(false);
+
+  //Checking if data is valid before saving it
+  const checkValidSettings = () => {
+    for (let item in totalBonus) {
+      if (!totalBonus[item]["bonus"]) {
+        return false;
+      }
+    }
+    for (let item in minBonus) {
+      if (!minBonus[item]["value"]) {
+        return false;
+      }
+      if (!minBonus[item]["bonus"]) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  //Saving user changes
+  const saveSettings = () => {
+    //Save Settings if provided valid data
+    if (checkValidSettings()) {
+      settings.setMinBonusActive(minBonusActive);
+      settings.setBonus(minBonus, totalBonus);
+      setSaveSettingsActive(false);
+    } else {
+      //Else, warn the user to provide valid data
+      setSaveSettingsWarning(true);
+      setTimeout(() => {
+        setSaveSettingsWarning(false);
+      }, 5000);
+    }
   };
   //#endregion
 
@@ -157,7 +233,7 @@ function ContainerSettings() {
                 continent={item.continent}
                 territory={item.territory}
                 deleteItemActive={deleteItemActive}
-                onClick={() => deleteTerritory(item.territory)}
+                onClick={() => deleteTerritory(item.territory, item.continent)}
               />
             ))}
           </C.TerritoriesItems>
@@ -217,6 +293,19 @@ function ContainerSettings() {
       </C.ContainerTerritories>
       <C.ContainerBonus>
         <Title text={"Game Settings"} fontSize={"1rem"} />
+        <C.SaveSettingWarning saveSettingsWarning={saveSettingsWarning}>
+          Field cannot be empty.
+        </C.SaveSettingWarning>
+        <C.ButtonSaveSettings>
+          <Button
+            text={saveSettingsActive ? "Save Settings*" : "Save Settings"}
+            fontSize={"0.8rem"}
+            buttonHeight="20px"
+            buttonBgColor="#2e8b2e"
+            disabled={!saveSettingsActive}
+            onClick={() => saveSettings()}
+          />
+        </C.ButtonSaveSettings>
         <C.BonusSettings>
           <C.BonusContinent>
             <C.BonusHeader>
@@ -234,7 +323,12 @@ function ContainerSettings() {
           <C.BonusMin>
             <C.BonusHeader>
               <C.Title>Min. Bonus</C.Title>
-              <CheckBox onClick={() => setMinBonusActive(!minBonusActive)} />
+              <CheckBox
+                onClick={() => [
+                  setMinBonusActive(!minBonusActive),
+                  setSaveSettingsActive(true),
+                ]}
+              />
               <ButtonInfo
                 text={
                   "Minimum of territories on a continent to receive additional troops."
@@ -242,20 +336,20 @@ function ContainerSettings() {
               />
             </C.BonusHeader>
             <C.BonusMinLeft minBonusActive={minBonusActive}>
-              {inputItem("minBonus", 0, 1, "Min.")}
-              {inputItem("minBonus", 1, 1)}
-              {inputItem("minBonus", 2, 1)}
-              {inputItem("minBonus", 3, 1)}
-              {inputItem("minBonus", 4, 1)}
-              {inputItem("minBonus", 5, 1)}
+              {inputItem("minBonus", "value", 0, "Min.")}
+              {inputItem("minBonus", "value", 1)}
+              {inputItem("minBonus", "value", 2)}
+              {inputItem("minBonus", "value", 3)}
+              {inputItem("minBonus", "value", 4)}
+              {inputItem("minBonus", "value", 5)}
             </C.BonusMinLeft>
             <C.BonusMinRight minBonusActive={minBonusActive}>
-              {inputItem("minBonus", 0, 2, "Bonus")}
-              {inputItem("minBonus", 1, 2)}
-              {inputItem("minBonus", 2, 2)}
-              {inputItem("minBonus", 3, 2)}
-              {inputItem("minBonus", 4, 2)}
-              {inputItem("minBonus", 5, 2)}
+              {inputItem("minBonus", "bonus", 0, "Bonus")}
+              {inputItem("minBonus", "bonus", 1)}
+              {inputItem("minBonus", "bonus", 2)}
+              {inputItem("minBonus", "bonus", 3)}
+              {inputItem("minBonus", "bonus", 4)}
+              {inputItem("minBonus", "bonus", 5)}
             </C.BonusMinRight>
           </C.BonusMin>
           <C.BonusTotal>
@@ -268,20 +362,20 @@ function ContainerSettings() {
               />
             </C.BonusHeader>
             <C.BonusTotalLeft>
-              {inputItem("totalBonus", 0, 1, "Total", true)}
-              {inputItem("totalBonus", 1, 1, "", true)}
-              {inputItem("totalBonus", 2, 1, "", true)}
-              {inputItem("totalBonus", 3, 1, "", true)}
-              {inputItem("totalBonus", 4, 1, "", true)}
-              {inputItem("totalBonus", 5, 1, "", true)}
+              {inputItem("totalBonus", "value", 0, "Total")}
+              {inputItem("totalBonus", "value", 1)}
+              {inputItem("totalBonus", "value", 2)}
+              {inputItem("totalBonus", "value", 3)}
+              {inputItem("totalBonus", "value", 4)}
+              {inputItem("totalBonus", "value", 5)}
             </C.BonusTotalLeft>
             <C.BonusTotalRight>
-              {inputItem("totalBonus", 0, 2, "Bonus")}
-              {inputItem("totalBonus", 1, 2)}
-              {inputItem("totalBonus", 2, 2)}
-              {inputItem("totalBonus", 3, 2)}
-              {inputItem("totalBonus", 4, 2)}
-              {inputItem("totalBonus", 5, 2)}
+              {inputItem("totalBonus", "bonus", 0, "Bonus")}
+              {inputItem("totalBonus", "bonus", 1)}
+              {inputItem("totalBonus", "bonus", 2)}
+              {inputItem("totalBonus", "bonus", 3)}
+              {inputItem("totalBonus", "bonus", 4)}
+              {inputItem("totalBonus", "bonus", 5)}
             </C.BonusTotalRight>
           </C.BonusTotal>
         </C.BonusSettings>

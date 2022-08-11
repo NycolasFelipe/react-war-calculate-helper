@@ -4,6 +4,7 @@ export const ContainerSettings = styled.div`
   display: flex;
   gap: 10px;
   width: 70%;
+  height: 100%;
 `;
 
 //#region Territories Settings
@@ -164,6 +165,7 @@ export const ContainerBonus = styled.div`
   border: 1px solid #424242;
   border-radius: 5px;
   padding: 5px 10px;
+  position: relative;
 `;
 
 export const Title = styled.div`
@@ -171,6 +173,31 @@ export const Title = styled.div`
   font-size: 0.8rem;
   pointer-events: none;
   width: 75%;
+`;
+
+export const SaveSettingWarning = styled.span`
+  font-size: 0.8rem;
+  color: transparent;
+  position: absolute;
+  right: 130px;
+  top: 10px;
+  text-align: right;
+  user-select: none;
+
+  ${(props) => {
+    if (props.saveSettingsWarning) {
+      return `
+        color: #ca1e1e;
+      `;
+    }
+  }}
+`;
+
+export const ButtonSaveSettings = styled.div`
+  position: absolute;
+  right: 5px;
+  top: 8px;
+  width: 120px;
 `;
 
 export const BonusSettings = styled.div`

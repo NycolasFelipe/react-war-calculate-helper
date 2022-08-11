@@ -12,6 +12,8 @@ function Input({
   borderRadius,
   inputWidth,
   lockValue,
+  type,
+  paddingleft = "5px",
 }) {
   return (
     <C.Label htmlFor={label}>
@@ -27,6 +29,8 @@ function Input({
         borderRadius={borderRadius}
         inputWidth={inputWidth}
         lockValue={lockValue}
+        type={type}
+        paddingleft={paddingleft}
       />
     </C.Label>
   );
