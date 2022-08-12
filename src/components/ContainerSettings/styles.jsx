@@ -2,6 +2,8 @@ import styled from "styled-components";
 
 export const ContainerSettings = styled.div`
   display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
   gap: 10px;
   width: 70%;
   height: 100%;
@@ -158,9 +160,9 @@ export const ContainerBonus = styled.div`
   flex-direction: column;
   flex: 1;
   gap: 5px;
-  width: 50%;
+  width: 75%;
   min-width: 360px;
-  height: 100%;
+  height: 60%;
   background: transparent;
   border: 1px solid #424242;
   border-radius: 5px;
@@ -173,6 +175,8 @@ export const Title = styled.div`
   font-size: 0.8rem;
   pointer-events: none;
   width: 75%;
+  height: 2rem;
+  line-height: 2.5;
 `;
 
 export const SaveSettingWarning = styled.span`
@@ -213,7 +217,7 @@ export const BonusHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 95%;
-  height: 15%;
+  height: 35%;
   padding-right: 3px;
   position: relative;
 `;
@@ -222,8 +226,8 @@ export const BonusContinent = styled.div`
   display: flex;
   flex-direction: column;
   width: 33%;
-  height: 100%;
   margin-right: 5px;
+  position: relative;
 `;
 
 export const TerritoryItems = styled.div`
@@ -231,7 +235,9 @@ export const TerritoryItems = styled.div`
   flex-direction: column;
   justify-content: flex-end;
   border: 1px solid transparent;
-  height: 85%;
+  position: absolute;
+  top: 55px;
+  width: 100%;
 `;
 
 export const BonusMin = styled.div`
@@ -308,5 +314,95 @@ export const BonusTotalRight = styled.div`
   justify-content: flex-end;
   padding-bottom: 3px;
   width: 45%;
+`;
+//#endregion
+
+//#region Players
+export const ContainerPlayers = styled.div`
+  border: 1px solid #424242;
+  border-radius: 5px;
+  height: 40%;
+  width: 75%;
+  padding: 5px 2px 10px 10px;
+  position: relative;
+
+  & > button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 100px;
+    height: 1.2rem;
+    font-size: 0.8rem;
+  }
+  & > button:hover {
+    color: #fff;
+  }
+`;
+
+export const Players = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 5px;
+  width: 100%;
+  height: 80%;
+  box-sizing: border-box;
+`;
+
+export const Player = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 20%;
+  width: 45%;
+  margin: 5px;
+
+  & > * {
+    margin-right: 6px;
+    font-size: 0.9rem;
+  }
+  & > h1 {
+    min-width: 60px;
+    margin-right: 0;
+  }
+
+  ${(props) => {
+    if (!props.playerActive) {
+      return `
+        * {
+          color: #505050 !important;
+        }
+      `;
+    }
+  }}
+  ${(props) => {
+    if (!props.editActive) {
+      return `
+        & > * {
+          pointer-events: none;
+          user-select: none;
+        }
+      `;
+    }
+  }}
+  ${(props) => {
+    if (!props.editActive && props.playerActive) {
+      return `
+        * {
+          color: #aaaaaa;
+        }
+      `;
+    }
+  }}
+
+  @media screen and (max-width: 960px) {
+    & > * {
+      font-size: 0.8rem;
+    }
+    padding: 0 5px;
+    width: 48%;
+    margin: 0;
+  }
 `;
 //#endregion

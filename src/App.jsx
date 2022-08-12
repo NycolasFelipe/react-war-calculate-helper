@@ -5,13 +5,16 @@ import ContainerSettings from "./components/ContainerSettings";
 
 import Territories from "./components/Classes/Territories";
 import Settings from "./components/Classes/Settings";
+import Players from "./components/Classes/Players";
 
 function App() {
   const territories = new Territories();
   const settings = new Settings();
+  const players = new Players();
+
   const providerValue = useMemo(
-    () => ({ territories, settings }),
-    [territories, settings]
+    () => ({ territories, settings, players }),
+    [territories, settings, players]
   );
 
   return (

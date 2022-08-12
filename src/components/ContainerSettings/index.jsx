@@ -238,6 +238,47 @@ function ContainerSettings() {
   };
   //#endregion
 
+  //#region Players
+  const { players } = useContext(DataContext);
+  const [playersList, setPlayersList] = useState(players.getPlayers());
+
+  const [editActive, setEditActive] = useState(true);
+
+  const playerItem = (playerId) => {
+    const player = players.getPlayer(playerId);
+    return (
+      <C.Player editActive={editActive} playerActive={player.active}>
+        <CheckBox
+          onClick={() => changePlayerActive(playerId)}
+          checked={player.active}
+        />
+        <Title text={`Player ${playerId.slice(-1)}`} />
+        <Input
+          defaultValue={player.playerName}
+          placeholder={"Player name..."}
+          borderRadius={"0"}
+        />
+      </C.Player>
+    );
+  };
+
+  const changePlayerActive = (playerId) => {
+    setPlayersList(
+      playersList.filter((item) => {
+        if (item.playerId === playerId) {
+          item.active = !item.active;
+          return item;
+        } else return item;
+      })
+    );
+  };
+
+  const savePlayers = () => {
+    players.setPlayers(playersList);
+    setEditActive(!editActive);
+  };
+  //#endregion
+
   return (
     <C.ContainerSettings>
       <C.ContainerTerritories>
@@ -405,6 +446,24 @@ function ContainerSettings() {
           </C.BonusTotal>
         </C.BonusSettings>
       </C.ContainerBonus>
+      <C.ContainerPlayers>
+        <Button
+          text={editActive ? "Save Players" : "Edit Players"}
+          onClick={() => savePlayers()}
+          color={editActive ? "#fff" : "#808080"}
+          buttonBgColor={"#2e8b2e"}
+          buttonBorderColor={editActive ? "#2e8b2e" : "#808080"}
+        />
+        <Title text={"Players"} fontSize={"1rem"} />
+        <C.Players>
+          {playerItem("player1")}
+          {playerItem("player4")}
+          {playerItem("player2")}
+          {playerItem("player5")}
+          {playerItem("player3")}
+          {playerItem("player6")}
+        </C.Players>
+      </C.ContainerPlayers>
     </C.ContainerSettings>
   );
 }
