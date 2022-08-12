@@ -212,7 +212,7 @@ export const BonusHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 90%;
+  width: 95%;
   height: 15%;
   padding-right: 3px;
   position: relative;

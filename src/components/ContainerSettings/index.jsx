@@ -178,19 +178,48 @@ function ContainerSettings() {
   const [saveSettingsActive, setSaveSettingsActive] = useState(false);
   const [saveSettingsWarning, setSaveSettingsWarning] = useState(false);
 
+  const [warningMessage, setWarningMessage] = useState("");
+  const warningMessages = {
+    fieldEmpty: "Field cannot be empty.",
+    negativeValue: "Value cannot be negative.",
+    invalidMinBonus: "Min bonus cannot be greater than total bonus.",
+  };
+
+  const handleWarning = (warningType) => {
+    setWarningMessage(warningMessages[warningType]);
+    setSaveSettingsWarning(true);
+    setTimeout(() => {
+      setSaveSettingsWarning(false);
+    }, 5000);
+  };
+
   //Checking if data is valid before saving it
   const checkValidSettings = () => {
     for (let item in totalBonus) {
-      if (!totalBonus[item]["bonus"]) {
+      if (totalBonus[item]["bonus"] === "") {
+        handleWarning("fieldEmpty");
+        return false;
+      } else if (totalBonus[item]["bonus"] < 0) {
+        handleWarning("negativeValue");
         return false;
       }
     }
-    for (let item in minBonus) {
-      if (!minBonus[item]["value"]) {
-        return false;
-      }
-      if (!minBonus[item]["bonus"]) {
-        return false;
+    if (minBonusActive) {
+      for (let item in minBonus) {
+        if (minBonus[item]["value"] === "" || minBonus[item]["bonus"] === "") {
+          handleWarning("fieldEmpty");
+          return false;
+        } else if (minBonus[item]["value"] > totalBonus[item]["value"]) {
+          handleWarning("invalidMinBonus");
+          return false;
+        } else if (minBonus[item]["value"] < 0) {
+          handleWarning("negativeValue");
+          return false;
+        }
+        if (minBonus[item]["bonus"] < 0) {
+          handleWarning("negativeValue");
+          return false;
+        }
       }
     }
     return true;
@@ -202,13 +231,9 @@ function ContainerSettings() {
     if (checkValidSettings()) {
       settings.setMinBonusActive(minBonusActive);
       settings.setBonus(minBonus, totalBonus);
+      setMinBonus(settings.getMinBonus());
       setSaveSettingsActive(false);
-    } else {
-      //Else, warn the user to provide valid data
-      setSaveSettingsWarning(true);
-      setTimeout(() => {
-        setSaveSettingsWarning(false);
-      }, 5000);
+      setSaveSettingsWarning(false);
     }
   };
   //#endregion
@@ -220,7 +245,7 @@ function ContainerSettings() {
           <C.AddAlert showAddAlert={showAddAlert}>Territory Added!</C.AddAlert>
           <C.TerritoriesTitle>
             <Title
-              text={`Territories count: ${territoriesList.length}`}
+              text={`Available Territories | Count: ${territoriesList.length}`}
               titleWidth={"100%"}
             />
             <Title text={"Continent"} />
@@ -294,7 +319,7 @@ function ContainerSettings() {
       <C.ContainerBonus>
         <Title text={"Game Settings"} fontSize={"1rem"} />
         <C.SaveSettingWarning saveSettingsWarning={saveSettingsWarning}>
-          Field cannot be empty.
+          {warningMessage}
         </C.SaveSettingWarning>
         <C.ButtonSaveSettings>
           <Button

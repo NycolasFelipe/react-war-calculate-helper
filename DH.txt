@@ -1,0 +1,12 @@
+checar se campo em min bonus é vazio SOMENTE se min bonus estiver ativo - ok
+
+bonus e valores NÃO PODEM ser vazios, mas podem ser 0. - ok
+bonus e valores NÃO PODEM ser menores do que 0. - ok
+bonus e valores NÃO PODEM ser maiores do que o total - ok
+
+Line 86:20:  'setMinBonus' is assigned a value but never used   
+  
+Terriories > Available Territories | Count: 42 - ok
+
+ao salvar, desativar o aviso de campo vazio - ok
+ajustar textos Min. Bonus e Total Bonus - ok
