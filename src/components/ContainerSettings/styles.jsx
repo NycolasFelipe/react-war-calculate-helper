@@ -244,7 +244,7 @@ export const BonusMin = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  width: 30%;
+  width: 33%;
   * {
     transition: all 0.2s ease;
   }

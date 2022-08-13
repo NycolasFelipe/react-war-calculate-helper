@@ -28,7 +28,7 @@ export const InfoWindow = styled.div`
   width: 100%;
   position: absolute;
   right: 0;
-  top: 25px;
+  top: 30px;
   overflow: hidden;
   color: transparent;
   font-size: 0.8rem;
@@ -49,4 +49,6 @@ export const InfoWindow = styled.div`
   }}
 `;
 
-export const InfoText = styled.div``;
+export const InfoText = styled.div`
+  white-space: pre-line;
+`;

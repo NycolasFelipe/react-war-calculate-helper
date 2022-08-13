@@ -53,7 +53,6 @@ function ContainerSettings() {
   const addTerritory = (territory, continent) => {
     const error = territories.addTerritory(territory, continent);
     setTerritoryName("");
-
     //Caso tenha havido um erro, exibe uma mensagem
     if (error) {
       inputAlert(error);
@@ -177,58 +176,23 @@ function ContainerSettings() {
   //Settings button and warning flags
   const [saveSettingsActive, setSaveSettingsActive] = useState(false);
   const [saveSettingsWarning, setSaveSettingsWarning] = useState(false);
+  const [settingsWarningMessage, setSettingsWarningMessage] = useState("");
 
-  const [warningMessage, setWarningMessage] = useState("");
-  const warningMessages = {
-    fieldEmpty: "Field cannot be empty.",
-    negativeValue: "Value cannot be negative.",
-    invalidMinBonus: "Min bonus cannot be greater than total bonus.",
-  };
-
-  const handleWarning = (warningType) => {
-    setWarningMessage(warningMessages[warningType]);
+  const handleWarning = (warningMessage) => {
+    setSettingsWarningMessage(warningMessage);
     setSaveSettingsWarning(true);
     setTimeout(() => {
       setSaveSettingsWarning(false);
     }, 5000);
   };
 
-  //Checking if data is valid before saving it
-  const checkValidSettings = () => {
-    for (let item in totalBonus) {
-      if (totalBonus[item]["bonus"] === "") {
-        handleWarning("fieldEmpty");
-        return false;
-      } else if (totalBonus[item]["bonus"] < 0) {
-        handleWarning("negativeValue");
-        return false;
-      }
-    }
-    if (minBonusActive) {
-      for (let item in minBonus) {
-        if (minBonus[item]["value"] === "" || minBonus[item]["bonus"] === "") {
-          handleWarning("fieldEmpty");
-          return false;
-        } else if (minBonus[item]["value"] > totalBonus[item]["value"]) {
-          handleWarning("invalidMinBonus");
-          return false;
-        } else if (minBonus[item]["value"] < 0) {
-          handleWarning("negativeValue");
-          return false;
-        }
-        if (minBonus[item]["bonus"] < 0) {
-          handleWarning("negativeValue");
-          return false;
-        }
-      }
-    }
-    return true;
-  };
-
   //Saving user changes
   const saveSettings = () => {
-    //Save Settings if provided valid data
-    if (checkValidSettings()) {
+    const error = settings.setBonus(minBonus, totalBonus, minBonusActive);
+    if (error) {
+      handleWarning(error);
+    } else if (!error) {
+      //Save Settings if provided valid data
       settings.setMinBonusActive(minBonusActive);
       settings.setBonus(minBonus, totalBonus);
       setMinBonus(settings.getMinBonus());
@@ -360,7 +324,7 @@ function ContainerSettings() {
       <C.ContainerBonus>
         <Title text={"Game Settings"} fontSize={"1rem"} />
         <C.SaveSettingWarning saveSettingsWarning={saveSettingsWarning}>
-          {warningMessage}
+          {settingsWarningMessage}
         </C.SaveSettingWarning>
         <C.ButtonSaveSettings>
           <Button
@@ -397,7 +361,10 @@ function ContainerSettings() {
               />
               <ButtonInfo
                 text={
-                  "Minimum of territories on a continent to receive additional troops."
+                  "MIN.: Minimum number of territories on this continent required to earn bonus troops."
+                }
+                textAdditional={
+                  "BONUS: Number of troops granted by minimum required domain of this continent."
                 }
               />
             </C.BonusHeader>
@@ -422,8 +389,9 @@ function ContainerSettings() {
             <C.BonusHeader>
               <C.Title>Total Bonus</C.Title>
               <ButtonInfo
-                text={
-                  "Number of additional troops received when there is total dominance of a continent."
+                text={"TOTAL: Total number of territories on this continent."}
+                textAdditional={
+                  "BONUS: Number of troops granted by the entire domain of this continent."
                 }
               />
             </C.BonusHeader>

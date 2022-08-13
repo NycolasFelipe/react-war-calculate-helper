@@ -68,6 +68,12 @@ export default class Settings {
       },
     ];
 
+    const error = {
+      fieldEmpty: "Field cannot be empty.",
+      negativeValue: "Value cannot be negative.",
+      invalidMinBonus: "Min value cannot be greater than total value.",
+    };
+
     this.getMinBonus = () => minBonus.values;
     this.getTotalBonus = () => totalBonus;
     this.minBonusActive = () => minBonus.active;
@@ -76,7 +82,14 @@ export default class Settings {
       minBonus.active = bool;
     };
 
-    this.setBonus = (newMinBonus, newTotalBonus) => {
+    this.setBonus = (newMinBonus, newTotalBonus, newMinBonusActive) => {
+      const error = checkValidSettings(
+        newMinBonus,
+        newTotalBonus,
+        newMinBonusActive
+      );
+      if (error) return error;
+
       for (let item in newMinBonus) {
         minBonus.values[item].value = newMinBonus[item].value;
         minBonus.values[item].bonus = newMinBonus[item].bonus;
@@ -93,6 +106,41 @@ export default class Settings {
           totalBonus[item].value = total;
         }
       }
+    };
+
+    const checkValidSettings = (
+      newMinBonus,
+      newTotalBonus,
+      newMinBonusActive
+    ) => {
+      //Checking if data is valid before saving it
+      for (let item in newTotalBonus) {
+        if (newTotalBonus[item]["bonus"] === "") {
+          return error.fieldEmpty;
+        } else if (newTotalBonus[item]["bonus"] < 0) {
+          return error.negativeValue;
+        }
+      }
+      if (newMinBonusActive) {
+        for (let item in newMinBonus) {
+          if (
+            newMinBonus[item]["value"] === "" ||
+            newMinBonus[item]["bonus"] === ""
+          ) {
+            return error.fieldEmpty;
+          } else if (
+            newMinBonus[item]["value"] > newTotalBonus[item]["value"]
+          ) {
+            return error.invalidMinBonus;
+          } else if (newMinBonus[item]["value"] < 0) {
+            return error.negativeValue;
+          }
+          if (newMinBonus[item]["bonus"] < 0) {
+            return error.negativeValue;
+          }
+        }
+      }
+      return false;
     };
   }
 }
