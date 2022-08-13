@@ -78,10 +78,6 @@ export default class Settings {
     this.getTotalBonus = () => totalBonus;
     this.minBonusActive = () => minBonus.active;
 
-    this.setMinBonusActive = (bool) => {
-      minBonus.active = bool;
-    };
-
     this.setBonus = (newMinBonus, newTotalBonus, newMinBonusActive) => {
       const error = checkValidSettings(
         newMinBonus,
@@ -98,6 +94,7 @@ export default class Settings {
         totalBonus[item].value = newTotalBonus[item].value;
         totalBonus[item].bonus = newTotalBonus[item].bonus;
       }
+      minBonus.active = newMinBonusActive;
     };
 
     this.setTotalValue = (territoryContinent, total) => {

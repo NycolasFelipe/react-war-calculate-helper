@@ -33,6 +33,11 @@ export default class Players {
       },
     ];
 
+    const error = {
+      emptyName: "Name field cannot be empty.",
+      minimumPlayers: "At least one player must be active.",
+    };
+
     this.getPlayer = (playerId) => {
       for (let item in players) {
         if (players[item].playerId === playerId) {
@@ -40,9 +45,38 @@ export default class Players {
         }
       }
     };
+
     this.getPlayers = () => {
       return players;
     };
-    this.setPlayers = () => {};
+
+    this.setPlayers = (playersList) => {
+      const error = checkValidPlayers(playersList);
+      if (error) return error;
+      else {
+        for (let item in playersList) {
+          if (players[item].playerName === playersList[item].playerName) {
+            players[item].playerName = playersList[item].playerName;
+          }
+          if (players[item].active === playersList[item].active) {
+            players[item].active = playersList[item].active;
+          }
+        }
+      }
+    };
+
+    const checkValidPlayers = (playersList) => {
+      let playersActiveCount = 0;
+
+      for (let item in playersList) {
+        if (playersList[item].active && playersList[item].playerName === "") {
+          return error.emptyName;
+        }
+        if (playersList[item].active) playersActiveCount++;
+      }
+      if (playersActiveCount === 0) {
+        return error.minimumPlayers;
+      }
+    };
   }
 }

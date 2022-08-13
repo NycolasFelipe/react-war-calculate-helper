@@ -178,7 +178,7 @@ function ContainerSettings() {
   const [saveSettingsWarning, setSaveSettingsWarning] = useState(false);
   const [settingsWarningMessage, setSettingsWarningMessage] = useState("");
 
-  const handleWarning = (warningMessage) => {
+  const handleSettingsWarning = (warningMessage) => {
     setSettingsWarningMessage(warningMessage);
     setSaveSettingsWarning(true);
     setTimeout(() => {
@@ -188,14 +188,11 @@ function ContainerSettings() {
 
   //Saving user changes
   const saveSettings = () => {
+    //Save Settings if provided valid data
     const error = settings.setBonus(minBonus, totalBonus, minBonusActive);
     if (error) {
-      handleWarning(error);
+      handleSettingsWarning(error);
     } else if (!error) {
-      //Save Settings if provided valid data
-      settings.setMinBonusActive(minBonusActive);
-      settings.setBonus(minBonus, totalBonus);
-      setMinBonus(settings.getMinBonus());
       setSaveSettingsActive(false);
       setSaveSettingsWarning(false);
     }
@@ -206,12 +203,13 @@ function ContainerSettings() {
   const { players } = useContext(DataContext);
   const [playersList, setPlayersList] = useState(players.getPlayers());
 
-  const [editActive, setEditActive] = useState(true);
-
   const playerItem = (playerId) => {
     const player = players.getPlayer(playerId);
     return (
-      <C.Player editActive={editActive} playerActive={player.active}>
+      <C.Player
+        editPlayersActive={editPlayersActive}
+        playerActive={player.active}
+      >
         <CheckBox
           onClick={() => changePlayerActive(playerId)}
           checked={player.active}
@@ -221,8 +219,20 @@ function ContainerSettings() {
           defaultValue={player.playerName}
           placeholder={"Player name..."}
           borderRadius={"0"}
+          onChange={(e) => changePlayerName(e.target.value, playerId)}
         />
       </C.Player>
+    );
+  };
+
+  const changePlayerName = (value, playerId) => {
+    setPlayersList(
+      playersList.filter((item) => {
+        if (item.playerId === playerId) {
+          item.playerName = value;
+          return item;
+        } else return item;
+      })
     );
   };
 
@@ -237,16 +247,35 @@ function ContainerSettings() {
     );
   };
 
+  const [editPlayersActive, setEditPlayersActive] = useState(false);
+  const [savePlayersWarning, setSavePlayersWarning] = useState(false);
+  const [settingsPlayersMessage, setSettingsPlayersMessage] = useState("");
+
+  const handlePlayersWarning = (warningMessage) => {
+    setSettingsPlayersMessage(warningMessage);
+    setSavePlayersWarning(true);
+    setTimeout(() => {
+      setSavePlayersWarning(false);
+    }, 5000);
+  };
+
   const savePlayers = () => {
-    players.setPlayers(playersList);
-    setEditActive(!editActive);
+    setEditPlayersActive(true);
+    let error;
+    if (editPlayersActive) {
+      error = players.setPlayers(playersList);
+      if (error) handlePlayersWarning(error);
+      else setEditPlayersActive(false);
+    }
   };
   //#endregion
 
   return (
     <C.ContainerSettings>
       <C.ContainerTerritories>
-        <C.TerritoriesContent>
+        <C.TerritoriesContent
+          editingActive={addTerritoryWindow || deleteItemActive}
+        >
           <C.AddAlert showAddAlert={showAddAlert}>Territory Added!</C.AddAlert>
           <C.TerritoriesTitle>
             <Title
@@ -321,7 +350,7 @@ function ContainerSettings() {
           />
         </C.TerritoriesButtons>
       </C.ContainerTerritories>
-      <C.ContainerBonus>
+      <C.ContainerBonus saveSettingsActive={saveSettingsActive}>
         <Title text={"Game Settings"} fontSize={"1rem"} />
         <C.SaveSettingWarning saveSettingsWarning={saveSettingsWarning}>
           {settingsWarningMessage}
@@ -414,15 +443,17 @@ function ContainerSettings() {
           </C.BonusTotal>
         </C.BonusSettings>
       </C.ContainerBonus>
-      <C.ContainerPlayers>
+      <C.ContainerPlayers editPlayersActive={editPlayersActive}>
         <Button
-          text={editActive ? "Save Players" : "Edit Players"}
+          text={editPlayersActive ? "Save Players" : "Edit Players"}
           onClick={() => savePlayers()}
-          color={editActive ? "#fff" : "#808080"}
+          color={editPlayersActive ? "#fff" : "#808080"}
           buttonBgColor={"#2e8b2e"}
-          buttonBorderColor={editActive ? "#2e8b2e" : "#808080"}
         />
         <Title text={"Players"} fontSize={"1rem"} />
+        <C.SavePlayersWarning savePlayersWarning={savePlayersWarning}>
+          {settingsPlayersMessage}
+        </C.SavePlayersWarning>
         <C.Players>
           {playerItem("player1")}
           {playerItem("player4")}

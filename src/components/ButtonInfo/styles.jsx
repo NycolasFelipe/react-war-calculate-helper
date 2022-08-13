@@ -5,6 +5,7 @@ export const Container = styled.div`
     transition: all 0.2s ease;
     user-select: none;
   }
+  z-index: 5;
 `;
 
 export const ButtonInfo = styled.p`

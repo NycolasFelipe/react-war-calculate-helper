@@ -30,6 +30,15 @@ export const TerritoriesContent = styled.div`
   border-radius: 5px;
   position: relative;
   overflow: hidden;
+
+  ${(props) => {
+    if (props.editingActive) {
+      return `
+        border: 1px solid #fff;
+        transition: all 0.2s ease;
+      `;
+    }
+  }}
 `;
 
 export const TerritoriesTitle = styled.div`
@@ -168,6 +177,15 @@ export const ContainerBonus = styled.div`
   border-radius: 5px;
   padding: 5px 10px;
   position: relative;
+
+  ${(props) => {
+    if (props.saveSettingsActive) {
+      return `
+        border: 1px solid #fff;
+        transition: all 0.2s ease;
+      `;
+    }
+  }}
 `;
 
 export const Title = styled.div`
@@ -337,6 +355,15 @@ export const ContainerPlayers = styled.div`
   & > button:hover {
     color: #fff;
   }
+
+  ${(props) => {
+    if (props.editPlayersActive) {
+      return `
+        border: 1px solid #fff;
+        transition: all 0.2s ease;
+      `;
+    }
+  }}
 `;
 
 export const Players = styled.div`
@@ -404,5 +431,23 @@ export const Player = styled.div`
     width: 48%;
     margin: 0;
   }
+`;
+
+export const SavePlayersWarning = styled.span`
+  font-size: 0.8rem;
+  color: transparent;
+  position: absolute;
+  right: 115px;
+  top: 10px;
+  text-align: right;
+  user-select: none;
+
+  ${(props) => {
+    if (props.savePlayersWarning) {
+      return `
+      color: #ca1e1e;
+    `;
+    }
+  }}
 `;
 //#endregion
