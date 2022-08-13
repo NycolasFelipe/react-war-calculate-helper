@@ -9,7 +9,7 @@ import CheckBox from "../CheckBox";
 import ButtonInfo from "../ButtonInfo";
 import TerritoryItem from "../TerritoryItem";
 
-function ContainerSettings() {
+function Main() {
   //#region Territories Settings
   //Get territories list
   const { territories } = useContext(DataContext);
@@ -265,13 +265,59 @@ function ContainerSettings() {
     if (editPlayersActive) {
       error = players.setPlayers(playersList);
       if (error) handlePlayersWarning(error);
-      else setEditPlayersActive(false);
+      else {
+        setEditPlayersActive(false);
+        setSavePlayersWarning(false);
+      }
     }
   };
   //#endregion
 
+  //#region Change Territories
+  const [changeActive, setChangeActive] = useState(false);
+
+  const changeTerritoryItem = (name) => {
+    return (
+      <Button
+        text={name}
+        padding={"6px 8px"}
+        fontSize={"0.8rem"}
+        buttonHeight={"auto"}
+        buttonWidth={"auto"}
+      />
+    );
+  };
+
+  const changeTerritoriesPlayers = () => {
+    let items = [changeTerritoryItem("Available")];
+    for (let item in playersList) {
+      if (playersList[item].active) {
+        items.push(changeTerritoryItem(playersList[item].playerName));
+      }
+    }
+    return items;
+  };
+
+  const changeTerritories = () => {
+    const requiredSaved = !(editPlayersActive || saveSettingsActive);
+
+    if (addTerritoryWindow || deleteItemActive) {
+      setAddTerritoryWindow(false);
+      setDeleteItemActive(false);
+      setTerritoryName("");
+    }
+    if (editPlayersActive) {
+      handlePlayersWarning("You must save changes first.");
+    }
+    if (saveSettingsActive) {
+      handleSettingsWarning("You must save changes first.");
+    }
+    if (requiredSaved) setChangeActive(true);
+  };
+  //#endregion
+
   return (
-    <C.ContainerSettings>
+    <C.Main>
       <C.ContainerTerritories>
         <C.TerritoriesContent
           editingActive={addTerritoryWindow || deleteItemActive}
@@ -335,7 +381,7 @@ function ContainerSettings() {
         </C.TerritoriesContent>
         <C.TerritoriesButtons>
           <Button
-            text={addTerritoryWindow ? "Finish" : "Add Territory"}
+            text={addTerritoryWindow ? "Finish" : "Add New Territory"}
             buttonBgColor={"#2e8b2e"}
             buttonWidth={"100%"}
             disabled={deleteItemActive}
@@ -463,8 +509,68 @@ function ContainerSettings() {
           {playerItem("player6")}
         </C.Players>
       </C.ContainerPlayers>
-    </C.ContainerSettings>
+      <C.ChangeTerritories changeActive={changeActive}>
+        <C.ChangeTerritoriesHeader>
+          <Title text={"Change Territories"} fontSize={"1rem"} />
+          <C.ChangeTerritoriesButtons>
+            <Button
+              text={"Save Changes"}
+              buttonBgColor={"#2e8b2e"}
+              buttonWidth={"120px"}
+              buttonHeight={"1.3rem"}
+              fontSize={"0.8rem"}
+            />
+            <Button
+              text={"x"}
+              buttonBgColor={"#ca1e1e"}
+              buttonWidth={"1.4rem"}
+              buttonHeight={"1.3rem"}
+              onClick={() => setChangeActive(false)}
+            />
+          </C.ChangeTerritoriesButtons>
+        </C.ChangeTerritoriesHeader>
+        <C.ChangeTerritoriesSelect>
+          <C.ChangeTerritoriesFrom>
+            <Title text={"From"} fontSize={"0.9rem"} />
+            <C.TerritoriesFromContainer>
+              {changeTerritoriesPlayers()}
+            </C.TerritoriesFromContainer>
+          </C.ChangeTerritoriesFrom>
+          <C.ChangeTerritoriesSwitch>
+            <Button
+              text={"⮂"}
+              fontSize={"1rem"}
+              buttonBgColor={"#228be6"}
+              buttonWidth={"2rem"}
+            />
+          </C.ChangeTerritoriesSwitch>
+          <C.ChangeTerritoriesTo>
+            <Title text={"To"} fontSize={"0.9rem"} />
+            <C.TerritoriesToContainer>
+              {changeTerritoriesPlayers()}
+            </C.TerritoriesToContainer>
+          </C.ChangeTerritoriesTo>
+        </C.ChangeTerritoriesSelect>
+        <C.ChangeTerritoriesList>
+          <C.TerritoriesListFrom />
+          <C.TerritoriesListAdd>
+            <Button
+              text={"⭢"}
+              fontSize={"1rem"}
+              buttonBgColor={"#2e8b2e"}
+              buttonWidth={"2rem"}
+            />
+          </C.TerritoriesListAdd>
+          <C.TerritoriesListTo />
+        </C.ChangeTerritoriesList>
+      </C.ChangeTerritories>
+      <Button
+        text={"change territories"}
+        buttonWidth={"160px"}
+        onClick={() => changeTerritories()}
+      />
+    </C.Main>
   );
 }
 
-export default ContainerSettings;
+export default Main;

@@ -8,6 +8,7 @@ function Button({
   buttonBgColor = "#808080",
   buttonBorderColor = "#808080",
   fontSize,
+  padding,
   color = "#fff",
   disabled,
 }) {
@@ -20,6 +21,7 @@ function Button({
       buttonBgColor={buttonBgColor}
       buttonBorderColor={buttonBorderColor}
       fontSize={fontSize}
+      padding={padding}
       color={color}
       disabled={disabled}
     >

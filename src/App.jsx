@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import DataContext from "./contexts/DataContext";
 import * as C from "./AppStyles";
-import ContainerSettings from "./components/ContainerSettings";
+import Main from "./components/Main";
 
 import Territories from "./components/Classes/Territories";
 import Settings from "./components/Classes/Settings";
@@ -21,7 +21,7 @@ function App() {
     <C.Container>
       <DataContext.Provider value={providerValue}>
         <C.ContainerMain>
-          <ContainerSettings />
+          <Main />
         </C.ContainerMain>
       </DataContext.Provider>
     </C.Container>

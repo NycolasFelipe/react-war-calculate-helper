@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const ContainerSettings = styled.div`
+export const Main = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -311,9 +311,6 @@ export const BonusTotal = styled.div`
   flex-wrap: wrap;
   justify-content: space-around;
   width: 33%;
-  * {
-    transition: all 0.2s ease;
-  }
 `;
 
 export const BonusTotalLeft = styled.div`
@@ -387,7 +384,7 @@ export const Player = styled.div`
 
   & > * {
     margin-right: 6px;
-    font-size: 0.9rem;
+    font-size: 0.9rem !important;
   }
   & > h1 {
     min-width: 60px;
@@ -397,6 +394,9 @@ export const Player = styled.div`
   ${(props) => {
     if (!props.playerActive) {
       return `
+        & > * {
+          color: #505050 !important;
+        }
         * {
           color: #505050 !important;
         }
@@ -417,7 +417,7 @@ export const Player = styled.div`
     if (!props.editPlayersActive && props.playerActive) {
       return `
         * {
-          color: #aaaaaa;
+          color: #aaaaaa !important;
         }
       `;
     }
@@ -428,7 +428,7 @@ export const SavePlayersWarning = styled.span`
   font-size: 0.8rem;
   color: transparent;
   position: absolute;
-  right: 115px;
+  right: 120px;
   top: 10px;
   text-align: right;
   user-select: none;
@@ -442,3 +442,125 @@ export const SavePlayersWarning = styled.span`
   }}
 `;
 //#endregion
+
+//#region Change Territories
+export const ChangeTerritories = styled.div`
+  background: #080808;
+  height: 80vh;
+  width: 40vw;
+  min-width: 580px;
+  position: fixed;
+  z-index: 10;
+  border-radius: 5px;
+  overflow: hidden;
+  padding: 5px 10px;
+  border: 1px solid #fff;
+  transition-duration: 0.1s !important;
+
+  //Center
+  transform: translateX(-50%);
+  left: 50%;
+  top: 10%;
+
+  ${(props) => {
+    if (!props.changeActive) {
+      return `
+        background: transparent !important;
+        border: transparent !important;
+        * {
+          color: transparent !important;
+          border: transparent !important;
+        }
+        user-select: none;
+        pointer-events: none;
+        transition-duration: 0.1s !important;
+      `;
+    }
+  }}
+`;
+
+export const ChangeTerritoriesHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 6%;
+`;
+
+export const ChangeTerritoriesButtons = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: center;
+`;
+
+export const ChangeTerritoriesSelect = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 20%;
+`;
+
+export const ChangeTerritoriesFrom = styled.div`
+  width: 45%;
+  height: 100%;
+  padding: 5px 10px;
+  overflow: hidden;
+`;
+
+export const ChangeTerritoriesTo = styled.div`
+  width: 45%;
+  height: 100%;
+  padding: 5px 10px;
+  overflow: hidden;
+`;
+
+export const TerritoriesFromContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px 3px;
+  margin-top: 5px;
+  width: 100%;
+  height: auto;
+`;
+
+export const TerritoriesToContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px 3px;
+  margin-top: 5px;
+  width: 100%;
+  height: auto;
+`;
+export const ChangeTerritoriesSwitch = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
+  height: 100%;
+`;
+
+export const ChangeTerritoriesList = styled.div`
+  display: flex;
+  width: 100%;
+  height: 74%;
+  padding: 10px 10px;
+`;
+
+export const TerritoriesListFrom = styled.div`
+  height: 100%;
+  width: 45%;
+  border-radius: 5px;
+  border: 1px solid #424242;
+`;
+
+export const TerritoriesListTo = styled.div`
+  height: 100%;
+  width: 45%;
+  border-radius: 5px;
+  border: 1px solid #424242;
+`;
+export const TerritoriesListAdd = styled.div`
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  width: 10%;
+`;

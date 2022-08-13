@@ -12,6 +12,7 @@ export const Button = styled.button`
   cursor: pointer;
   transition: all 0.2s ease;
   user-select: none;
+  padding: ${(props) => props.padding};
 
   &:hover {
     background: ${(props) => props.buttonBgColor};
