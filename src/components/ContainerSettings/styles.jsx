@@ -404,7 +404,7 @@ export const Player = styled.div`
     }
   }}
   ${(props) => {
-    if (!props.editActive) {
+    if (!props.editPlayersActive) {
       return `
         & > * {
           pointer-events: none;
@@ -414,7 +414,7 @@ export const Player = styled.div`
     }
   }}
   ${(props) => {
-    if (!props.editActive && props.playerActive) {
+    if (!props.editPlayersActive && props.playerActive) {
       return `
         * {
           color: #aaaaaa;
@@ -422,15 +422,6 @@ export const Player = styled.div`
       `;
     }
   }}
-
-  @media screen and (max-width: 960px) {
-    & > * {
-      font-size: 0.8rem;
-    }
-    padding: 0 5px;
-    width: 48%;
-    margin: 0;
-  }
 `;
 
 export const SavePlayersWarning = styled.span`
