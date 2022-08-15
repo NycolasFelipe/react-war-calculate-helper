@@ -274,33 +274,66 @@ function Main() {
   //#endregion
 
   //#region Change Territories
-  const [changeActive, setChangeActive] = useState(false);
+  const { territoriesTrade } = useContext(DataContext);
+  const [changeActive, setChangeActive] = useState(true);
+  const [playersTradeList, setPlayersTradeList] = useState(
+    territoriesTrade.getPlayersTrade()
+  );
 
-  const changeTerritoryItem = (name) => {
+  territoriesTrade.loadPlayersTradeActive(players.getPlayers());
+
+  const changeTerritoryItem = (name, playerId, selected, type) => {
+    let disabled = territoriesTrade.checkPlayersTradeDuplicate(playerId, type);
     return (
       <Button
+        key={name}
         text={name}
         padding={"6px 8px"}
         fontSize={"0.8rem"}
         buttonHeight={"auto"}
         buttonWidth={"auto"}
+        buttonBorderColor={selected ? "#228be6" : "#424242"}
+        buttonBgColor={"#228be6"}
+        disabled={disabled}
+        onClick={() => changeTerritorySelected(playerId, type)}
       />
     );
   };
 
-  const changeTerritoriesPlayers = () => {
-    let items = [changeTerritoryItem("Available")];
-    for (let item in playersList) {
-      if (playersList[item].active) {
-        items.push(changeTerritoryItem(playersList[item].playerName));
+  const changeTerritorySelected = (playerId, type) => {
+    territoriesTrade.setPlayersTradeSelected(playerId, type);
+    setPlayersTradeList(territoriesTrade.getPlayersTrade());
+  };
+
+  const changeTerritoriesPlayers = (type) => {
+    let items = [];
+    let playerIdTrade;
+    let playerName;
+    let playerSelected;
+    let playersTrade = territoriesTrade.getPlayersTrade(type);
+
+    for (let item in playersTrade) {
+      playerIdTrade = playersTrade[item]["playerId"];
+      playerSelected = playersTrade[item]["selected"];
+
+      if (playerIdTrade === "none") {
+        playerName = "Available";
+        items.unshift(
+          changeTerritoryItem(playerName, playerIdTrade, playerSelected, type)
+        );
+      } else {
+        playerName = players.getPlayer(playerIdTrade)["playerName"];
+        items.push(
+          changeTerritoryItem(playerName, playerIdTrade, playerSelected, type)
+        );
       }
     }
+
     return items;
   };
 
   const changeTerritories = () => {
     const requiredSaved = !(editPlayersActive || saveSettingsActive);
-
     if (addTerritoryWindow || deleteItemActive) {
       setAddTerritoryWindow(false);
       setDeleteItemActive(false);
@@ -533,7 +566,7 @@ function Main() {
           <C.ChangeTerritoriesFrom>
             <Title text={"From"} fontSize={"0.9rem"} />
             <C.TerritoriesFromContainer>
-              {changeTerritoriesPlayers()}
+              {changeTerritoriesPlayers("from")}
             </C.TerritoriesFromContainer>
           </C.ChangeTerritoriesFrom>
           <C.ChangeTerritoriesSwitch>
@@ -547,7 +580,7 @@ function Main() {
           <C.ChangeTerritoriesTo>
             <Title text={"To"} fontSize={"0.9rem"} />
             <C.TerritoriesToContainer>
-              {changeTerritoriesPlayers()}
+              {changeTerritoriesPlayers("to")}
             </C.TerritoriesToContainer>
           </C.ChangeTerritoriesTo>
         </C.ChangeTerritoriesSelect>

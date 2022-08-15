@@ -5,31 +5,37 @@ export default class Players {
         playerId: "player1",
         playerName: "Blue",
         active: true,
+        selected: false,
       },
       {
         playerId: "player2",
         playerName: "Red",
         active: true,
+        selected: false,
       },
       {
         playerId: "player3",
         playerName: "Green",
         active: true,
+        selected: false,
       },
       {
         playerId: "player4",
         playerName: "Yellow",
         active: false,
+        selected: false,
       },
       {
         playerId: "player5",
         playerName: "White",
         active: false,
+        selected: false,
       },
       {
         playerId: "player6",
         playerName: "Black",
         active: false,
+        selected: false,
       },
     ];
 

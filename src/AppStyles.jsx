@@ -22,13 +22,7 @@ export const ContainerMain = styled.div`
   width: 100%;
   height: 70%;
 
-  ${(props) => {
-    if (props.addTerritoryWindow) {
-      return `
-        pointer-events: none;
-        filter: blur(2px);
-        transition: all 0.2s ease;
-      `;
-    }
-  }}
+  /* pointer-events: none;
+  filter: blur(2px);
+  transition: all 0.2s ease; */
 `;
