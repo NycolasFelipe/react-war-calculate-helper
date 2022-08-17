@@ -5,8 +5,40 @@ export const Main = styled.div`
   flex-direction: column;
   flex-wrap: wrap;
   gap: 10px;
-  width: 70%;
+  width: 80%;
   height: 100%;
+
+  ${(props) => {
+    if (props.changeActive) {
+      return `
+        pointer-events: none;
+        user-select: none;
+
+        body {
+          overflow-y: hidden !important;
+        }
+    `;
+    }
+  }}
+`;
+
+export const ContainerBlur = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: transparent;
+  pointer-events: none !important;
+
+  ${(props) => {
+    if (props.changeActive) {
+      return `
+      background: #000000a0;
+      transition: all 0.2s ease;
+    `;
+    }
+  }}
 `;
 
 //#region Territories Settings
@@ -169,7 +201,7 @@ export const ContainerBonus = styled.div`
   flex-direction: column;
   flex: 1;
   gap: 5px;
-  width: 75%;
+  width: 70%;
   min-width: 360px;
   height: 60%;
   background: transparent;
@@ -337,7 +369,7 @@ export const ContainerPlayers = styled.div`
   border: 1px solid #424242;
   border-radius: 5px;
   height: 40%;
-  width: 75%;
+  width: 70%;
   padding: 5px 2px 10px 10px;
   position: relative;
 
@@ -457,6 +489,14 @@ export const ChangeTerritories = styled.div`
   border: 1px solid #fff;
   transition-duration: 0.1s !important;
 
+  ${(props) => {
+    if (props.changeActive) {
+      return `
+        pointer-events: auto !important;
+    `;
+    }
+  }}
+
   //Center
   transform: translateX(-50%);
   left: 50%;
@@ -468,8 +508,14 @@ export const ChangeTerritories = styled.div`
         background: transparent !important;
         border: transparent !important;
         * {
+          background: transparent !important;
           color: transparent !important;
           border: transparent !important;
+        }
+        & > * {
+          height: 0 !important;
+          width: 0 !important;
+          overflow: hidden !important;
         }
         user-select: none;
         pointer-events: none;
@@ -502,39 +548,72 @@ export const ChangeTerritoriesSelect = styled.div`
 export const ChangeTerritoriesFrom = styled.div`
   width: 45%;
   height: 100%;
-  padding: 5px 10px;
-  overflow: hidden;
+  padding: 5px 0 5px 0;
+  margin-left: 10px;
 `;
 
 export const ChangeTerritoriesTo = styled.div`
   width: 45%;
   height: 100%;
-  padding: 5px 10px;
-  overflow: hidden;
+  padding: 5px 0 5px 5px;
+  margin-right: 10px;
+`;
+
+export const TerritoriesContainerTitle = styled.div`
+  width: 100%;
+  height: 1.2rem;
 `;
 
 export const TerritoriesFromContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
+  align-items: flex-start;
   gap: 3px 3px;
   margin-top: 5px;
   width: 100%;
-  height: auto;
+  height: 80%;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    background-color: transparent;
+    border-radius: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    --webkit-box-shadow: inset 0 0 6px #0000004d;
+    background-color: #202020;
+  }
 `;
 
 export const TerritoriesToContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
+  align-items: flex-start;
   gap: 3px 3px;
   margin-top: 5px;
   width: 100%;
-  height: auto;
+  height: 80%;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    background-color: transparent;
+    border-radius: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    --webkit-box-shadow: inset 0 0 6px #0000004d;
+    background-color: #202020;
+  }
 `;
 export const ChangeTerritoriesSwitch = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
-  width: 10%;
+  padding-top: 15px;
+  width: 8%;
   height: 100%;
 `;
 

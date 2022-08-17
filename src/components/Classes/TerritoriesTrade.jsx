@@ -139,7 +139,7 @@ export default class TerritoriesTrade {
         case "to": {
           for (let item in playersTradeTo) {
             if (playersTradeTo[item].playerId === playerId) {
-              playersTradeTo[item].selected = true;
+              playersTradeTo[item].selected = !playersTradeTo[item].selected;
             } else playersTradeTo[item].selected = false;
           }
           break;
@@ -153,6 +153,35 @@ export default class TerritoriesTrade {
       if (type === "from" && tradeTerritoryTo["selected"]) return true;
       if (type === "to" && tradeTerritoryFrom["selected"]) return true;
       return false;
+    };
+
+    this.checkPlayerSelected = () => {
+      for (let item in playersTradeTo) {
+        if (
+          playersTradeTo[item]["active"] &&
+          playersTradeTo[item]["selected"] === true
+        ) {
+          return false;
+        }
+      }
+      return true;
+    };
+
+    this.switchPlayersTrade = () => {
+      let newPlayerTradeFrom;
+      let newPlayerTradeTo;
+
+      for (let item in playersTradeTo) {
+        if (playersTradeTo[item]["selected"])
+          newPlayerTradeFrom = playersTradeTo[item]["playerId"];
+      }
+      for (let item in playersTradeFrom) {
+        if (playersTradeFrom[item]["selected"])
+          newPlayerTradeTo = playersTradeFrom[item]["playerId"];
+      }
+
+      this.setPlayersTradeSelected(newPlayerTradeFrom, "from");
+      this.setPlayersTradeSelected(newPlayerTradeTo, "to");
     };
   }
 }

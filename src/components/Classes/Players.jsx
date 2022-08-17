@@ -42,11 +42,12 @@ export default class Players {
     const error = {
       emptyName: "Name field cannot be empty.",
       minimumPlayers: "At least one player must be active.",
+      duplicatedName: "There can be no identical names.",
     };
 
     this.getPlayer = (playerId) => {
       for (let item in players) {
-        if (players[item].playerId === playerId) {
+        if (players[item]["playerId"] === playerId) {
           return players[item];
         }
       }
@@ -61,27 +62,45 @@ export default class Players {
       if (error) return error;
       else {
         for (let item in playersList) {
-          if (players[item].playerName === playersList[item].playerName) {
-            players[item].playerName = playersList[item].playerName;
+          let playerListName = playersList[item]["playerName"];
+          let playerListActive = playersList[item]["active"];
+
+          if (players[item]["playerName"] === playerListName) {
+            players[item]["playerName"] = playerListName;
           }
-          if (players[item].active === playersList[item].active) {
-            players[item].active = playersList[item].active;
+          if (players[item]["active"] === playerListActive) {
+            players[item]["active"] = playerListActive;
           }
         }
       }
     };
 
+    const checkDuplicate = (array) => {
+      return new Set(array).size !== array.length;
+    };
+
     const checkValidPlayers = (playersList) => {
+      let playersListNames = [];
       let playersActiveCount = 0;
 
       for (let item in playersList) {
-        if (playersList[item].active && playersList[item].playerName === "") {
-          return error.emptyName;
+        let playerActive = playersList[item]["active"];
+        let playerName = playersList[item]["playerName"];
+
+        if (playerActive) {
+          if (playerName === "" || playerName.replaceAll(/\s/g, "") === "")
+            return error.emptyName;
+
+          playersActiveCount++;
+          playersListNames.push(playersList[item]["playerName"]);
         }
-        if (playersList[item].active) playersActiveCount++;
       }
+
       if (playersActiveCount === 0) {
         return error.minimumPlayers;
+      }
+      if (checkDuplicate(playersListNames)) {
+        return error.duplicatedName;
       }
     };
   }

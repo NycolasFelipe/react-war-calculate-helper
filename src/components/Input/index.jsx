@@ -9,6 +9,7 @@ function Input({
   alignCenter,
   onChange,
   readOnly,
+  maxLength,
   borderRadius,
   inputWidth,
   lockValue,
@@ -26,6 +27,7 @@ function Input({
         alignCenter={alignCenter}
         onChange={onChange}
         readOnly={readOnly}
+        maxLength={maxLength}
         borderRadius={borderRadius}
         inputWidth={inputWidth}
         lockValue={lockValue}

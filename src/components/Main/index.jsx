@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import DataContext from "../../contexts/DataContext";
+import { RemoveScroll } from "react-remove-scroll";
 import * as C from "./styles";
 import Title from "../Title";
 import Input from "../Input";
@@ -8,6 +9,7 @@ import Select from "../Select";
 import CheckBox from "../CheckBox";
 import ButtonInfo from "../ButtonInfo";
 import TerritoryItem from "../TerritoryItem";
+import TitleCase from "../Functions/TitleClase";
 
 function Main() {
   //#region Territories Settings
@@ -51,7 +53,7 @@ function Main() {
   const [territoryName, setTerritoryName] = useState("");
   const [territoryContinent, setTerritoryContinent] = useState("Africa");
   const addTerritory = (territory, continent) => {
-    const error = territories.addTerritory(territory, continent);
+    const error = territories.addTerritory(TitleCase(territory), continent);
     setTerritoryName("");
     //Caso tenha havido um erro, exibe uma mensagem
     if (error) {
@@ -220,6 +222,7 @@ function Main() {
           placeholder={"Player name..."}
           borderRadius={"0"}
           onChange={(e) => changePlayerName(e.target.value, playerId)}
+          maxLength={12}
         />
       </C.Player>
     );
@@ -286,7 +289,7 @@ function Main() {
     let disabled = territoriesTrade.checkPlayersTradeDuplicate(playerId, type);
     return (
       <Button
-        key={name}
+        key={playerId}
         text={name}
         padding={"6px 8px"}
         fontSize={"0.8rem"}
@@ -296,6 +299,36 @@ function Main() {
         buttonBgColor={"#228be6"}
         disabled={disabled}
         onClick={() => changeTerritorySelected(playerId, type)}
+      />
+    );
+  };
+
+  const changeTerritorieSwitch = () => {
+    let disabled = territoriesTrade.checkPlayerSelected();
+    return (
+      <Button
+        text={"⮂"}
+        fontSize={"1rem"}
+        buttonBgColor={"#228be6"}
+        buttonWidth={"2rem"}
+        onClick={() => [
+          territoriesTrade.switchPlayersTrade(),
+          setPlayersTradeList(territoriesTrade.getPlayersTrade()),
+        ]}
+        disabled={disabled}
+      />
+    );
+  };
+
+  const changeTerritoriesAdd = () => {
+    let disabled = territoriesTrade.checkPlayerSelected();
+    return (
+      <Button
+        text={"⭢"}
+        fontSize={"1rem"}
+        buttonBgColor={"#2e8b2e"}
+        buttonWidth={"2rem"}
+        disabled={disabled}
       />
     );
   };
@@ -350,7 +383,7 @@ function Main() {
   //#endregion
 
   return (
-    <C.Main>
+    <C.Main changeActive={changeActive}>
       <C.ContainerTerritories>
         <C.TerritoriesContent
           editingActive={addTerritoryWindow || deleteItemActive}
@@ -385,6 +418,7 @@ function Main() {
               placeholder={"Ex.: Canada"}
               value={territoryName}
               onChange={(e) => setTerritoryName(e.target.value)}
+              maxLength={14}
             />
             <Select
               label={"labelAddTerritoryContinent"}
@@ -542,61 +576,59 @@ function Main() {
           {playerItem("player6")}
         </C.Players>
       </C.ContainerPlayers>
-      <C.ChangeTerritories changeActive={changeActive}>
-        <C.ChangeTerritoriesHeader>
-          <Title text={"Change Territories"} fontSize={"1rem"} />
-          <C.ChangeTerritoriesButtons>
-            <Button
-              text={"Save Changes"}
-              buttonBgColor={"#2e8b2e"}
-              buttonWidth={"120px"}
-              buttonHeight={"1.3rem"}
-              fontSize={"0.8rem"}
-            />
-            <Button
-              text={"x"}
-              buttonBgColor={"#ca1e1e"}
-              buttonWidth={"1.4rem"}
-              buttonHeight={"1.3rem"}
-              onClick={() => setChangeActive(false)}
-            />
-          </C.ChangeTerritoriesButtons>
-        </C.ChangeTerritoriesHeader>
-        <C.ChangeTerritoriesSelect>
-          <C.ChangeTerritoriesFrom>
-            <Title text={"From"} fontSize={"0.9rem"} />
-            <C.TerritoriesFromContainer>
-              {changeTerritoriesPlayers("from")}
-            </C.TerritoriesFromContainer>
-          </C.ChangeTerritoriesFrom>
-          <C.ChangeTerritoriesSwitch>
-            <Button
-              text={"⮂"}
-              fontSize={"1rem"}
-              buttonBgColor={"#228be6"}
-              buttonWidth={"2rem"}
-            />
-          </C.ChangeTerritoriesSwitch>
-          <C.ChangeTerritoriesTo>
-            <Title text={"To"} fontSize={"0.9rem"} />
-            <C.TerritoriesToContainer>
-              {changeTerritoriesPlayers("to")}
-            </C.TerritoriesToContainer>
-          </C.ChangeTerritoriesTo>
-        </C.ChangeTerritoriesSelect>
-        <C.ChangeTerritoriesList>
-          <C.TerritoriesListFrom />
-          <C.TerritoriesListAdd>
-            <Button
-              text={"⭢"}
-              fontSize={"1rem"}
-              buttonBgColor={"#2e8b2e"}
-              buttonWidth={"2rem"}
-            />
-          </C.TerritoriesListAdd>
-          <C.TerritoriesListTo />
-        </C.ChangeTerritoriesList>
-      </C.ChangeTerritories>
+      <C.ContainerBlur changeActive={changeActive} />
+      <RemoveScroll enabled={changeActive}>
+        <C.ChangeTerritories changeActive={changeActive}>
+          <C.ChangeTerritoriesHeader>
+            <Title text={"Change Territories"} fontSize={"1rem"} />
+            <C.ChangeTerritoriesButtons>
+              <Button
+                text={"Save Changes"}
+                buttonBgColor={"#2e8b2e"}
+                buttonWidth={"120px"}
+                buttonHeight={"1.3rem"}
+                fontSize={"0.8rem"}
+              />
+              <Button
+                text={"x"}
+                buttonBgColor={"#ca1e1e"}
+                buttonWidth={"1.4rem"}
+                buttonHeight={"1.3rem"}
+                onClick={() => setChangeActive(false)}
+              />
+            </C.ChangeTerritoriesButtons>
+          </C.ChangeTerritoriesHeader>
+          <C.ChangeTerritoriesSelect>
+            <C.ChangeTerritoriesFrom>
+              <C.TerritoriesContainerTitle>
+                <Title text={"From"} fontSize={"0.9rem"} />
+              </C.TerritoriesContainerTitle>
+              <C.TerritoriesFromContainer>
+                {changeTerritoriesPlayers("from")}
+              </C.TerritoriesFromContainer>
+            </C.ChangeTerritoriesFrom>
+            <C.ChangeTerritoriesSwitch>
+              {changeTerritorieSwitch()}
+            </C.ChangeTerritoriesSwitch>
+            <C.ChangeTerritoriesTo>
+              <C.TerritoriesContainerTitle>
+                <Title text={"To"} fontSize={"0.9rem"} />
+              </C.TerritoriesContainerTitle>
+              <C.TerritoriesToContainer>
+                {changeTerritoriesPlayers("to")}
+              </C.TerritoriesToContainer>
+            </C.ChangeTerritoriesTo>
+          </C.ChangeTerritoriesSelect>
+          <C.ChangeTerritoriesList>
+            <C.TerritoriesListFrom />
+            <C.TerritoriesListAdd>
+              {changeTerritoriesAdd()}
+            </C.TerritoriesListAdd>
+            <C.TerritoriesListTo />
+          </C.ChangeTerritoriesList>
+        </C.ChangeTerritories>
+      </RemoveScroll>
+
       <Button
         text={"change territories"}
         buttonWidth={"160px"}
