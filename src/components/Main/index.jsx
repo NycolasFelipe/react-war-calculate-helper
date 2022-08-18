@@ -298,7 +298,10 @@ function Main() {
         buttonBorderColor={selected ? "#228be6" : "#424242"}
         buttonBgColor={"#228be6"}
         disabled={disabled}
-        onClick={() => changeTerritorySelected(playerId, type)}
+        onClick={() => [
+          changePlayerTradeSelected(playerId, type),
+          checkSelectAll(),
+        ]}
       />
     );
   };
@@ -308,12 +311,13 @@ function Main() {
     return (
       <Button
         text={"⮂"}
-        fontSize={"1rem"}
+        fontSize={"1.5rem"}
         buttonBgColor={"#228be6"}
         buttonWidth={"2rem"}
         onClick={() => [
           territoriesTrade.switchPlayersTrade(),
           setPlayersTradeList(territoriesTrade.getPlayersTrade()),
+          checkSelectAll(),
         ]}
         disabled={disabled}
       />
@@ -321,19 +325,120 @@ function Main() {
   };
 
   const changeTerritoriesAdd = () => {
-    let disabled = territoriesTrade.checkPlayerSelected();
+    let disabled = true;
+    let territorySelected = false;
+    let playerTradeSelected = false;
+    let playersTradeList = territoriesTrade.getPlayersTrade("to");
+
+    for (let item in territoriesList) {
+      if (territoriesList[item]["selected"]) {
+        territorySelected = true;
+        break;
+      }
+    }
+    for (let item in playersTradeList) {
+      if (playersTradeList[item]["selected"]) {
+        playerTradeSelected = true;
+        break;
+      }
+    }
+    disabled = !(territorySelected && playerTradeSelected);
+
     return (
       <Button
         text={"⭢"}
-        fontSize={"1rem"}
+        fontSize={"1.5rem"}
         buttonBgColor={"#2e8b2e"}
         buttonWidth={"2rem"}
+        onClick={() => [changeTerritoriesOwner()]}
         disabled={disabled}
       />
     );
   };
 
-  const changeTerritorySelected = (playerId, type) => {
+  const changeTerritoriesCancel = () => {
+    let disabled = true;
+    for (let item in territoriesList) {
+      if (territoriesList[item]["selected"]) {
+        disabled = false;
+        break;
+      }
+    }
+    return (
+      <Button
+        text={"🗑"}
+        fontSize={"1.5rem"}
+        buttonBgColor={"#ca1e1e"}
+        buttonWidth={"2rem"}
+        disabled={disabled}
+        onClick={() => [
+          changeTerritoriesSelected("deselect"),
+          setSelectAllFlag(false),
+        ]}
+      />
+    );
+  };
+
+  const [selectAllFlag, setSelectAllFlag] = useState(false);
+
+  const changeTerritoriesSelectAll = () => {
+    return (
+      <Button
+        text={"🞻"}
+        fontSize={"1.5rem"}
+        buttonBgColor={"#228be6"}
+        buttonWidth={"2rem"}
+        onClick={() => [
+          changeTerritoriesSelected("selectAll"),
+          setSelectAllFlag(true),
+        ]}
+        disabled={selectAllFlag}
+      />
+    );
+  };
+
+  const checkSelectAll = () => {
+    let playersTradeList = territoriesTrade.getPlayersTrade("from");
+    for (let item in playersTradeList) {
+      if (playersTradeList[item]["selected"]) {
+        //checar se o player está SELECIONADO
+        //e se existem territorios com esse dono
+        //criar um método em territories para checar o número
+        //de territorios que um determinado player possui
+        setSelectAllFlag(false);
+        break;
+      } else {
+        setSelectAllFlag(true);
+        break;
+      }
+    }
+  };
+
+  const changeTerritoriesOwner = () => {
+    let items = [];
+    let list = territoriesList;
+    let playerSelected = playersTradeList[1].filter((item) => {
+      if (item["selected"]) return item;
+    })[0]["playerId"];
+
+    for (let item in list) {
+      if (list[item]["selected"]) {
+        list[item]["selected"] = false;
+        items.push(list[item]);
+      }
+    }
+    for (let item in items) {
+      territories.setPlayerTerritory(playerSelected, items[item]["territory"]);
+    }
+    setUpdateTerritories(!updateTerritories);
+  };
+
+  const changeTerritoriesSelected = (type) => {
+    territories.setTerritorySelected([], type);
+    setUpdateTerritories(!updateTerritories);
+  };
+
+  const changePlayerTradeSelected = (playerId, type) => {
     territoriesTrade.setPlayersTradeSelected(playerId, type);
     setPlayersTradeList(territoriesTrade.getPlayersTrade());
   };
@@ -361,10 +466,82 @@ function Main() {
         );
       }
     }
-
     return items;
   };
 
+  const compareTerritoriesSelected = (a, b) => {
+    if (a.selected === b.selected) {
+      return a.selected < b.selected ? -1 : 1;
+    }
+    if (a.selected > b.selected) {
+      return -1;
+    }
+    if ((a.selected && b.selected) || (!a.selected && !b.selected)) {
+      if (a.continent > b.continent) {
+        return 1;
+      }
+      if (a.continent < b.continent) {
+        return -1;
+      }
+    }
+  };
+
+  const territoriesListItems = (type) => {
+    let items = [];
+    let sortedItems = [];
+    let list = territories.territoriesList;
+    let playersTradeList = territoriesTrade.getPlayersTrade(type);
+    let playerSelected = "";
+
+    //Get player that is currently selected
+    for (let item in playersTradeList) {
+      if (playersTradeList[item]["selected"]) {
+        playerSelected = playersTradeList[item]["playerId"];
+      }
+    }
+
+    for (let item in list) {
+      if (list[item]["owner"] === playerSelected) {
+        sortedItems.push(list[item]);
+      }
+    }
+    sortedItems.sort(compareTerritoriesSelected);
+
+    //Get territories owned by this player
+    sortedItems.forEach((item, index) => {
+      if (item["owner"] === playerSelected) {
+        if (type === "from") {
+          items.push(
+            <TerritoryItem
+              key={index}
+              continent={item["continent"]}
+              territory={item["territory"]}
+              addTerritory={true}
+              onClick={() => [
+                territories.setTerritorySelected(item["territory"]),
+                setSelectAllFlag(false),
+                setUpdateTerritories(!updateTerritories),
+              ]}
+              selected={item["selected"]}
+            />
+          );
+        } else {
+          items.push(
+            <TerritoryItem
+              key={index}
+              continent={item["continent"]}
+              territory={item["territory"]}
+            />
+          );
+        }
+      }
+    });
+    return items;
+  };
+
+  const [updateTerritories, setUpdateTerritories] = useState(true);
+
+  //Show Change Territories window
   const changeTerritories = () => {
     const requiredSaved = !(editPlayersActive || saveSettingsActive);
     if (addTerritoryWindow || deleteItemActive) {
@@ -620,11 +797,18 @@ function Main() {
             </C.ChangeTerritoriesTo>
           </C.ChangeTerritoriesSelect>
           <C.ChangeTerritoriesList>
-            <C.TerritoriesListFrom />
-            <C.TerritoriesListAdd>
+            <C.TerritoriesListFrom>
+              {territoriesListItems("from")}
+              {updateTerritories}
+            </C.TerritoriesListFrom>
+            <C.TerritoriesListTools>
               {changeTerritoriesAdd()}
-            </C.TerritoriesListAdd>
-            <C.TerritoriesListTo />
+              {changeTerritoriesCancel()}
+              {changeTerritoriesSelectAll()}
+            </C.TerritoriesListTools>
+            <C.TerritoriesListTo>
+              {territoriesListItems("to")}
+            </C.TerritoriesListTo>
           </C.ChangeTerritoriesList>
         </C.ChangeTerritories>
       </RemoveScroll>

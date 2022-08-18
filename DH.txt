@@ -2,6 +2,6 @@
 - O nome do jogador deve ter um limite de caracteres - ok
 - não podem haver 2 players com o mesmo nome - ok
 - List de players disponiveis deve ter altura dinamica - ok
-- add swap functionality
-- não deve ser possível adicionar territórios se ambas a opcoes não estiverem selecionadas
+- add swap functionality - ok
+- não deve ser possível adicionar territórios se ambas a opcoes não estiverem selecionadas - ok
 - save changes deve iniciar disabled e só poder ser ativado quando houverem modificações

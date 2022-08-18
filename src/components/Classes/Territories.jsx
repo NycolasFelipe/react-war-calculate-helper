@@ -322,5 +322,38 @@ export default class Territories {
       }
     };
     //#endregion
+
+    //#region Set Territory Selected
+    this.setTerritorySelected = (territory, type) => {
+      switch (type) {
+        case "deselect":
+          {
+            for (let item in this.territoriesList) {
+              this.territoriesList[item].selected = false;
+            }
+          }
+          break;
+
+        case "selectAll":
+          {
+            for (let item in this.territoriesList) {
+              this.territoriesList[item].selected = true;
+            }
+          }
+          break;
+
+        default:
+          {
+            for (let item in this.territoriesList) {
+              if (this.territoriesList[item].territory === territory) {
+                this.territoriesList[item].selected =
+                  !this.territoriesList[item].selected;
+              }
+            }
+          }
+          break;
+      }
+    };
+    //#endregion
   }
 }

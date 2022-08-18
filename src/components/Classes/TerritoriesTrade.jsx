@@ -1,3 +1,5 @@
+import TerritoryItem from "../TerritoryItem";
+
 export default class TerritoriesTrade {
   constructor() {
     const playersTradeFrom = [

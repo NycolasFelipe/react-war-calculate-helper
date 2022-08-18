@@ -612,7 +612,7 @@ export const TerritoriesToContainer = styled.div`
 export const ChangeTerritoriesSwitch = styled.div`
   display: flex;
   justify-content: center;
-  padding-top: 15px;
+  padding-top: 30px;
   width: 8%;
   height: 100%;
 `;
@@ -625,22 +625,57 @@ export const ChangeTerritoriesList = styled.div`
 `;
 
 export const TerritoriesListFrom = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1px 0;
   height: 100%;
   width: 45%;
   border-radius: 5px;
   border: 1px solid #424242;
+  overflow-y: auto;
+  border-radius: 5px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    background-color: transparent;
+    border-radius: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    --webkit-box-shadow: inset 0 0 6px #0000004d;
+    background-color: #202020;
+  }
 `;
 
 export const TerritoriesListTo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1px 0;
   height: 100%;
   width: 45%;
   border-radius: 5px;
   border: 1px solid #424242;
+  overflow-y: auto;
+  border-radius: 5px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    background-color: transparent;
+    border-radius: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    --webkit-box-shadow: inset 0 0 6px #0000004d;
+    background-color: #202020;
+  }
 `;
-export const TerritoriesListAdd = styled.div`
+export const TerritoriesListTools = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  height: 100%;
+  height: 35%;
   width: 10%;
 `;
 //#endregion
