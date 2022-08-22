@@ -324,7 +324,7 @@ export default class Territories {
     //#endregion
 
     //#region Set Territory Selected
-    this.setTerritorySelected = (territory, type) => {
+    this.setTerritorySelected = (territory, type, owner) => {
       switch (type) {
         case "deselect":
           {
@@ -337,7 +337,9 @@ export default class Territories {
         case "selectAll":
           {
             for (let item in this.territoriesList) {
-              this.territoriesList[item].selected = true;
+              if (this.territoriesList[item]["owner"] === owner) {
+                this.territoriesList[item].selected = true;
+              }
             }
           }
           break;
@@ -353,6 +355,33 @@ export default class Territories {
           }
           break;
       }
+    };
+    //#endregion
+
+    //#region Check Owner Territories
+    this.checkOwnerTerritories = (owner, selected = false) => {
+      let count = 0;
+      let anySelected = false;
+
+      for (let item in this.territoriesList) {
+        if (this.territoriesList[item]["owner"] === owner) {
+          count++;
+        }
+      }
+
+      if (selected) {
+        for (let item in this.territoriesList) {
+          if (
+            this.territoriesList[item]["owner"] === owner &&
+            this.territoriesList[item]["selected"]
+          ) {
+            anySelected = true;
+            break;
+          }
+        }
+      }
+
+      return { count: count, anySelected: anySelected };
     };
     //#endregion
   }

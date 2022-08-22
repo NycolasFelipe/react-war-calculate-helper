@@ -149,6 +149,52 @@ export default class TerritoriesTrade {
       }
     };
 
+    this.checkPlayerTradeSelected = (type) => {
+      switch (type) {
+        case "from":
+          {
+            for (let item in playersTradeFrom) {
+              if (
+                playersTradeFrom[item]["active"] &&
+                playersTradeFrom[item]["selected"] === true
+              ) {
+                return playersTradeFrom[item]["playerId"];
+              }
+            }
+          }
+          break;
+        case "to":
+          {
+            for (let item in playersTradeTo) {
+              if (
+                playersTradeTo[item]["active"] &&
+                playersTradeTo[item]["selected"] === true
+              ) {
+                return playersTradeTo[item]["playerId"];
+              }
+            }
+          }
+          break;
+      }
+    };
+
+    this.checkPlayersTradeSelected = () => {
+      let fromSelected = false;
+      let toSelected = false;
+
+      for (let item in playersTradeFrom) {
+        if (playersTradeFrom[item]["selected"]) {
+          fromSelected = true;
+        }
+      }
+      for (let item in playersTradeTo) {
+        if (playersTradeTo[item]["selected"]) {
+          toSelected = true;
+        }
+      }
+      return fromSelected && toSelected;
+    };
+
     this.checkPlayersTradeDuplicate = (playerId, type) => {
       let tradeTerritoryFrom = getPlayersTradeId("from", playerId);
       let tradeTerritoryTo = getPlayersTradeId("to", playerId);
