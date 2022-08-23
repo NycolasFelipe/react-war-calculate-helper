@@ -15,7 +15,6 @@ export const Item = styled.div`
   padding: 3px 8px;
   font-size: 0.8rem;
   user-select: none;
-
   transition: width 0.1s ease;
 
   ${(props) => {

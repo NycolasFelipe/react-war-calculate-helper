@@ -313,10 +313,7 @@ export default class Territories {
           territory: territoryName,
           continent: territoryContinent,
           owner: "none",
-          selected: {
-            sideTerritories: false,
-            addTerritories: false,
-          },
+          selected: false,
         });
         this.territoriesList = this.territoriesList.sort(compareTerritories);
       }
@@ -384,5 +381,22 @@ export default class Territories {
       return { count: count, anySelected: anySelected };
     };
     //#endregion
+
+    //#region Get Owner Territories
+    this.getOwnerTerritories = (owner) => {
+      let territories = [];
+      for (let item in this.territoriesList) {
+        if (this.territoriesList[item]["owner"] === owner) {
+          territories.push(this.territoriesList[item]);
+        }
+      }
+      return territories;
+    };
+    //#endregion
+
+    //#region Save Trade Changes
+    this.saveTradeChanges = (newList) => {
+      this.territoriesList = newList;
+    };
   }
 }

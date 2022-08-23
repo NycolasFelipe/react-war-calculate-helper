@@ -3,10 +3,14 @@ import styled from "styled-components";
 export const Main = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   flex-wrap: wrap;
   gap: 10px;
-  width: 80%;
+  width: 100%;
   height: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding-right: 25px;
 
   ${(props) => {
     if (props.changeActive) {
@@ -46,6 +50,7 @@ export const ContainerTerritories = styled.div`
   width: 20%;
   min-width: 240px;
   height: 100%;
+  padding-bottom: 10px;
 
   @media (max-width: 1050px) {
     width: 30%;
@@ -54,7 +59,7 @@ export const ContainerTerritories = styled.div`
 
 export const TerritoriesContent = styled.div`
   border: 1px solid #424242;
-  height: 80%;
+  height: 85%;
   width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
@@ -190,8 +195,9 @@ export const TerritoriesButtons = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
+  margin-top: 10px;
   gap: 5px;
-  height: 20%;
+  height: 15%;
 `;
 //#endregion
 
@@ -201,7 +207,7 @@ export const ContainerBonus = styled.div`
   flex-direction: column;
   flex: 1;
   gap: 5px;
-  width: 70%;
+  width: 60%;
   min-width: 360px;
   height: 60%;
   background: transparent;
@@ -369,7 +375,7 @@ export const ContainerPlayers = styled.div`
   border: 1px solid #424242;
   border-radius: 5px;
   height: 40%;
-  width: 70%;
+  width: 60%;
   padding: 5px 2px 10px 10px;
   position: relative;
 
@@ -475,14 +481,127 @@ export const SavePlayersWarning = styled.span`
 `;
 //#endregion
 
+//#region Side
+export const ContainerSide = styled.div`
+  display: flex;
+  justify-content: center;
+  border: 1px solid #424242;
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+  width: 20%;
+  height: 100%;
+
+  & > button {
+    width: 100%;
+  }
+`;
+//#endregion
+
 //#region Change Territories
+export const ChangeTerritoriesAlert = styled.div`
+  background: #080808;
+  border: 1px solid #fff;
+  width: 25%;
+  height: 30%;
+  min-width: 300px;
+  min-height: 180px;
+  z-index: 6;
+  position: fixed;
+  padding: 6px 8px;
+  border-radius: 5px;
+  pointer-events: auto;
+
+  //Center
+  transform: translateX(-50%);
+  left: 50%;
+  top: 30%;
+
+  ${(props) => {
+    if (props.changeAlertActive) {
+      return `
+        pointer-events: auto;
+      `;
+    }
+  }}
+
+  ${(props) => {
+    if (!props.changeAlertActive) {
+      return `
+        background: transparent !important;
+        border: transparent !important;
+        * {
+          background: transparent !important;
+          color: transparent !important;
+          border: transparent !important;
+        }
+        & > * {
+          height: 0 !important;
+          width: 0 !important;
+          overflow: hidden !important;
+        }
+        user-select: none;
+        pointer-events: none;
+        transition-duration: 0.1s !important;
+      `;
+    }
+  }}
+`;
+
+export const ChangeTerritoriesAlertHeader = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 10%;
+  position: relative;
+
+  & > h1 {
+    width: 100%;
+    font-size: 0.8rem;
+    color: yellow;
+  }
+
+  & > button {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+`;
+export const ChangeTerritoriesAlertMessage = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 50%;
+  padding: 0 4px;
+
+  & > h1 {
+    width: 100%;
+    font-size: 1rem;
+  }
+`;
+export const ChangeTerritoriesAlertButtons = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  width: 100%;
+  height: 40%;
+
+  & > button {
+    width: 100%;
+  }
+`;
+
 export const ChangeTerritories = styled.div`
   background: #080808;
   height: 80vh;
   width: 40vw;
   min-width: 580px;
   position: fixed;
-  z-index: 10;
+  z-index: 5;
   border-radius: 5px;
   overflow: hidden;
   padding: 5px 10px;
@@ -490,7 +609,7 @@ export const ChangeTerritories = styled.div`
   transition-duration: 0.1s !important;
 
   ${(props) => {
-    if (props.changeActive) {
+    if (props.changeActive && !props.changeAlertActive) {
       return `
         pointer-events: auto !important;
     `;
@@ -522,6 +641,11 @@ export const ChangeTerritories = styled.div`
         transition-duration: 0.1s !important;
       `;
     }
+    if (props.changeAlertActive) {
+      return `
+        border: 1px solid #424242 !important;
+      `;
+    }
   }}
 `;
 
@@ -550,6 +674,7 @@ export const ChangeTerritoriesFrom = styled.div`
   height: 100%;
   padding: 5px 0 5px 0;
   margin-left: 10px;
+  padding-right: 5px;
 `;
 
 export const ChangeTerritoriesTo = styled.div`
@@ -646,6 +771,10 @@ export const TerritoriesListFrom = styled.div`
     --webkit-box-shadow: inset 0 0 6px #0000004d;
     background-color: #202020;
   }
+
+  & > * {
+    cursor: pointer !important;
+  }
 `;
 
 export const TerritoriesListTo = styled.div`
@@ -677,5 +806,25 @@ export const TerritoriesListTools = styled.div`
   justify-content: center;
   height: 35%;
   width: 10%;
+`;
+//#endregion
+
+//#region Players Cards
+export const ContainerPlayersCards = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  height: 300px;
+`;
+
+export const PlayerCardPlaceholder = styled.div`
+  flex-grow: 1;
+  flex-basis: 180px;
+  height: 300px;
+  border-radius: 5px;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  border: 1px solid #424242;
 `;
 //#endregion

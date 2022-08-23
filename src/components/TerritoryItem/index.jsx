@@ -9,7 +9,7 @@ function TerritoryItem({
   deleteItemActive = false,
   selected = false,
   addTerritory = false,
-  hideTerritory,
+  hideTerritory = false,
 }) {
   let backgroundColor = "";
   switch (continent) {

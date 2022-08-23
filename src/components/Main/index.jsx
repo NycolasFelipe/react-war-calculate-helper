@@ -10,14 +10,38 @@ import CheckBox from "../CheckBox";
 import ButtonInfo from "../ButtonInfo";
 import TerritoryItem from "../TerritoryItem";
 import TitleCase from "../Functions/TitleClase";
+import Player from "../Player";
 
 function Main() {
   //#region Territories Settings
   //Get territories list
   const { territories } = useContext(DataContext);
+  const { currentTerritories } = useContext(DataContext);
+
   const [territoriesList, setTerritoriesList] = useState(
     territories.territoriesList
   );
+
+  const availableTerritories = (count = false) => {
+    let territories = currentTerritories.getOwnerTerritories("none");
+    if (count) {
+      return territories.length;
+    }
+    let list = [];
+
+    for (let item in territories) {
+      list.push(
+        <TerritoryItem
+          key={territories[item]["territory"]}
+          continent={territories[item]["continent"]}
+          territory={territories[item]["territory"]}
+          deleteItemActive={deleteItemActive}
+          onClick={() => deleteTerritory(item.territory, item.continent)}
+        />
+      );
+    }
+    return list;
+  };
 
   //Flag for Add Territory Window
   const [addTerritoryWindow, setAddTerritoryWindow] = useState(false);
@@ -41,9 +65,8 @@ function Main() {
   //Delete territory
   const deleteTerritory = (territory, continent) => {
     if (deleteItemActive) {
-      territories.deleteTerritory(territory);
       //Update territories list
-      setTerritoriesList(territories.territoriesList);
+      currentTerritories.deleteTerritory(territory);
       setBonusSettings(continent);
     }
   };
@@ -53,7 +76,10 @@ function Main() {
   const [territoryName, setTerritoryName] = useState("");
   const [territoryContinent, setTerritoryContinent] = useState("Africa");
   const addTerritory = (territory, continent) => {
-    const error = territories.addTerritory(TitleCase(territory), continent);
+    const error = currentTerritories.addTerritory(
+      TitleCase(territory),
+      continent
+    );
     setTerritoryName("");
     //Caso tenha havido um erro, exibe uma mensagem
     if (error) {
@@ -278,7 +304,9 @@ function Main() {
 
   //#region Change Territories
   const { territoriesTrade } = useContext(DataContext);
-  const [changeActive, setChangeActive] = useState(true);
+  const [saveTradesActive, setSaveTradesActive] = useState(false);
+  const [changeActive, setChangeActive] = useState(false);
+  const [changeAlertActive, setChangeAlertActive] = useState(false);
   const [updateTerritories, setUpdateTerritories] = useState(true);
   const [playersTradeList, setPlayersTradeList] = useState(
     territoriesTrade.getPlayersTrade()
@@ -345,7 +373,7 @@ function Main() {
         fontSize={"1.5rem"}
         buttonBgColor={"#2e8b2e"}
         buttonWidth={"2rem"}
-        onClick={() => [changeTerritoriesOwner()]}
+        onClick={() => changeTerritoriesOwner()}
         disabled={disabled}
       />
     );
@@ -400,8 +428,8 @@ function Main() {
   };
 
   const changeTerritoriesOwner = () => {
-    let items = [];
     let list = territoriesList;
+
     let playerSelected = playersTradeList[1].filter((item) => {
       if (item["selected"]) return item;
     })[0]["playerId"];
@@ -409,13 +437,12 @@ function Main() {
     for (let item in list) {
       if (list[item]["selected"]) {
         list[item]["selected"] = false;
-        items.push(list[item]);
+        list[item]["owner"] = playerSelected;
       }
     }
-    for (let item in items) {
-      territories.setPlayerTerritory(playerSelected, items[item]["territory"]);
-    }
+
     setUpdateTerritories(!updateTerritories);
+    setSaveTradesActive(true);
   };
 
   const changeTerritoriesSelected = (type, owner) => {
@@ -523,6 +550,34 @@ function Main() {
     return items;
   };
 
+  const saveTradesChanges = () => {
+    let changes = JSON.parse(JSON.stringify(territoriesList));
+    currentTerritories.saveTradeChanges(changes);
+    setUpdateTerritories(!updateTerritories);
+    setChangeAlertActive(false);
+    setSaveTradesActive(false);
+  };
+
+  const cancelTradesChanges = () => {
+    let previousChanges = JSON.parse(
+      JSON.stringify(currentTerritories.territoriesList)
+    );
+    territories.saveTradeChanges(previousChanges);
+    setTerritoriesList(territories.territoriesList);
+    setChangeAlertActive(false);
+    setChangeActive(false);
+    setSaveTradesActive(false);
+  };
+
+  const exitTradesWindow = () => {
+    if (saveTradesActive) {
+      setChangeAlertActive(true);
+    } else {
+      setChangeActive(false);
+      territories.setTerritorySelected("", "deselect");
+    }
+  };
+
   //Show Change Territories window
   const changeTerritories = () => {
     const requiredSaved = !(editPlayersActive || saveSettingsActive);
@@ -537,270 +592,347 @@ function Main() {
     if (saveSettingsActive) {
       handleSettingsWarning("You must save changes first.");
     }
-    if (requiredSaved) setChangeActive(true);
+    if (requiredSaved) {
+      cancelTradesChanges();
+      setChangeActive(true);
+    }
+  };
+  //#endregion
+
+  //#region Players Cards
+  const playersCards = () => {
+    let items = [];
+    let list = players.getPlayers();
+
+    for (let player in list) {
+      let playerId = list[player]["playerId"];
+
+      if (list[player]["active"]) {
+        let playerName = list[player]["playerName"];
+        let playerFromTerritories = currentTerritories.checkOwnerTerritories(
+          playerId,
+          true
+        );
+        let playerTerritories =
+          currentTerritories.getOwnerTerritories(playerId);
+        let territoriesCount = playerFromTerritories["count"];
+
+        items.push(
+          <Player
+            key={playerId}
+            playerName={playerName}
+            playerActive={true}
+            playerTerritories={playerTerritories}
+            territoriesCount={territoriesCount}
+          />
+        );
+      } else {
+        items.push(<C.PlayerCardPlaceholder key={playerId} />);
+      }
+    }
+    return items;
   };
   //#endregion
 
   return (
-    <C.Main changeActive={changeActive}>
-      <C.ContainerTerritories>
-        <C.TerritoriesContent
-          editingActive={addTerritoryWindow || deleteItemActive}
-        >
-          <C.AddAlert showAddAlert={showAddAlert}>Territory Added!</C.AddAlert>
-          <C.TerritoriesTitle>
-            <Title
-              text={`Available Territories | Count: ${territoriesList.length}`}
-              titleWidth={"100%"}
-            />
-            <Title text={"Continent"} />
-            <Title text={"| Territory"} />
-          </C.TerritoriesTitle>
-          <C.TerritoriesItems>
-            {territoriesList.map((item, index) => (
-              <TerritoryItem
-                key={index}
-                continent={item.continent}
-                territory={item.territory}
-                deleteItemActive={deleteItemActive}
-                onClick={() => deleteTerritory(item.territory, item.continent)}
+    <>
+      <C.Main changeActive={changeActive}>
+        <C.ContainerTerritories>
+          <C.TerritoriesContent
+            editingActive={addTerritoryWindow || deleteItemActive}
+          >
+            <C.AddAlert showAddAlert={showAddAlert}>
+              Territory Added!
+            </C.AddAlert>
+            <C.TerritoriesTitle>
+              <Title
+                text={`Available Territories | Count: ${availableTerritories(
+                  true
+                )}`}
+                titleWidth={"100%"}
               />
-            ))}
-          </C.TerritoriesItems>
-          <C.TerritoriesAddWindow addTerritoryWindow={addTerritoryWindow}>
-            <C.InputAlert showInputAlert={showInputAlert}>
-              {inputAlertText}
-            </C.InputAlert>
-            <Input
-              label={"labelAddTerritoryName"}
-              text={"Territory's Name"}
-              placeholder={"Ex.: Canada"}
-              value={territoryName}
-              onChange={(e) => setTerritoryName(e.target.value)}
-              maxLength={14}
-            />
-            <Select
-              label={"labelAddTerritoryContinent"}
-              text={"Continent"}
-              options={[
-                ["Africa", "africa"],
-                ["Asia", "asia"],
-                ["Europe", "europe"],
-                ["North America", "northAmerica"],
-                ["Oceania", "oceania"],
-                ["South America", "southAmerica"],
-              ]}
-              onChange={(e) =>
-                setTerritoryContinent(
-                  e.target.options[e.target.selectedIndex].text
-                )
-              }
+              <Title text={"Continent"} />
+              <Title text={"| Territory"} />
+            </C.TerritoriesTitle>
+            <C.TerritoriesItems>{availableTerritories()}</C.TerritoriesItems>
+            <C.TerritoriesAddWindow addTerritoryWindow={addTerritoryWindow}>
+              <C.InputAlert showInputAlert={showInputAlert}>
+                {inputAlertText}
+              </C.InputAlert>
+              <Input
+                label={"labelAddTerritoryName"}
+                text={"Territory's Name"}
+                placeholder={"Ex.: Canada"}
+                value={territoryName}
+                onChange={(e) => setTerritoryName(e.target.value)}
+                maxLength={14}
+              />
+              <Select
+                label={"labelAddTerritoryContinent"}
+                text={"Continent"}
+                options={[
+                  ["Africa", "africa"],
+                  ["Asia", "asia"],
+                  ["Europe", "europe"],
+                  ["North America", "northAmerica"],
+                  ["Oceania", "oceania"],
+                  ["South America", "southAmerica"],
+                ]}
+                onChange={(e) =>
+                  setTerritoryContinent(
+                    e.target.options[e.target.selectedIndex].text
+                  )
+                }
+              />
+              <Button
+                text={"Add"}
+                buttonBgColor={"#228be6"}
+                buttonWidth={"100%"}
+                buttonHeight={"1.6rem"}
+                onClick={() => addTerritory(territoryName, territoryContinent)}
+              />
+            </C.TerritoriesAddWindow>
+          </C.TerritoriesContent>
+          <C.TerritoriesButtons>
+            <Button
+              text={addTerritoryWindow ? "Finish" : "Add New Territory"}
+              buttonBgColor={"#2e8b2e"}
+              buttonWidth={"100%"}
+              disabled={deleteItemActive}
+              onClick={() => setAddTerritoryWindow(!addTerritoryWindow)}
             />
             <Button
-              text={"Add"}
-              buttonBgColor={"#228be6"}
+              text={deleteItemActive ? "Cancel" : "Delete Item"}
+              buttonBgColor={"#ca1e1e"}
               buttonWidth={"100%"}
-              buttonHeight={"1.6rem"}
-              onClick={() => addTerritory(territoryName, territoryContinent)}
+              disabled={addTerritoryWindow}
+              onClick={() => setDeleteItemActive(!deleteItemActive)}
             />
-          </C.TerritoriesAddWindow>
-        </C.TerritoriesContent>
-        <C.TerritoriesButtons>
+          </C.TerritoriesButtons>
+        </C.ContainerTerritories>
+        <C.ContainerBonus saveSettingsActive={saveSettingsActive}>
+          <Title text={"Game Settings"} fontSize={"1rem"} />
+          <C.SaveSettingWarning saveSettingsWarning={saveSettingsWarning}>
+            {settingsWarningMessage}
+          </C.SaveSettingWarning>
+          <C.ButtonSaveSettings>
+            <Button
+              text={saveSettingsActive ? "Save Settings*" : "Save Settings"}
+              fontSize={"0.8rem"}
+              buttonHeight="20px"
+              buttonBgColor="#2e8b2e"
+              disabled={!saveSettingsActive}
+              onClick={() => saveSettings()}
+            />
+          </C.ButtonSaveSettings>
+          <C.BonusSettings>
+            <C.BonusContinent>
+              <C.BonusHeader>
+                <C.Title>Continent</C.Title>
+              </C.BonusHeader>
+              <C.TerritoryItems>
+                {territoryItem("Africa")}
+                {territoryItem("Asia")}
+                {territoryItem("Europe")}
+                {territoryItem("North America")}
+                {territoryItem("Oceania")}
+                {territoryItem("South America")}
+              </C.TerritoryItems>
+            </C.BonusContinent>
+            <C.BonusMin>
+              <C.BonusHeader>
+                <C.Title>Min. Bonus</C.Title>
+                <CheckBox
+                  onClick={() => [
+                    setMinBonusActive(!minBonusActive),
+                    setSaveSettingsActive(true),
+                  ]}
+                />
+                <ButtonInfo
+                  text={
+                    "MIN.: Minimum number of territories on this continent required to earn bonus troops."
+                  }
+                  textAdditional={
+                    "BONUS: Number of troops granted by minimum required domain of this continent."
+                  }
+                />
+              </C.BonusHeader>
+              <C.BonusMinLeft minBonusActive={minBonusActive}>
+                {inputItem("minBonus", "value", 0, "Min.")}
+                {inputItem("minBonus", "value", 1)}
+                {inputItem("minBonus", "value", 2)}
+                {inputItem("minBonus", "value", 3)}
+                {inputItem("minBonus", "value", 4)}
+                {inputItem("minBonus", "value", 5)}
+              </C.BonusMinLeft>
+              <C.BonusMinRight minBonusActive={minBonusActive}>
+                {inputItem("minBonus", "bonus", 0, "Bonus")}
+                {inputItem("minBonus", "bonus", 1)}
+                {inputItem("minBonus", "bonus", 2)}
+                {inputItem("minBonus", "bonus", 3)}
+                {inputItem("minBonus", "bonus", 4)}
+                {inputItem("minBonus", "bonus", 5)}
+              </C.BonusMinRight>
+            </C.BonusMin>
+            <C.BonusTotal>
+              <C.BonusHeader>
+                <C.Title>Total Bonus</C.Title>
+                <ButtonInfo
+                  text={"TOTAL: Total number of territories on this continent."}
+                  textAdditional={
+                    "BONUS: Number of troops granted by the entire domain of this continent."
+                  }
+                />
+              </C.BonusHeader>
+              <C.BonusTotalLeft>
+                {inputItem("totalBonus", "value", 0, "Total")}
+                {inputItem("totalBonus", "value", 1)}
+                {inputItem("totalBonus", "value", 2)}
+                {inputItem("totalBonus", "value", 3)}
+                {inputItem("totalBonus", "value", 4)}
+                {inputItem("totalBonus", "value", 5)}
+              </C.BonusTotalLeft>
+              <C.BonusTotalRight>
+                {inputItem("totalBonus", "bonus", 0, "Bonus")}
+                {inputItem("totalBonus", "bonus", 1)}
+                {inputItem("totalBonus", "bonus", 2)}
+                {inputItem("totalBonus", "bonus", 3)}
+                {inputItem("totalBonus", "bonus", 4)}
+                {inputItem("totalBonus", "bonus", 5)}
+              </C.BonusTotalRight>
+            </C.BonusTotal>
+          </C.BonusSettings>
+        </C.ContainerBonus>
+        <C.ContainerPlayers editPlayersActive={editPlayersActive}>
           <Button
-            text={addTerritoryWindow ? "Finish" : "Add New Territory"}
+            text={editPlayersActive ? "Save Players" : "Edit Players"}
+            onClick={() => savePlayers()}
+            color={editPlayersActive ? "#fff" : "#808080"}
             buttonBgColor={"#2e8b2e"}
-            buttonWidth={"100%"}
-            disabled={deleteItemActive}
-            onClick={() => setAddTerritoryWindow(!addTerritoryWindow)}
           />
+          <Title text={"Players"} fontSize={"1rem"} />
+          <C.SavePlayersWarning savePlayersWarning={savePlayersWarning}>
+            {settingsPlayersMessage}
+          </C.SavePlayersWarning>
+          <C.Players>
+            {playerItem("player1")}
+            {playerItem("player4")}
+            {playerItem("player2")}
+            {playerItem("player5")}
+            {playerItem("player3")}
+            {playerItem("player6")}
+          </C.Players>
+        </C.ContainerPlayers>
+
+        <C.ContainerSide>
           <Button
-            text={deleteItemActive ? "Cancel" : "Delete Item"}
-            buttonBgColor={"#ca1e1e"}
-            buttonWidth={"100%"}
-            disabled={addTerritoryWindow}
-            onClick={() => setDeleteItemActive(!deleteItemActive)}
+            text={"change territories"}
+            buttonWidth={"160px"}
+            onClick={() => changeTerritories()}
           />
-        </C.TerritoriesButtons>
-      </C.ContainerTerritories>
-      <C.ContainerBonus saveSettingsActive={saveSettingsActive}>
-        <Title text={"Game Settings"} fontSize={"1rem"} />
-        <C.SaveSettingWarning saveSettingsWarning={saveSettingsWarning}>
-          {settingsWarningMessage}
-        </C.SaveSettingWarning>
-        <C.ButtonSaveSettings>
-          <Button
-            text={saveSettingsActive ? "Save Settings*" : "Save Settings"}
-            fontSize={"0.8rem"}
-            buttonHeight="20px"
-            buttonBgColor="#2e8b2e"
-            disabled={!saveSettingsActive}
-            onClick={() => saveSettings()}
-          />
-        </C.ButtonSaveSettings>
-        <C.BonusSettings>
-          <C.BonusContinent>
-            <C.BonusHeader>
-              <C.Title>Continent</C.Title>
-            </C.BonusHeader>
-            <C.TerritoryItems>
-              {territoryItem("Africa")}
-              {territoryItem("Asia")}
-              {territoryItem("Europe")}
-              {territoryItem("North America")}
-              {territoryItem("Oceania")}
-              {territoryItem("South America")}
-            </C.TerritoryItems>
-          </C.BonusContinent>
-          <C.BonusMin>
-            <C.BonusHeader>
-              <C.Title>Min. Bonus</C.Title>
-              <CheckBox
-                onClick={() => [
-                  setMinBonusActive(!minBonusActive),
-                  setSaveSettingsActive(true),
-                ]}
-              />
-              <ButtonInfo
-                text={
-                  "MIN.: Minimum number of territories on this continent required to earn bonus troops."
-                }
-                textAdditional={
-                  "BONUS: Number of troops granted by minimum required domain of this continent."
-                }
-              />
-            </C.BonusHeader>
-            <C.BonusMinLeft minBonusActive={minBonusActive}>
-              {inputItem("minBonus", "value", 0, "Min.")}
-              {inputItem("minBonus", "value", 1)}
-              {inputItem("minBonus", "value", 2)}
-              {inputItem("minBonus", "value", 3)}
-              {inputItem("minBonus", "value", 4)}
-              {inputItem("minBonus", "value", 5)}
-            </C.BonusMinLeft>
-            <C.BonusMinRight minBonusActive={minBonusActive}>
-              {inputItem("minBonus", "bonus", 0, "Bonus")}
-              {inputItem("minBonus", "bonus", 1)}
-              {inputItem("minBonus", "bonus", 2)}
-              {inputItem("minBonus", "bonus", 3)}
-              {inputItem("minBonus", "bonus", 4)}
-              {inputItem("minBonus", "bonus", 5)}
-            </C.BonusMinRight>
-          </C.BonusMin>
-          <C.BonusTotal>
-            <C.BonusHeader>
-              <C.Title>Total Bonus</C.Title>
-              <ButtonInfo
-                text={"TOTAL: Total number of territories on this continent."}
-                textAdditional={
-                  "BONUS: Number of troops granted by the entire domain of this continent."
-                }
-              />
-            </C.BonusHeader>
-            <C.BonusTotalLeft>
-              {inputItem("totalBonus", "value", 0, "Total")}
-              {inputItem("totalBonus", "value", 1)}
-              {inputItem("totalBonus", "value", 2)}
-              {inputItem("totalBonus", "value", 3)}
-              {inputItem("totalBonus", "value", 4)}
-              {inputItem("totalBonus", "value", 5)}
-            </C.BonusTotalLeft>
-            <C.BonusTotalRight>
-              {inputItem("totalBonus", "bonus", 0, "Bonus")}
-              {inputItem("totalBonus", "bonus", 1)}
-              {inputItem("totalBonus", "bonus", 2)}
-              {inputItem("totalBonus", "bonus", 3)}
-              {inputItem("totalBonus", "bonus", 4)}
-              {inputItem("totalBonus", "bonus", 5)}
-            </C.BonusTotalRight>
-          </C.BonusTotal>
-        </C.BonusSettings>
-      </C.ContainerBonus>
-      <C.ContainerPlayers editPlayersActive={editPlayersActive}>
-        <Button
-          text={editPlayersActive ? "Save Players" : "Edit Players"}
-          onClick={() => savePlayers()}
-          color={editPlayersActive ? "#fff" : "#808080"}
-          buttonBgColor={"#2e8b2e"}
-        />
-        <Title text={"Players"} fontSize={"1rem"} />
-        <C.SavePlayersWarning savePlayersWarning={savePlayersWarning}>
-          {settingsPlayersMessage}
-        </C.SavePlayersWarning>
-        <C.Players>
-          {playerItem("player1")}
-          {playerItem("player4")}
-          {playerItem("player2")}
-          {playerItem("player5")}
-          {playerItem("player3")}
-          {playerItem("player6")}
-        </C.Players>
-      </C.ContainerPlayers>
-      <C.ContainerBlur changeActive={changeActive} />
-      <RemoveScroll enabled={changeActive}>
-        <C.ChangeTerritories changeActive={changeActive}>
-          <C.ChangeTerritoriesHeader>
-            <Title text={"Change Territories"} fontSize={"1rem"} />
-            <C.ChangeTerritoriesButtons>
-              <Button
-                text={"Save Changes"}
-                buttonBgColor={"#2e8b2e"}
-                buttonWidth={"120px"}
-                buttonHeight={"1.3rem"}
-                fontSize={"0.8rem"}
-              />
+        </C.ContainerSide>
+
+        <C.ContainerBlur changeActive={changeActive} />
+        <RemoveScroll enabled={changeActive}>
+          <C.ChangeTerritoriesAlert changeAlertActive={changeAlertActive}>
+            <C.ChangeTerritoriesAlertHeader>
+              <Title text={"⚠ You have pending changes..."} />
               <Button
                 text={"x"}
                 buttonBgColor={"#ca1e1e"}
                 buttonWidth={"1.4rem"}
                 buttonHeight={"1.3rem"}
-                onClick={() => setChangeActive(false)}
+                onClick={() => setChangeAlertActive(!changeAlertActive)}
               />
-            </C.ChangeTerritoriesButtons>
-          </C.ChangeTerritoriesHeader>
-          <C.ChangeTerritoriesSelect>
-            <C.ChangeTerritoriesFrom>
-              <C.TerritoriesContainerTitle>
-                <Title text={"From"} fontSize={"0.9rem"} />
-              </C.TerritoriesContainerTitle>
-              <C.TerritoriesFromContainer>
-                {changeTerritoriesPlayers("from")}
-              </C.TerritoriesFromContainer>
-            </C.ChangeTerritoriesFrom>
-            <C.ChangeTerritoriesSwitch>
-              {changeTerritorieSwitch()}
-            </C.ChangeTerritoriesSwitch>
-            <C.ChangeTerritoriesTo>
-              <C.TerritoriesContainerTitle>
-                <Title text={"To"} fontSize={"0.9rem"} />
-              </C.TerritoriesContainerTitle>
-              <C.TerritoriesToContainer>
-                {changeTerritoriesPlayers("to")}
-              </C.TerritoriesToContainer>
-            </C.ChangeTerritoriesTo>
-          </C.ChangeTerritoriesSelect>
-          <C.ChangeTerritoriesList>
-            <C.TerritoriesListFrom>
-              {territoriesListItems("from")}
-              {updateTerritories}
-            </C.TerritoriesListFrom>
-            <C.TerritoriesListTools>
-              {changeTerritoriesAdd()}
-              {changeTerritoriesCancel()}
-              {changeTerritoriesSelectAll()}
-            </C.TerritoriesListTools>
-            <C.TerritoriesListTo>
-              {territoriesListItems("to")}
-            </C.TerritoriesListTo>
-          </C.ChangeTerritoriesList>
-        </C.ChangeTerritories>
-      </RemoveScroll>
-
-      <Button
-        text={"change territories"}
-        buttonWidth={"160px"}
-        onClick={() => changeTerritories()}
-      />
-    </C.Main>
+            </C.ChangeTerritoriesAlertHeader>
+            <C.ChangeTerritoriesAlertMessage>
+              <Title
+                text={
+                  "Canceling will cause **all** the changes you have made to be lost. Do you want to save?"
+                }
+              />
+            </C.ChangeTerritoriesAlertMessage>
+            <C.ChangeTerritoriesAlertButtons>
+              <Button
+                text={"Save Changes"}
+                buttonBgColor={"#2e8b2e"}
+                onClick={() => [saveTradesChanges(), setChangeActive(false)]}
+              />
+              <Button
+                text={"Exit"}
+                buttonBgColor={"#ca1e1e"}
+                onClick={() => cancelTradesChanges()}
+              />
+            </C.ChangeTerritoriesAlertButtons>
+          </C.ChangeTerritoriesAlert>
+          <C.ChangeTerritories
+            changeActive={changeActive}
+            changeAlertActive={changeAlertActive}
+          >
+            <C.ChangeTerritoriesHeader>
+              <Title text={"Change Territories"} fontSize={"1rem"} />
+              <C.ChangeTerritoriesButtons>
+                <Button
+                  text={saveTradesActive ? "Save Changes*" : "Save Changes"}
+                  buttonBgColor={"#2e8b2e"}
+                  buttonWidth={"120px"}
+                  buttonHeight={"1.3rem"}
+                  fontSize={"0.8rem"}
+                  disabled={!saveTradesActive}
+                  onClick={() => saveTradesChanges()}
+                />
+                <Button
+                  text={"x"}
+                  buttonBgColor={"#ca1e1e"}
+                  buttonWidth={"1.4rem"}
+                  buttonHeight={"1.3rem"}
+                  onClick={() => exitTradesWindow()}
+                />
+              </C.ChangeTerritoriesButtons>
+            </C.ChangeTerritoriesHeader>
+            <C.ChangeTerritoriesSelect>
+              <C.ChangeTerritoriesFrom>
+                <C.TerritoriesContainerTitle>
+                  <Title text={"From"} fontSize={"0.9rem"} />
+                </C.TerritoriesContainerTitle>
+                <C.TerritoriesFromContainer>
+                  {changeTerritoriesPlayers("from")}
+                </C.TerritoriesFromContainer>
+              </C.ChangeTerritoriesFrom>
+              <C.ChangeTerritoriesSwitch>
+                {changeTerritorieSwitch()}
+              </C.ChangeTerritoriesSwitch>
+              <C.ChangeTerritoriesTo>
+                <C.TerritoriesContainerTitle>
+                  <Title text={"To"} fontSize={"0.9rem"} />
+                </C.TerritoriesContainerTitle>
+                <C.TerritoriesToContainer>
+                  {changeTerritoriesPlayers("to")}
+                </C.TerritoriesToContainer>
+              </C.ChangeTerritoriesTo>
+            </C.ChangeTerritoriesSelect>
+            <C.ChangeTerritoriesList>
+              <C.TerritoriesListFrom>
+                {territoriesListItems("from")}
+                {updateTerritories}
+              </C.TerritoriesListFrom>
+              <C.TerritoriesListTools>
+                {changeTerritoriesAdd()}
+                {changeTerritoriesCancel()}
+                {changeTerritoriesSelectAll()}
+              </C.TerritoriesListTools>
+              <C.TerritoriesListTo>
+                {territoriesListItems("to")}
+              </C.TerritoriesListTo>
+            </C.ChangeTerritoriesList>
+          </C.ChangeTerritories>
+        </RemoveScroll>
+      </C.Main>
+      <C.ContainerPlayersCards>
+        {playersCards()}
+        {updateTerritories}
+      </C.ContainerPlayersCards>
+    </>
   );
 }
 

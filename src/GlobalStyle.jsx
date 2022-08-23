@@ -13,5 +13,17 @@ body {
     height: 100vh;
     background-color: #05050a;
     overflow-x: hidden;
+
+    &::-webkit-scrollbar {
+    width: 6px;
+    background-color: transparent;
+    border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      --webkit-box-shadow: inset 0 0 6px #0000004d;
+      background-color: #202020;
+    }
   }
 `;

@@ -4,7 +4,7 @@ import worldMap from "../src/images/world-map.png";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 90vw;
+  width: 100vw;
   height: 600px;
   background-image: url(${worldMap});
   background-repeat: no-repeat;
@@ -19,10 +19,7 @@ export const ContainerMain = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
-  width: 100%;
+  width: 90%;
   height: 70%;
-
-  /* pointer-events: none;
-  filter: blur(2px);
-  transition: all 0.2s ease; */
+  margin: 0 auto;
 `;
