@@ -36,7 +36,13 @@ function Main() {
           continent={territories[item]["continent"]}
           territory={territories[item]["territory"]}
           deleteItemActive={deleteItemActive}
-          onClick={() => deleteTerritory(item.territory, item.continent)}
+          onClick={() => [
+            deleteTerritory(
+              territories[item]["territory"],
+              territories[item]["continent"]
+            ),
+            setUpdateTerritories(!updateTerritories),
+          ]}
         />
       );
     }
@@ -75,12 +81,12 @@ function Main() {
   //#region Add Territory
   const [territoryName, setTerritoryName] = useState("");
   const [territoryContinent, setTerritoryContinent] = useState("Africa");
+
   const addTerritory = (territory, continent) => {
     const error = currentTerritories.addTerritory(
       TitleCase(territory),
       continent
     );
-    setTerritoryName("");
     //Caso tenha havido um erro, exibe uma mensagem
     if (error) {
       inputAlert(error);
@@ -88,6 +94,7 @@ function Main() {
     //Caso a adição tenha sucesso, exibe uma mensagem
     else if (!error) {
       //Exibe confirmação de que o território foi adicionado
+      setTerritoryName("");
       setShowAddAlert(true);
       //Depois de um tempo, esconde o alerta novamente
       setTimeout(() => setShowAddAlert(false), 3000);
@@ -101,7 +108,7 @@ function Main() {
   const { settings } = useContext(DataContext);
 
   const setBonusSettings = (territoryContinent) => {
-    let totalValue = territories.territoriesList.filter((item) => {
+    let totalValue = currentTerritories.territoriesList.filter((item) => {
       if (item.continent === territoryContinent) return item;
     }).length;
 
