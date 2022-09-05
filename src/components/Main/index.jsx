@@ -1,16 +1,16 @@
-import { useContext, useState } from "react";
-import DataContext from "../../contexts/DataContext";
-import { RemoveScroll } from "react-remove-scroll";
-import * as C from "./styles";
-import Title from "../Title";
-import Input from "../Input";
-import Button from "../Button";
-import Select from "../Select";
-import CheckBox from "../CheckBox";
-import ButtonInfo from "../ButtonInfo";
-import TerritoryItem from "../TerritoryItem";
-import TitleCase from "../Functions/TitleClase";
-import Player from "../Player";
+import { useContext, useState } from 'react';
+import DataContext from '../../contexts/DataContext';
+import { RemoveScroll } from 'react-remove-scroll';
+import * as C from './styles';
+import Title from '../Title';
+import Input from '../Input';
+import Button from '../Button';
+import Select from '../Select';
+import CheckBox from '../CheckBox';
+import ButtonInfo from '../ButtonInfo';
+import TerritoryItem from '../TerritoryItem';
+import TitleCase from '../Functions/TitleClase';
+import Player from '../Player';
 
 function Main() {
   //#region Territories Settings
@@ -23,7 +23,7 @@ function Main() {
   );
 
   const availableTerritories = (count = false) => {
-    let territories = currentTerritories.getOwnerTerritories("none");
+    let territories = currentTerritories.getOwnerTerritories('none');
     if (count) {
       return territories.length;
     }
@@ -32,14 +32,14 @@ function Main() {
     for (let item in territories) {
       list.push(
         <TerritoryItem
-          key={territories[item]["territory"]}
-          continent={territories[item]["continent"]}
-          territory={territories[item]["territory"]}
+          key={territories[item]['territory']}
+          continent={territories[item]['continent']}
+          territory={territories[item]['territory']}
           deleteItemActive={deleteItemActive}
           onClick={() => [
             deleteTerritory(
-              territories[item]["territory"],
-              territories[item]["continent"]
+              territories[item]['territory'],
+              territories[item]['continent']
             ),
             setUpdateTerritories(!updateTerritories),
           ]}
@@ -55,7 +55,7 @@ function Main() {
   //#region Alerts and related
   const [showAddAlert, setShowAddAlert] = useState(false);
   const [showInputAlert, setShowInputAlert] = useState(false);
-  const [inputAlertText, setInputAlertText] = useState("");
+  const [inputAlertText, setInputAlertText] = useState('');
 
   const inputAlert = (text) => {
     setInputAlertText(text);
@@ -79,8 +79,8 @@ function Main() {
   //#endregion
 
   //#region Add Territory
-  const [territoryName, setTerritoryName] = useState("");
-  const [territoryContinent, setTerritoryContinent] = useState("Africa");
+  const [territoryName, setTerritoryName] = useState('');
+  const [territoryContinent, setTerritoryContinent] = useState('Africa');
 
   const addTerritory = (territory, continent) => {
     const error = currentTerritories.addTerritory(
@@ -94,7 +94,7 @@ function Main() {
     //Caso a adição tenha sucesso, exibe uma mensagem
     else if (!error) {
       //Exibe confirmação de que o território foi adicionado
-      setTerritoryName("");
+      setTerritoryName('');
       setShowAddAlert(true);
       //Depois de um tempo, esconde o alerta novamente
       setTimeout(() => setShowAddAlert(false), 3000);
@@ -127,28 +127,28 @@ function Main() {
 
   //#region Input Item model
   const inputItem = (type, subtype, index, text) => {
-    if (type === "totalBonus") {
-      if (subtype === "value") {
+    if (type === 'totalBonus') {
+      if (subtype === 'value') {
         return (
           <Input
             value={totalBonus[index].value}
             readOnly={true}
             text={text}
-            type={"number"}
+            type={'number'}
             lockValue={true}
-            borderRadius={"0"}
+            borderRadius={'0'}
           />
         );
-      } else if (subtype === "bonus") {
+      } else if (subtype === 'bonus') {
         return (
           <Input
             defaultValue={totalBonus[index].bonus}
             text={text}
-            type={"number"}
-            borderRadius={"0"}
+            type={'number'}
+            borderRadius={'0'}
             onChange={(e) =>
               changeBonus(
-                "totalBonus",
+                'totalBonus',
                 totalBonus[index].continent,
                 e.target.value
               )
@@ -156,13 +156,13 @@ function Main() {
           />
         );
       }
-    } else if (type === "minBonus") {
+    } else if (type === 'minBonus') {
       return (
         <Input
           defaultValue={minBonus[index][subtype]}
           text={text}
-          type={"number"}
-          borderRadius={"0"}
+          type={'number'}
+          borderRadius={'0'}
           onChange={(e) =>
             changeBonus(
               type,
@@ -181,7 +181,7 @@ function Main() {
   const territoryItem = (continent) => {
     return (
       <TerritoryItem
-        divHeight={"19px"}
+        divHeight={'19px'}
         hideTerritory={true}
         continent={continent}
       />
@@ -190,15 +190,15 @@ function Main() {
 
   //Changing input values
   const changeBonus = (type, continent, input, subtype) => {
-    const inputValue = input ? parseInt(input) : "";
-    if (type === "totalBonus") {
+    const inputValue = input ? parseInt(input) : '';
+    if (type === 'totalBonus') {
       for (let item in totalBonus) {
         if (totalBonus[item].continent === continent) {
           totalBonus[item].bonus = inputValue;
         }
       }
     }
-    if (type === "minBonus") {
+    if (type === 'minBonus') {
       for (let item in minBonus) {
         if (minBonus[item].continent === continent) {
           minBonus[item][subtype] = inputValue;
@@ -211,7 +211,7 @@ function Main() {
   //Settings button and warning flags
   const [saveSettingsActive, setSaveSettingsActive] = useState(false);
   const [saveSettingsWarning, setSaveSettingsWarning] = useState(false);
-  const [settingsWarningMessage, setSettingsWarningMessage] = useState("");
+  const [settingsWarningMessage, setSettingsWarningMessage] = useState('');
 
   const handleSettingsWarning = (warningMessage) => {
     setSettingsWarningMessage(warningMessage);
@@ -252,8 +252,8 @@ function Main() {
         <Title text={`Player ${playerId.slice(-1)}`} />
         <Input
           defaultValue={player.playerName}
-          placeholder={"Player name..."}
-          borderRadius={"0"}
+          placeholder={'Player name...'}
+          borderRadius={'0'}
           onChange={(e) => changePlayerName(e.target.value, playerId)}
           maxLength={12}
         />
@@ -285,7 +285,7 @@ function Main() {
 
   const [editPlayersActive, setEditPlayersActive] = useState(false);
   const [savePlayersWarning, setSavePlayersWarning] = useState(false);
-  const [settingsPlayersMessage, setSettingsPlayersMessage] = useState("");
+  const [settingsPlayersMessage, setSettingsPlayersMessage] = useState('');
 
   const handlePlayersWarning = (warningMessage) => {
     setSettingsPlayersMessage(warningMessage);
@@ -309,6 +309,30 @@ function Main() {
   };
   //#endregion
 
+  //#region Calculate Territories [SIDE]
+  const calculateTerritories = () => {
+    let playersActive = players.getPlayers('active');
+    let playersActiveList = [];
+
+    for (let item in playersActive) {
+      let id = playersActive[item]['playerId'];
+      let name = playersActive[item]['playerName'];
+      let territoriesOwned = territories.getOwnerTerritories(id);
+      let territoriesLength = territoriesOwned.length;
+      let territoriesTotality =
+        settings.checkTerritoriesTotality(territoriesOwned);
+
+      playersActiveList.push({
+        id: id,
+        name: name,
+        territoriesLength: territoriesLength,
+        territoriesTotality: territoriesTotality,
+      });
+    }
+    console.log(playersActiveList);
+  };
+  //#endregion
+
   //#region Change Territories
   const { territoriesTrade } = useContext(DataContext);
   const [saveTradesActive, setSaveTradesActive] = useState(false);
@@ -326,12 +350,12 @@ function Main() {
       <Button
         key={playerId}
         text={name}
-        padding={"6px 8px"}
-        fontSize={"0.8rem"}
-        buttonHeight={"auto"}
-        buttonWidth={"auto"}
-        buttonBorderColor={selected ? "#228be6" : "#424242"}
-        buttonBgColor={"#228be6"}
+        padding={'6px 8px'}
+        fontSize={'0.8rem'}
+        buttonHeight={'auto'}
+        buttonWidth={'auto'}
+        buttonBorderColor={selected ? '#228be6' : '#424242'}
+        buttonBgColor={'#228be6'}
         disabled={disabled}
         onClick={() => [changePlayerTradeSelected(playerId, type)]}
       />
@@ -346,14 +370,14 @@ function Main() {
     }
     return (
       <Button
-        text={"⮂"}
-        fontSize={"1.5rem"}
-        buttonBgColor={"#228be6"}
-        buttonWidth={"2rem"}
+        text={'⮂'}
+        fontSize={'1.5rem'}
+        buttonBgColor={'#228be6'}
+        buttonWidth={'2rem'}
         onClick={() => [
           territoriesTrade.switchPlayersTrade(),
           setPlayersTradeList(territoriesTrade.getPlayersTrade()),
-          territories.setTerritorySelected("", "deselect"),
+          territories.setTerritorySelected('', 'deselect'),
         ]}
         disabled={disabled}
       />
@@ -362,24 +386,24 @@ function Main() {
 
   const changeTerritoriesAdd = () => {
     let disabled = true;
-    let playerFrom = territoriesTrade.checkPlayerTradeSelected("from");
+    let playerFrom = territoriesTrade.checkPlayerTradeSelected('from');
     let playerFromTerritories = territories.checkOwnerTerritories(
       playerFrom,
       true
     );
     let playersSelected = territoriesTrade.checkPlayersTradeSelected();
-    let territoriesCount = playerFromTerritories["count"];
-    let territoriesSelected = playerFromTerritories["anySelected"];
+    let territoriesCount = playerFromTerritories['count'];
+    let territoriesSelected = playerFromTerritories['anySelected'];
 
     if (playersSelected && territoriesSelected && territoriesCount > 0) {
       disabled = false;
     }
     return (
       <Button
-        text={"⭢"}
-        fontSize={"1.5rem"}
-        buttonBgColor={"#2e8b2e"}
-        buttonWidth={"2rem"}
+        text={'⭢'}
+        fontSize={'1.5rem'}
+        buttonBgColor={'#2e8b2e'}
+        buttonWidth={'2rem'}
         onClick={() => changeTerritoriesOwner()}
         disabled={disabled}
       />
@@ -388,47 +412,47 @@ function Main() {
 
   const changeTerritoriesCancel = () => {
     let disabled = true;
-    let playerFrom = territoriesTrade.checkPlayerTradeSelected("from");
+    let playerFrom = territoriesTrade.checkPlayerTradeSelected('from');
     let playerFromTerritories = territories.checkOwnerTerritories(
       playerFrom,
       true
     );
-    let territoriesSelected = playerFromTerritories["anySelected"];
+    let territoriesSelected = playerFromTerritories['anySelected'];
 
     if (territoriesSelected) {
       disabled = false;
     }
     return (
       <Button
-        text={"🗑"}
-        fontSize={"1.5rem"}
-        buttonBgColor={"#ca1e1e"}
-        buttonWidth={"2rem"}
+        text={'🗑'}
+        fontSize={'1.5rem'}
+        buttonBgColor={'#ca1e1e'}
+        buttonWidth={'2rem'}
         disabled={disabled}
-        onClick={() => [changeTerritoriesSelected("deselect")]}
+        onClick={() => [changeTerritoriesSelected('deselect')]}
       />
     );
   };
 
   const changeTerritoriesSelectAll = () => {
     let disabled = true;
-    let playerFrom = territoriesTrade.checkPlayerTradeSelected("from");
+    let playerFrom = territoriesTrade.checkPlayerTradeSelected('from');
     let playerFromTerritories = territories.checkOwnerTerritories(
       playerFrom,
       true
     );
-    let territoriesCount = playerFromTerritories["count"];
+    let territoriesCount = playerFromTerritories['count'];
 
     if (territoriesCount > 0) {
       disabled = false;
     }
     return (
       <Button
-        text={"🞻"}
-        fontSize={"1.5rem"}
-        buttonBgColor={"#228be6"}
-        buttonWidth={"2rem"}
-        onClick={() => [changeTerritoriesSelected("selectAll", playerFrom)]}
+        text={'🞻'}
+        fontSize={'1.5rem'}
+        buttonBgColor={'#228be6'}
+        buttonWidth={'2rem'}
+        onClick={() => [changeTerritoriesSelected('selectAll', playerFrom)]}
         disabled={disabled}
       />
     );
@@ -438,13 +462,13 @@ function Main() {
     let list = territoriesList;
 
     let playerSelected = playersTradeList[1].filter((item) => {
-      if (item["selected"]) return item;
-    })[0]["playerId"];
+      if (item['selected']) return item;
+    })[0]['playerId'];
 
     for (let item in list) {
-      if (list[item]["selected"]) {
-        list[item]["selected"] = false;
-        list[item]["owner"] = playerSelected;
+      if (list[item]['selected']) {
+        list[item]['selected'] = false;
+        list[item]['owner'] = playerSelected;
       }
     }
 
@@ -470,16 +494,16 @@ function Main() {
     let playersTrade = territoriesTrade.getPlayersTrade(type);
 
     for (let item in playersTrade) {
-      playerIdTrade = playersTrade[item]["playerId"];
-      playerSelected = playersTrade[item]["selected"];
+      playerIdTrade = playersTrade[item]['playerId'];
+      playerSelected = playersTrade[item]['selected'];
 
-      if (playerIdTrade === "none") {
-        playerName = "Available";
+      if (playerIdTrade === 'none') {
+        playerName = 'Available';
         items.unshift(
           changeTerritoryItem(playerName, playerIdTrade, playerSelected, type)
         );
       } else {
-        playerName = players.getPlayer(playerIdTrade)["playerName"];
+        playerName = players.getPlayer(playerIdTrade)['playerName'];
         items.push(
           changeTerritoryItem(playerName, playerIdTrade, playerSelected, type)
         );
@@ -510,17 +534,17 @@ function Main() {
     let sortedItems = [];
     let list = territories.territoriesList;
     let playersTradeList = territoriesTrade.getPlayersTrade(type);
-    let playerSelected = "";
+    let playerSelected = '';
 
     //Get player that is currently selected
     for (let item in playersTradeList) {
-      if (playersTradeList[item]["selected"]) {
-        playerSelected = playersTradeList[item]["playerId"];
+      if (playersTradeList[item]['selected']) {
+        playerSelected = playersTradeList[item]['playerId'];
       }
     }
 
     for (let item in list) {
-      if (list[item]["owner"] === playerSelected) {
+      if (list[item]['owner'] === playerSelected) {
         sortedItems.push(list[item]);
       }
     }
@@ -528,27 +552,27 @@ function Main() {
 
     //Get territories owned by this player
     sortedItems.forEach((item, index) => {
-      if (item["owner"] === playerSelected) {
-        if (type === "from") {
+      if (item['owner'] === playerSelected) {
+        if (type === 'from') {
           items.push(
             <TerritoryItem
               key={index}
-              continent={item["continent"]}
-              territory={item["territory"]}
+              continent={item['continent']}
+              territory={item['territory']}
               addTerritory={true}
               onClick={() => [
-                territories.setTerritorySelected(item["territory"]),
+                territories.setTerritorySelected(item['territory']),
                 setUpdateTerritories(!updateTerritories),
               ]}
-              selected={item["selected"]}
+              selected={item['selected']}
             />
           );
         } else {
           items.push(
             <TerritoryItem
               key={index}
-              continent={item["continent"]}
-              territory={item["territory"]}
+              continent={item['continent']}
+              territory={item['territory']}
             />
           );
         }
@@ -581,7 +605,7 @@ function Main() {
       setChangeAlertActive(true);
     } else {
       setChangeActive(false);
-      territories.setTerritorySelected("", "deselect");
+      territories.setTerritorySelected('', 'deselect');
     }
   };
 
@@ -591,13 +615,13 @@ function Main() {
     if (addTerritoryWindow || deleteItemActive) {
       setAddTerritoryWindow(false);
       setDeleteItemActive(false);
-      setTerritoryName("");
+      setTerritoryName('');
     }
     if (editPlayersActive) {
-      handlePlayersWarning("You must save changes first.");
+      handlePlayersWarning('You must save changes first.');
     }
     if (saveSettingsActive) {
-      handleSettingsWarning("You must save changes first.");
+      handleSettingsWarning('You must save changes first.');
     }
     if (requiredSaved) {
       cancelTradesChanges();
@@ -612,17 +636,17 @@ function Main() {
     let list = players.getPlayers();
 
     for (let player in list) {
-      let playerId = list[player]["playerId"];
+      let playerId = list[player]['playerId'];
 
-      if (list[player]["active"]) {
-        let playerName = list[player]["playerName"];
+      if (list[player]['active']) {
+        let playerName = list[player]['playerName'];
         let playerFromTerritories = currentTerritories.checkOwnerTerritories(
           playerId,
           true
         );
         let playerTerritories =
           currentTerritories.getOwnerTerritories(playerId);
-        let territoriesCount = playerFromTerritories["count"];
+        let territoriesCount = playerFromTerritories['count'];
 
         items.push(
           <Player
@@ -656,10 +680,10 @@ function Main() {
                 text={`Available Territories | Count: ${availableTerritories(
                   true
                 )}`}
-                titleWidth={"100%"}
+                titleWidth={'100%'}
               />
-              <Title text={"Continent"} />
-              <Title text={"| Territory"} />
+              <Title text={'Continent'} />
+              <Title text={'| Territory'} />
             </C.TerritoriesTitle>
             <C.TerritoriesItems>{availableTerritories()}</C.TerritoriesItems>
             <C.TerritoriesAddWindow addTerritoryWindow={addTerritoryWindow}>
@@ -667,23 +691,23 @@ function Main() {
                 {inputAlertText}
               </C.InputAlert>
               <Input
-                label={"labelAddTerritoryName"}
+                label={'labelAddTerritoryName'}
                 text={"Territory's Name"}
-                placeholder={"Ex.: Canada"}
+                placeholder={'Ex.: Canada'}
                 value={territoryName}
                 onChange={(e) => setTerritoryName(e.target.value)}
                 maxLength={14}
               />
               <Select
-                label={"labelAddTerritoryContinent"}
-                text={"Continent"}
+                label={'labelAddTerritoryContinent'}
+                text={'Continent'}
                 options={[
-                  ["Africa", "africa"],
-                  ["Asia", "asia"],
-                  ["Europe", "europe"],
-                  ["North America", "northAmerica"],
-                  ["Oceania", "oceania"],
-                  ["South America", "southAmerica"],
+                  ['Africa', 'africa'],
+                  ['Asia', 'asia'],
+                  ['Europe', 'europe'],
+                  ['North America', 'northAmerica'],
+                  ['Oceania', 'oceania'],
+                  ['South America', 'southAmerica'],
                 ]}
                 onChange={(e) =>
                   setTerritoryContinent(
@@ -692,42 +716,42 @@ function Main() {
                 }
               />
               <Button
-                text={"Add"}
-                buttonBgColor={"#228be6"}
-                buttonWidth={"100%"}
-                buttonHeight={"1.6rem"}
+                text={'Add'}
+                buttonBgColor={'#228be6'}
+                buttonWidth={'100%'}
+                buttonHeight={'1.6rem'}
                 onClick={() => addTerritory(territoryName, territoryContinent)}
               />
             </C.TerritoriesAddWindow>
           </C.TerritoriesContent>
           <C.TerritoriesButtons>
             <Button
-              text={addTerritoryWindow ? "Finish" : "Add New Territory"}
-              buttonBgColor={"#2e8b2e"}
-              buttonWidth={"100%"}
+              text={addTerritoryWindow ? 'Finish' : 'Add New Territory'}
+              buttonBgColor={'#2e8b2e'}
+              buttonWidth={'100%'}
               disabled={deleteItemActive}
               onClick={() => setAddTerritoryWindow(!addTerritoryWindow)}
             />
             <Button
-              text={deleteItemActive ? "Cancel" : "Delete Item"}
-              buttonBgColor={"#ca1e1e"}
-              buttonWidth={"100%"}
+              text={deleteItemActive ? 'Cancel' : 'Delete Item'}
+              buttonBgColor={'#ca1e1e'}
+              buttonWidth={'100%'}
               disabled={addTerritoryWindow}
               onClick={() => setDeleteItemActive(!deleteItemActive)}
             />
           </C.TerritoriesButtons>
         </C.ContainerTerritories>
         <C.ContainerBonus saveSettingsActive={saveSettingsActive}>
-          <Title text={"Game Settings"} fontSize={"1rem"} />
+          <Title text={'Game Settings'} fontSize={'1rem'} />
           <C.SaveSettingWarning saveSettingsWarning={saveSettingsWarning}>
             {settingsWarningMessage}
           </C.SaveSettingWarning>
           <C.ButtonSaveSettings>
             <Button
-              text={saveSettingsActive ? "Save Settings*" : "Save Settings"}
-              fontSize={"0.8rem"}
-              buttonHeight="20px"
-              buttonBgColor="#2e8b2e"
+              text={saveSettingsActive ? 'Save Settings*' : 'Save Settings'}
+              fontSize={'0.8rem'}
+              buttonHeight='20px'
+              buttonBgColor='#2e8b2e'
               disabled={!saveSettingsActive}
               onClick={() => saveSettings()}
             />
@@ -738,12 +762,12 @@ function Main() {
                 <C.Title>Continent</C.Title>
               </C.BonusHeader>
               <C.TerritoryItems>
-                {territoryItem("Africa")}
-                {territoryItem("Asia")}
-                {territoryItem("Europe")}
-                {territoryItem("North America")}
-                {territoryItem("Oceania")}
-                {territoryItem("South America")}
+                {territoryItem('Africa')}
+                {territoryItem('Asia')}
+                {territoryItem('Europe')}
+                {territoryItem('North America')}
+                {territoryItem('Oceania')}
+                {territoryItem('South America')}
               </C.TerritoryItems>
             </C.BonusContinent>
             <C.BonusMin>
@@ -757,117 +781,118 @@ function Main() {
                 />
                 <ButtonInfo
                   text={
-                    "MIN.: Minimum number of territories on this continent required to earn bonus troops."
+                    'MIN.: Minimum number of territories on this continent required to earn bonus troops.'
                   }
                   textAdditional={
-                    "BONUS: Number of troops granted by minimum required domain of this continent."
+                    'BONUS: Number of troops granted by minimum required domain of this continent.'
                   }
                 />
               </C.BonusHeader>
               <C.BonusMinLeft minBonusActive={minBonusActive}>
-                {inputItem("minBonus", "value", 0, "Min.")}
-                {inputItem("minBonus", "value", 1)}
-                {inputItem("minBonus", "value", 2)}
-                {inputItem("minBonus", "value", 3)}
-                {inputItem("minBonus", "value", 4)}
-                {inputItem("minBonus", "value", 5)}
+                {inputItem('minBonus', 'value', 0, 'Min.')}
+                {inputItem('minBonus', 'value', 1)}
+                {inputItem('minBonus', 'value', 2)}
+                {inputItem('minBonus', 'value', 3)}
+                {inputItem('minBonus', 'value', 4)}
+                {inputItem('minBonus', 'value', 5)}
               </C.BonusMinLeft>
               <C.BonusMinRight minBonusActive={minBonusActive}>
-                {inputItem("minBonus", "bonus", 0, "Bonus")}
-                {inputItem("minBonus", "bonus", 1)}
-                {inputItem("minBonus", "bonus", 2)}
-                {inputItem("minBonus", "bonus", 3)}
-                {inputItem("minBonus", "bonus", 4)}
-                {inputItem("minBonus", "bonus", 5)}
+                {inputItem('minBonus', 'bonus', 0, 'Bonus')}
+                {inputItem('minBonus', 'bonus', 1)}
+                {inputItem('minBonus', 'bonus', 2)}
+                {inputItem('minBonus', 'bonus', 3)}
+                {inputItem('minBonus', 'bonus', 4)}
+                {inputItem('minBonus', 'bonus', 5)}
               </C.BonusMinRight>
             </C.BonusMin>
             <C.BonusTotal>
               <C.BonusHeader>
                 <C.Title>Total Bonus</C.Title>
                 <ButtonInfo
-                  text={"TOTAL: Total number of territories on this continent."}
+                  text={'TOTAL: Total number of territories on this continent.'}
                   textAdditional={
-                    "BONUS: Number of troops granted by the entire domain of this continent."
+                    'BONUS: Number of troops granted by the entire domain of this continent.'
                   }
                 />
               </C.BonusHeader>
               <C.BonusTotalLeft>
-                {inputItem("totalBonus", "value", 0, "Total")}
-                {inputItem("totalBonus", "value", 1)}
-                {inputItem("totalBonus", "value", 2)}
-                {inputItem("totalBonus", "value", 3)}
-                {inputItem("totalBonus", "value", 4)}
-                {inputItem("totalBonus", "value", 5)}
+                {inputItem('totalBonus', 'value', 0, 'Total')}
+                {inputItem('totalBonus', 'value', 1)}
+                {inputItem('totalBonus', 'value', 2)}
+                {inputItem('totalBonus', 'value', 3)}
+                {inputItem('totalBonus', 'value', 4)}
+                {inputItem('totalBonus', 'value', 5)}
               </C.BonusTotalLeft>
               <C.BonusTotalRight>
-                {inputItem("totalBonus", "bonus", 0, "Bonus")}
-                {inputItem("totalBonus", "bonus", 1)}
-                {inputItem("totalBonus", "bonus", 2)}
-                {inputItem("totalBonus", "bonus", 3)}
-                {inputItem("totalBonus", "bonus", 4)}
-                {inputItem("totalBonus", "bonus", 5)}
+                {inputItem('totalBonus', 'bonus', 0, 'Bonus')}
+                {inputItem('totalBonus', 'bonus', 1)}
+                {inputItem('totalBonus', 'bonus', 2)}
+                {inputItem('totalBonus', 'bonus', 3)}
+                {inputItem('totalBonus', 'bonus', 4)}
+                {inputItem('totalBonus', 'bonus', 5)}
               </C.BonusTotalRight>
             </C.BonusTotal>
           </C.BonusSettings>
         </C.ContainerBonus>
         <C.ContainerPlayers editPlayersActive={editPlayersActive}>
           <Button
-            text={editPlayersActive ? "Save Players" : "Edit Players"}
+            text={editPlayersActive ? 'Save Players' : 'Edit Players'}
             onClick={() => savePlayers()}
-            color={editPlayersActive ? "#fff" : "#808080"}
-            buttonBgColor={"#2e8b2e"}
+            color={editPlayersActive ? '#fff' : '#808080'}
+            buttonBgColor={'#2e8b2e'}
           />
-          <Title text={"Players"} fontSize={"1rem"} />
+          <Title text={'Players'} fontSize={'1rem'} />
           <C.SavePlayersWarning savePlayersWarning={savePlayersWarning}>
             {settingsPlayersMessage}
           </C.SavePlayersWarning>
           <C.Players>
-            {playerItem("player1")}
-            {playerItem("player4")}
-            {playerItem("player2")}
-            {playerItem("player5")}
-            {playerItem("player3")}
-            {playerItem("player6")}
+            {playerItem('player1')}
+            {playerItem('player4')}
+            {playerItem('player2')}
+            {playerItem('player5')}
+            {playerItem('player3')}
+            {playerItem('player6')}
           </C.Players>
         </C.ContainerPlayers>
 
         <C.ContainerSide>
           <Button
-            text={"change territories"}
-            buttonWidth={"160px"}
+            text={'change territories'}
+            buttonWidth={'160px'}
             onClick={() => changeTerritories()}
           />
+          <Button onClick={() => calculateTerritories()} />
         </C.ContainerSide>
 
         <C.ContainerBlur changeActive={changeActive} />
         <RemoveScroll enabled={changeActive}>
           <C.ChangeTerritoriesAlert changeAlertActive={changeAlertActive}>
             <C.ChangeTerritoriesAlertHeader>
-              <Title text={"⚠ You have pending changes..."} />
+              <Title text={'⚠ You have pending changes...'} />
               <Button
-                text={"x"}
-                buttonBgColor={"#ca1e1e"}
-                buttonWidth={"1.4rem"}
-                buttonHeight={"1.3rem"}
+                text={'x'}
+                buttonBgColor={'#ca1e1e'}
+                buttonWidth={'1.4rem'}
+                buttonHeight={'1.3rem'}
                 onClick={() => setChangeAlertActive(!changeAlertActive)}
               />
             </C.ChangeTerritoriesAlertHeader>
             <C.ChangeTerritoriesAlertMessage>
               <Title
                 text={
-                  "Canceling will cause **all** the changes you have made to be lost. Do you want to save?"
+                  'Canceling will cause **all** the changes you have made to be lost. Do you want to save?'
                 }
               />
             </C.ChangeTerritoriesAlertMessage>
             <C.ChangeTerritoriesAlertButtons>
               <Button
-                text={"Save Changes"}
-                buttonBgColor={"#2e8b2e"}
+                text={'Save Changes'}
+                buttonBgColor={'#2e8b2e'}
                 onClick={() => [saveTradesChanges(), setChangeActive(false)]}
               />
               <Button
-                text={"Exit"}
-                buttonBgColor={"#ca1e1e"}
+                text={'Exit'}
+                buttonBgColor={'#ca1e1e'}
                 onClick={() => cancelTradesChanges()}
               />
             </C.ChangeTerritoriesAlertButtons>
@@ -877,22 +902,22 @@ function Main() {
             changeAlertActive={changeAlertActive}
           >
             <C.ChangeTerritoriesHeader>
-              <Title text={"Change Territories"} fontSize={"1rem"} />
+              <Title text={'Change Territories'} fontSize={'1rem'} />
               <C.ChangeTerritoriesButtons>
                 <Button
-                  text={saveTradesActive ? "Save Changes*" : "Save Changes"}
-                  buttonBgColor={"#2e8b2e"}
-                  buttonWidth={"120px"}
-                  buttonHeight={"1.3rem"}
-                  fontSize={"0.8rem"}
+                  text={saveTradesActive ? 'Save Changes*' : 'Save Changes'}
+                  buttonBgColor={'#2e8b2e'}
+                  buttonWidth={'120px'}
+                  buttonHeight={'1.3rem'}
+                  fontSize={'0.8rem'}
                   disabled={!saveTradesActive}
                   onClick={() => saveTradesChanges()}
                 />
                 <Button
-                  text={"x"}
-                  buttonBgColor={"#ca1e1e"}
-                  buttonWidth={"1.4rem"}
-                  buttonHeight={"1.3rem"}
+                  text={'x'}
+                  buttonBgColor={'#ca1e1e'}
+                  buttonWidth={'1.4rem'}
+                  buttonHeight={'1.3rem'}
                   onClick={() => exitTradesWindow()}
                 />
               </C.ChangeTerritoriesButtons>
@@ -900,10 +925,10 @@ function Main() {
             <C.ChangeTerritoriesSelect>
               <C.ChangeTerritoriesFrom>
                 <C.TerritoriesContainerTitle>
-                  <Title text={"From"} fontSize={"0.9rem"} />
+                  <Title text={'From'} fontSize={'0.9rem'} />
                 </C.TerritoriesContainerTitle>
                 <C.TerritoriesFromContainer>
-                  {changeTerritoriesPlayers("from")}
+                  {changeTerritoriesPlayers('from')}
                 </C.TerritoriesFromContainer>
               </C.ChangeTerritoriesFrom>
               <C.ChangeTerritoriesSwitch>
@@ -911,16 +936,16 @@ function Main() {
               </C.ChangeTerritoriesSwitch>
               <C.ChangeTerritoriesTo>
                 <C.TerritoriesContainerTitle>
-                  <Title text={"To"} fontSize={"0.9rem"} />
+                  <Title text={'To'} fontSize={'0.9rem'} />
                 </C.TerritoriesContainerTitle>
                 <C.TerritoriesToContainer>
-                  {changeTerritoriesPlayers("to")}
+                  {changeTerritoriesPlayers('to')}
                 </C.TerritoriesToContainer>
               </C.ChangeTerritoriesTo>
             </C.ChangeTerritoriesSelect>
             <C.ChangeTerritoriesList>
               <C.TerritoriesListFrom>
-                {territoriesListItems("from")}
+                {territoriesListItems('from')}
                 {updateTerritories}
               </C.TerritoriesListFrom>
               <C.TerritoriesListTools>
@@ -929,7 +954,7 @@ function Main() {
                 {changeTerritoriesSelectAll()}
               </C.TerritoriesListTools>
               <C.TerritoriesListTo>
-                {territoriesListItems("to")}
+                {territoriesListItems('to')}
               </C.TerritoriesListTo>
             </C.ChangeTerritoriesList>
           </C.ChangeTerritories>

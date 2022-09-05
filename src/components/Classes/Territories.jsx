@@ -3,256 +3,255 @@ export default class Territories {
     //#region Territories List
     this.territoriesList = [
       {
-        continent: "Africa",
-        territory: "Algeria",
-        owner: "none",
+        continent: 'Africa',
+        territory: 'Algeria',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Africa",
-        territory: "Congo",
-        owner: "none",
+        continent: 'Africa',
+        territory: 'Congo',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Africa",
-        territory: "Egypt",
-        owner: "none",
+        continent: 'Africa',
+        territory: 'Egypt',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Africa",
-        territory: "Madagascar",
-        owner: "none",
+        continent: 'Africa',
+        territory: 'Madagascar',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Africa",
-        territory: "South Africa",
-        owner: "none",
+        continent: 'Africa',
+        territory: 'South Africa',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Africa",
-        territory: "Sudan",
-        owner: "none",
-        selected: false,
-      },
-
-      {
-        continent: "Asia",
-        territory: "Aral",
-        owner: "none",
+        continent: 'Africa',
+        territory: 'Sudan',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Asia",
-        territory: "China",
-        owner: "none",
+        continent: 'Asia',
+        territory: 'Aral',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Asia",
-        territory: "Dudinka",
-        owner: "none",
+        continent: 'Asia',
+        territory: 'China',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Asia",
-        territory: "India",
-        owner: "none",
+        continent: 'Asia',
+        territory: 'Dudinka',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Asia",
-        territory: "Japan",
-        owner: "none",
+        continent: 'Asia',
+        territory: 'India',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Asia",
-        territory: "Middle East",
-        owner: "none",
+        continent: 'Asia',
+        territory: 'Japan',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Asia",
-        territory: "Mongolia",
-        owner: "none",
+        continent: 'Asia',
+        territory: 'Middle East',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Asia",
-        territory: "Omsk",
-        owner: "none",
+        continent: 'Asia',
+        territory: 'Mongolia',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Asia",
-        territory: "Siberia",
-        owner: "none",
+        continent: 'Asia',
+        territory: 'Omsk',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Asia",
-        territory: "Tchita",
-        owner: "none",
+        continent: 'Asia',
+        territory: 'Siberia',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Asia",
-        territory: "Vietnam",
-        owner: "none",
+        continent: 'Asia',
+        territory: 'Tchita',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Asia",
-        territory: "Vladivostok",
-        owner: "none",
+        continent: 'Asia',
+        territory: 'Vietnam',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Europe",
-        territory: "England",
-        owner: "none",
+        continent: 'Asia',
+        territory: 'Vladivostok',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Europe",
-        territory: "France",
-        owner: "none",
+        continent: 'Europe',
+        territory: 'England',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Europe",
-        territory: "Germany",
-        owner: "none",
+        continent: 'Europe',
+        territory: 'France',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Europe",
-        territory: "Iceland",
-        owner: "none",
+        continent: 'Europe',
+        territory: 'Germany',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Europe",
-        territory: "Moscow",
-        owner: "none",
+        continent: 'Europe',
+        territory: 'Iceland',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Europe",
-        territory: "Poland",
-        owner: "none",
+        continent: 'Europe',
+        territory: 'Moscow',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Europe",
-        territory: "Sweden",
-        owner: "none",
+        continent: 'Europe',
+        territory: 'Poland',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "North America",
-        territory: "Alaska",
-        owner: "none",
+        continent: 'Europe',
+        territory: 'Sweden',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "North America",
-        territory: "California",
-        owner: "none",
+        continent: 'North America',
+        territory: 'Alaska',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "North America",
-        territory: "Greenland",
-        owner: "none",
+        continent: 'North America',
+        territory: 'California',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "North America",
-        territory: "Labrador",
-        owner: "none",
+        continent: 'North America',
+        territory: 'Greenland',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "North America",
-        territory: "Mackenzie",
-        owner: "none",
+        continent: 'North America',
+        territory: 'Labrador',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "North America",
-        territory: "Mexico",
-        owner: "none",
+        continent: 'North America',
+        territory: 'Mackenzie',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "North America",
-        territory: "New York",
-        owner: "none",
+        continent: 'North America',
+        territory: 'Mexico',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "North America",
-        territory: "Ottawa",
-        owner: "none",
+        continent: 'North America',
+        territory: 'New York',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "North America",
-        territory: "Vancouver",
-        owner: "none",
+        continent: 'North America',
+        territory: 'Ottawa',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Oceania",
-        territory: "Australia",
-        owner: "none",
+        continent: 'North America',
+        territory: 'Vancouver',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Oceania",
-        territory: "Borneo",
-        owner: "none",
+        continent: 'Oceania',
+        territory: 'Australia',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Oceania",
-        territory: "New Guinea",
-        owner: "none",
+        continent: 'Oceania',
+        territory: 'Borneo',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "Oceania",
-        territory: "Sumatra",
-        owner: "none",
+        continent: 'Oceania',
+        territory: 'New Guinea',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "South America",
-        territory: "Argentina",
-        owner: "none",
+        continent: 'Oceania',
+        territory: 'Sumatra',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "South America",
-        territory: "Brazil",
-        owner: "none",
+        continent: 'South America',
+        territory: 'Argentina',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "South America",
-        territory: "Peru",
-        owner: "none",
+        continent: 'South America',
+        territory: 'Brazil',
+        owner: 'none',
         selected: false,
       },
       {
-        continent: "South America",
-        territory: "Venezuela",
-        owner: "none",
+        continent: 'South America',
+        territory: 'Peru',
+        owner: 'none',
+        selected: false,
+      },
+      {
+        continent: 'South America',
+        territory: 'Venezuela',
+        owner: 'none',
         selected: false,
       },
     ];
@@ -279,8 +278,8 @@ export default class Territories {
 
     //#region Error Messages
     const error = {
-      emptyName: "You must type a name for the territory.",
-      duplicatedName: "There is already a territory with this name.",
+      emptyName: 'You must type a name for the territory.',
+      duplicatedName: 'There is already a territory with this name.',
     };
     //#endregion
 
@@ -312,7 +311,7 @@ export default class Territories {
         this.territoriesList.push({
           territory: territoryName,
           continent: territoryContinent,
-          owner: "none",
+          owner: 'none',
           selected: false,
         });
         this.territoriesList = this.territoriesList.sort(compareTerritories);
@@ -323,7 +322,7 @@ export default class Territories {
     //#region Set Territory Selected
     this.setTerritorySelected = (territory, type, owner) => {
       switch (type) {
-        case "deselect":
+        case 'deselect':
           {
             for (let item in this.territoriesList) {
               this.territoriesList[item].selected = false;
@@ -331,10 +330,10 @@ export default class Territories {
           }
           break;
 
-        case "selectAll":
+        case 'selectAll':
           {
             for (let item in this.territoriesList) {
-              if (this.territoriesList[item]["owner"] === owner) {
+              if (this.territoriesList[item]['owner'] === owner) {
                 this.territoriesList[item].selected = true;
               }
             }
@@ -361,7 +360,7 @@ export default class Territories {
       let anySelected = false;
 
       for (let item in this.territoriesList) {
-        if (this.territoriesList[item]["owner"] === owner) {
+        if (this.territoriesList[item]['owner'] === owner) {
           count++;
         }
       }
@@ -369,8 +368,8 @@ export default class Territories {
       if (selected) {
         for (let item in this.territoriesList) {
           if (
-            this.territoriesList[item]["owner"] === owner &&
-            this.territoriesList[item]["selected"]
+            this.territoriesList[item]['owner'] === owner &&
+            this.territoriesList[item]['selected']
           ) {
             anySelected = true;
             break;
@@ -386,7 +385,7 @@ export default class Territories {
     this.getOwnerTerritories = (owner) => {
       let territories = [];
       for (let item in this.territoriesList) {
-        if (this.territoriesList[item]["owner"] === owner) {
+        if (this.territoriesList[item]['owner'] === owner) {
           territories.push(this.territoriesList[item]);
         }
       }
@@ -398,5 +397,6 @@ export default class Territories {
     this.saveTradeChanges = (newList) => {
       this.territoriesList = newList;
     };
+    //#endregion
   }
 }
