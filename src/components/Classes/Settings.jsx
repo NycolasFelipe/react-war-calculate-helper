@@ -163,34 +163,41 @@ export default class Settings {
       let africa = {
         continent: 'Africa',
         totality: false,
+        minTotality: false,
         count: 0,
       };
       let asia = {
         continent: 'Asia',
         totality: false,
+        minTotality: false,
         count: 0,
       };
       let europe = {
         continent: 'Europe',
         totality: false,
+        minTotality: false,
         count: 0,
       };
       let northAmerica = {
         continent: 'North America',
         totality: false,
+        minTotality: false,
         count: 0,
       };
       let oceania = {
         continent: 'Oceania',
         totality: false,
+        minTotality: false,
         count: 0,
       };
       let southAmerica = {
         continent: 'South America',
         totality: false,
+        minTotality: false,
         count: 0,
       };
 
+      //Determining the number of territories per player's continent
       for (let item in territoriesOwned) {
         let itemContinent = territoriesOwned[item]['continent'];
         switch (itemContinent) {
@@ -217,6 +224,38 @@ export default class Settings {
         }
       }
 
+      if (minBonus['active']) {
+        for (let item in minBonus['values']) {
+          let minContinent = minBonus['values'][item]['continent'];
+          let minValue = minBonus['values'][item]['value'];
+
+          switch (minContinent) {
+            case 'Africa':
+              africa['minTotality'] = minValue <= africa['count'];
+              break;
+            case 'Asia':
+              asia['minTotality'] = minValue <= asia['count'];
+              break;
+            case 'Europe':
+              europe['minTotality'] = minValue <= europe['count'];
+              break;
+            case 'North America':
+              northAmerica['minTotality'] = minValue <= northAmerica['count'];
+              break;
+            case 'Oceania':
+              oceania['minTotality'] = minValue <= oceania['count'];
+              break;
+            case 'South America':
+              southAmerica['minTotality'] = minValue <= southAmerica['count'];
+              break;
+          }
+        }
+      }
+
+      /*
+      Determines if the player owns the entire continent if its count is equal
+      to the required one determined in settings
+      */
       for (let item in totalBonus) {
         let totalContinent = totalBonus[item]['continent'];
         let totalValue = totalBonus[item]['value'];
@@ -246,12 +285,24 @@ export default class Settings {
       }
 
       let territoriesTotality = [];
-      if (africa['totality']) territoriesTotality.push(africa);
-      if (asia['totality']) territoriesTotality.push(asia);
-      if (europe['totality']) territoriesTotality.push(europe);
-      if (northAmerica['totality']) territoriesTotality.push(northAmerica);
-      if (oceania['totality']) territoriesTotality.push(oceania);
-      if (southAmerica['totality']) territoriesTotality.push(southAmerica);
+      if (africa['totality'] || africa['minTotality']) {
+        territoriesTotality.push(africa);
+      }
+      if (asia['totality'] || asia['minTotality']) {
+        territoriesTotality.push(asia);
+      }
+      if (europe['totality'] || europe['minTotality']) {
+        territoriesTotality.push(europe);
+      }
+      if (northAmerica['totality'] || northAmerica['minTotality']) {
+        territoriesTotality.push(northAmerica);
+      }
+      if (oceania['totality'] || oceania['minTotality']) {
+        territoriesTotality.push(oceania);
+      }
+      if (southAmerica['totality'] || southAmerica['minTotality']) {
+        territoriesTotality.push(southAmerica);
+      }
 
       return territoriesTotality;
     };
