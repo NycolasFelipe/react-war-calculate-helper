@@ -11,6 +11,7 @@ import ButtonInfo from '../ButtonInfo';
 import TerritoryItem from '../TerritoryItem';
 import TitleCase from '../Functions/TitleClase';
 import Player from '../Player';
+import CalculateResultItem from '../CalculateResultItem';
 
 function Main() {
   //#region Territories Settings
@@ -310,6 +311,9 @@ function Main() {
   //#endregion
 
   //#region Calculate Territories [SIDE]
+  const [calculatedList, setCalculatedList] = useState(null);
+  const [calculateActive, setCalculateActive] = useState(false);
+
   const calculateTerritories = () => {
     let playersActive = players.getPlayers('active');
     let playersActiveList = [];
@@ -322,14 +326,24 @@ function Main() {
       let territoriesTotality =
         settings.checkTerritoriesTotality(territoriesOwned);
 
-      playersActiveList.push({
-        id: id,
-        name: name,
-        territoriesLength: territoriesLength,
-        territoriesTotality: territoriesTotality,
-      });
+      playersActiveList.push(
+        <CalculateResultItem
+          key={id}
+          playerName={name}
+          territoriesLength={territoriesLength}
+          territoriesTotality={territoriesTotality}
+        />
+      );
     }
-    console.log(playersActiveList);
+    setCalculatedList(playersActiveList);
+    setRemoveScroll(true);
+    setBackgroundBlur(true);
+  };
+
+  const exitCalculation = () => {
+    setCalculateActive(false);
+    setRemoveScroll(false);
+    setBackgroundBlur(false);
   };
   //#endregion
 
@@ -604,8 +618,10 @@ function Main() {
     if (saveTradesActive) {
       setChangeAlertActive(true);
     } else {
-      setChangeActive(false);
       territories.setTerritorySelected('', 'deselect');
+      setChangeActive(false);
+      setRemoveScroll(false);
+      setBackgroundBlur(false);
     }
   };
 
@@ -626,6 +642,8 @@ function Main() {
     if (requiredSaved) {
       cancelTradesChanges();
       setChangeActive(true);
+      setRemoveScroll(true);
+      setBackgroundBlur(true);
     }
   };
   //#endregion
@@ -665,9 +683,12 @@ function Main() {
   };
   //#endregion
 
+  const [removeScroll, setRemoveScroll] = useState(false);
+  const [backgroundBlur, setBackgroundBlur] = useState(false);
+
   return (
     <>
-      <C.Main changeActive={changeActive}>
+      <C.Main changeActive={changeActive || calculateActive}>
         <C.ContainerTerritories>
           <C.TerritoriesContent
             editingActive={addTerritoryWindow || deleteItemActive}
@@ -861,11 +882,26 @@ function Main() {
             buttonWidth={'160px'}
             onClick={() => changeTerritories()}
           />
-          <Button onClick={() => calculateTerritories()} />
+          <Button
+            onClick={() => [calculateTerritories(), setCalculateActive(true)]}
+          />
         </C.ContainerSide>
 
-        <C.ContainerBlur changeActive={changeActive} />
-        <RemoveScroll enabled={changeActive}>
+        <C.ContainerBlur changeActive={backgroundBlur} />
+        <RemoveScroll enabled={removeScroll}>
+          <C.CalculateTerritoriesResult calculateActive={calculateActive}>
+            <C.CalculateHeader>
+              <Title text={'Troop Calculation'} />
+              <Button
+                text={'x'}
+                buttonBgColor={'#ca1e1e'}
+                buttonWidth={'1.4rem'}
+                buttonHeight={'1.3rem'}
+                onClick={() => exitCalculation()}
+              />
+            </C.CalculateHeader>
+            <C.CalculateContent>{calculatedList}</C.CalculateContent>
+          </C.CalculateTerritoriesResult>
           <C.ChangeTerritoriesAlert changeAlertActive={changeAlertActive}>
             <C.ChangeTerritoriesAlertHeader>
               <Title text={'⚠ You have pending changes...'} />

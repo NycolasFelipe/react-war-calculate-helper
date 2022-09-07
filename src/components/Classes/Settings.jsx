@@ -85,6 +85,35 @@ export default class Settings {
     this.getMinBonus = () => minBonus.values;
     this.getTotalBonus = () => totalBonus;
     this.minBonusActive = () => minBonus.active;
+
+    this.getTotalBonusContinent = (continent) => {
+      for (let item in totalBonus) {
+        if (totalBonus[item]['continent'] === continent)
+          return totalBonus[item]['bonus'];
+      }
+    };
+
+    this.getTotalValueContinent = (continent) => {
+      for (let item in totalBonus) {
+        if (totalBonus[item]['continent'] === continent)
+          return totalBonus[item]['value'];
+      }
+    };
+
+    this.getMinBonusContinent = (continent) => {
+      for (let item in minBonus['values']) {
+        if (minBonus['values'][item]['continent'] === continent)
+          return minBonus['values'][item]['bonus'];
+      }
+    };
+
+    this.getMinValueContinent = (continent) => {
+      for (let item in minBonus['values']) {
+        if (minBonus['values'][item]['continent'] === continent)
+          return minBonus['values'][item]['value'];
+      }
+    };
+
     //#endregion
 
     //#region Set Min/Total Bonus Settings (expect total value)

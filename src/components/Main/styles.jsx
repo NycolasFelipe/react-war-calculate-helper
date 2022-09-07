@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Main = styled.div`
   display: flex;
@@ -500,6 +500,7 @@ export const ContainerSide = styled.div`
 //#endregion
 
 //#region Change Territories
+//Alert Message
 export const ChangeTerritoriesAlert = styled.div`
   background: #080808;
   border: 1px solid #fff;
@@ -568,6 +569,7 @@ export const ChangeTerritoriesAlertHeader = styled.div`
     top: 0;
   }
 `;
+
 export const ChangeTerritoriesAlertMessage = styled.div`
   display: flex;
   justify-content: center;
@@ -581,6 +583,7 @@ export const ChangeTerritoriesAlertMessage = styled.div`
     font-size: 1rem;
   }
 `;
+
 export const ChangeTerritoriesAlertButtons = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -594,6 +597,7 @@ export const ChangeTerritoriesAlertButtons = styled.div`
     width: 100%;
   }
 `;
+//
 
 export const ChangeTerritories = styled.div`
   background: #080808;
@@ -734,6 +738,7 @@ export const TerritoriesToContainer = styled.div`
     background-color: #202020;
   }
 `;
+
 export const ChangeTerritoriesSwitch = styled.div`
   display: flex;
   justify-content: center;
@@ -800,6 +805,7 @@ export const TerritoriesListTo = styled.div`
     background-color: #202020;
   }
 `;
+
 export const TerritoriesListTools = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -826,5 +832,93 @@ export const PlayerCardPlaceholder = styled.div`
   padding: 5px 10px;
   box-sizing: border-box;
   border: 1px solid #424242;
+`;
+//#endregion
+
+//#region Calculate Territories
+export const CalculateTerritoriesResult = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+  height: 30%;
+  min-width: 580px;
+  min-height: 500px;
+  position: absolute;
+
+  //Position
+  top: 5%;
+  transform: translateX(-50%);
+  left: 50%;
+  z-index: 30;
+
+  background: #080808;
+  border-radius: 5px;
+  border: 1px solid #fff;
+  //
+
+  ${(props) => {
+    if (props.calculateActive) {
+      return `
+        pointer-events: auto !important;
+    `;
+    }
+  }}
+
+  ${(props) => {
+    if (!props.calculateActive) {
+      return `
+        background: transparent !important;
+        border: transparent !important;
+        * {
+          background: transparent !important;
+          color: transparent !important;
+          border: transparent !important;
+        }
+        & > * {
+          height: 0 !important;
+          width: 0 !important;
+          overflow: hidden !important;
+        }
+        user-select: none;
+        pointer-events: none;
+        transition-duration: 0.1s !important;
+      `;
+    }
+  }}
+`;
+
+export const CalculateHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  height: 38px;
+  width: 100%;
+  position: fixed;
+  background: #080808;
+  border-radius: 5px 5px 0 0;
+  padding: 8px 10px;
+
+  & > h1 {
+    font-size: 1rem;
+  }
+`;
+
+export const CalculateContent = styled.div`
+  flex: 1;
+  width: 100%;
+  overflow-y: auto;
+  padding: 0 5px;
+  padding-top: 35px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    background-color: transparent;
+    border-radius: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    --webkit-box-shadow: inset 0 0 6px #0000004d;
+    background-color: #202020;
+  }
 `;
 //#endregion
