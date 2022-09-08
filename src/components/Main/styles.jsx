@@ -821,7 +821,6 @@ export const ContainerPlayersCards = styled.div`
   flex-wrap: wrap;
   gap: 10px;
   width: 100%;
-  height: 300px;
 `;
 
 export const PlayerCardPlaceholder = styled.div`

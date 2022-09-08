@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import worldMap from "../src/images/world-map.png";
+import styled from 'styled-components';
+import worldMap from '../src/images/world-map.png';
 
 export const Container = styled.div`
   display: flex;
