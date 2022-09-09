@@ -3,14 +3,20 @@ import styled from 'styled-components';
 export const Main = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-content: center;
   flex-wrap: wrap;
   gap: 10px;
+  height: 500px;
   width: 100%;
-  height: 100%;
   margin: 0 auto;
+  padding: 0 100px;
   box-sizing: border-box;
-  padding-right: 25px;
+
+  @media (max-width: 1025px) {
+    flex-wrap: nowrap;
+    height: 900px;
+    padding: 0;
+  }
 
   ${(props) => {
     if (props.changeActive) {
@@ -45,176 +51,22 @@ export const ContainerBlur = styled.div`
   }}
 `;
 
-//#region Territories Settings
-export const ContainerTerritories = styled.div`
-  width: 20%;
-  min-width: 240px;
-  height: 100%;
-  padding-bottom: 10px;
-
-  @media (max-width: 1050px) {
-    width: 30%;
-  }
-`;
-
-export const TerritoriesContent = styled.div`
-  border: 1px solid #424242;
-  height: 85%;
-  width: 100%;
-  margin: 0 auto;
-  box-sizing: border-box;
-  padding: 5px 10px;
-  border-radius: 5px;
-  position: relative;
-  overflow: hidden;
-
-  ${(props) => {
-    if (props.editingActive) {
-      return `
-        border: 1px solid #fff;
-        transition: all 0.2s ease;
-      `;
-    }
-  }}
-`;
-
-export const TerritoriesTitle = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-export const AddAlert = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #39af4f;
-  width: 93%;
-  height: 18px;
-  position: absolute;
-  border-radius: 5px;
-  font-size: 0.8rem;
-  color: #fff;
-  pointer-events: none;
-
-  transform-origin: 50% 0%;
-  transition: all 0.2s ease;
-
-  ${(props) => {
-    if (props.showAddAlert) {
-      return `
-        transform: scaleY(1);
-      `;
-    } else {
-      return `
-        transform: scaleY(0);
-      `;
-    }
-  }}
-`;
-
-export const TerritoriesItems = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  margin-top: 6px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  height: 85%;
-  border-radius: 5px;
-  border: 1px solid #424242;
-
-  &::-webkit-scrollbar {
-    width: 6px;
-    background-color: transparent;
-    border-radius: 5px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    --webkit-box-shadow: inset 0 0 6px #0000004d;
-    background-color: #202020;
-  }
-`;
-
-export const TerritoriesAddWindow = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  width: 96%;
-  left: 5px;
-  bottom: 5px;
-
-  background: #161616;
-  position: absolute;
-  box-sizing: border-box;
-  padding: 4px 6px;
-  border-radius: 5px;
-  overflow: hidden;
-
-  transform-origin: 50% 100%;
-  transition: all 0.2s ease;
-
-  & button {
-    margin-top: 5px;
-  }
-
-  ${(props) => {
-    if (props.addTerritoryWindow) {
-      return `
-        transform: scaleY(1);
-      `;
-    } else {
-      return `
-        transform: scaleY(0);
-      `;
-    }
-  }}
-`;
-
-export const InputAlert = styled.div`
-  font-size: 0.8rem;
-  pointer-events: none;
-
-  ${(props) => {
-    if (props.showInputAlert) {
-      return `
-        display: block;
-        color: red;
-      `;
-    } else {
-      return `
-        display: none;
-      `;
-    }
-  }}
-`;
-
-export const TerritoriesButtons = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  margin-top: 10px;
-  gap: 5px;
-  height: 15%;
-`;
-//#endregion
-
 //#region Bonus Settings
 export const ContainerBonus = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
   gap: 5px;
-  width: 60%;
-  min-width: 360px;
-  height: 60%;
+  width: 700px;
   background: transparent;
   border: 1px solid #424242;
   border-radius: 5px;
   padding: 5px 10px;
   position: relative;
+
+  @media (max-width: 1025px) {
+    width: 100%;
+  }
 
   ${(props) => {
     if (props.saveSettingsActive) {
@@ -292,8 +144,13 @@ export const TerritoryItems = styled.div`
   justify-content: flex-end;
   border: 1px solid transparent;
   position: absolute;
-  top: 55px;
   width: 100%;
+
+  top: 62px;
+
+  @media (max-width: 1025px) {
+    top: 52px;
+  }
 `;
 
 export const BonusMin = styled.div`
@@ -375,9 +232,13 @@ export const ContainerPlayers = styled.div`
   border: 1px solid #424242;
   border-radius: 5px;
   height: 40%;
-  width: 60%;
+  width: 700px;
   padding: 5px 2px 10px 10px;
   position: relative;
+
+  @media (max-width: 1025px) {
+    width: 100%;
+  }
 
   & > button {
     position: absolute;
@@ -478,6 +339,190 @@ export const SavePlayersWarning = styled.span`
     `;
     }
   }}
+`;
+//#endregion
+
+//#region Territories Settings
+export const ContainerTerritories = styled.div`
+  width: 220px;
+  padding-bottom: 10px;
+  border: 1px solid #424242;
+  border-radius: 5px;
+
+  @media (max-width: 1025px) {
+    width: 100%;
+  }
+
+  ${(props) => {
+    if (props.editingActive) {
+      return `
+        border: 1px solid #fff;
+        transition: all 0.2s ease;
+      `;
+    }
+  }}
+`;
+
+export const TerritoriesContent = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 5px 10px;
+  position: relative;
+  overflow: hidden;
+`;
+
+export const TerritoriesTitle = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+export const AddAlert = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #39af4f;
+  width: 93%;
+  height: 18px;
+  position: absolute;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  color: #fff;
+  pointer-events: none;
+
+  transform-origin: 50% 0%;
+  transition: all 0.2s ease;
+
+  ${(props) => {
+    if (props.showAddAlert) {
+      return `
+        transform: scaleY(1);
+      `;
+    } else {
+      return `
+        transform: scaleY(0);
+      `;
+    }
+  }}
+`;
+
+export const TerritoriesItems = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin-top: 6px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 251px;
+  border-radius: 5px;
+  border: 1px solid #424242;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    background-color: transparent;
+    border-radius: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    --webkit-box-shadow: inset 0 0 6px #0000004d;
+    background-color: #202020;
+  }
+`;
+
+export const TerritoriesAddWindow = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  width: 96%;
+  left: 5px;
+  bottom: 5px;
+
+  background: #161616;
+  position: absolute;
+  box-sizing: border-box;
+  padding: 4px 6px;
+  border-radius: 5px;
+  overflow: hidden;
+
+  transform-origin: 50% 100%;
+  transition: all 0.2s ease;
+
+  & button {
+    margin-top: 5px;
+  }
+
+  ${(props) => {
+    if (props.addTerritoryWindow) {
+      return `
+        transform: scaleY(1);
+      `;
+    } else {
+      return `
+        transform: scaleY(0);
+      `;
+    }
+  }}
+`;
+
+export const InputAlert = styled.div`
+  font-size: 0.8rem;
+  pointer-events: none;
+
+  ${(props) => {
+    if (props.showInputAlert) {
+      return `
+        display: block;
+        color: red;
+      `;
+    } else {
+      return `
+        display: none;
+      `;
+    }
+  }}
+`;
+
+export const TerritoriesButtons = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 0 auto;
+  margin-top: 10px;
+  gap: 5px;
+  padding: 0 10px;
+`;
+//#endregion
+
+//#region Calculate/Change Territories
+export const ContainerCalculate = styled.div`
+  display: flex;
+  height: 95px;
+  width: 220px;
+  border: 1px solid #424242;
+  border-radius: 5px;
+
+  @media (max-width: 1025px) {
+    height: 300px;
+    width: 100%;
+  }
+`;
+
+export const ContainerCalculateTitle = styled.div`
+  color: #fff;
+  text-align: center;
+  font-size: 0.8rem;
+`;
+
+export const ContainerCalculateItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  width: 50%;
 `;
 //#endregion
 

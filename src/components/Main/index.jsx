@@ -689,79 +689,6 @@ function Main() {
   return (
     <>
       <C.Main changeActive={changeActive || calculateActive}>
-        <C.ContainerTerritories>
-          <C.TerritoriesContent
-            editingActive={addTerritoryWindow || deleteItemActive}
-          >
-            <C.AddAlert showAddAlert={showAddAlert}>
-              Territory Added!
-            </C.AddAlert>
-            <C.TerritoriesTitle>
-              <Title
-                text={`Available Territories | Count: ${availableTerritories(
-                  true
-                )}`}
-                titleWidth={'100%'}
-              />
-              <Title text={'Continent'} />
-              <Title text={'| Territory'} />
-            </C.TerritoriesTitle>
-            <C.TerritoriesItems>{availableTerritories()}</C.TerritoriesItems>
-            <C.TerritoriesAddWindow addTerritoryWindow={addTerritoryWindow}>
-              <C.InputAlert showInputAlert={showInputAlert}>
-                {inputAlertText}
-              </C.InputAlert>
-              <Input
-                label={'labelAddTerritoryName'}
-                text={"Territory's Name"}
-                placeholder={'Ex.: Canada'}
-                value={territoryName}
-                onChange={(e) => setTerritoryName(e.target.value)}
-                maxLength={14}
-              />
-              <Select
-                label={'labelAddTerritoryContinent'}
-                text={'Continent'}
-                options={[
-                  ['Africa', 'africa'],
-                  ['Asia', 'asia'],
-                  ['Europe', 'europe'],
-                  ['North America', 'northAmerica'],
-                  ['Oceania', 'oceania'],
-                  ['South America', 'southAmerica'],
-                ]}
-                onChange={(e) =>
-                  setTerritoryContinent(
-                    e.target.options[e.target.selectedIndex].text
-                  )
-                }
-              />
-              <Button
-                text={'Add'}
-                buttonBgColor={'#228be6'}
-                buttonWidth={'100%'}
-                buttonHeight={'1.6rem'}
-                onClick={() => addTerritory(territoryName, territoryContinent)}
-              />
-            </C.TerritoriesAddWindow>
-          </C.TerritoriesContent>
-          <C.TerritoriesButtons>
-            <Button
-              text={addTerritoryWindow ? 'Finish' : 'Add New Territory'}
-              buttonBgColor={'#2e8b2e'}
-              buttonWidth={'100%'}
-              disabled={deleteItemActive}
-              onClick={() => setAddTerritoryWindow(!addTerritoryWindow)}
-            />
-            <Button
-              text={deleteItemActive ? 'Cancel' : 'Delete Item'}
-              buttonBgColor={'#ca1e1e'}
-              buttonWidth={'100%'}
-              disabled={addTerritoryWindow}
-              onClick={() => setDeleteItemActive(!deleteItemActive)}
-            />
-          </C.TerritoriesButtons>
-        </C.ContainerTerritories>
         <C.ContainerBonus saveSettingsActive={saveSettingsActive}>
           <Title text={'Game Settings'} fontSize={'1rem'} />
           <C.SaveSettingWarning saveSettingsWarning={saveSettingsWarning}>
@@ -875,131 +802,207 @@ function Main() {
             {playerItem('player6')}
           </C.Players>
         </C.ContainerPlayers>
-
-        <C.ContainerSide>
-          <Button
-            text={'change territories'}
-            buttonWidth={'160px'}
-            onClick={() => changeTerritories()}
-          />
-          <Button
-            onClick={() => [calculateTerritories(), setCalculateActive(true)]}
-          />
-        </C.ContainerSide>
-
-        <C.ContainerBlur changeActive={backgroundBlur} />
-        <RemoveScroll enabled={removeScroll}>
-          <C.CalculateTerritoriesResult calculateActive={calculateActive}>
-            <C.CalculateHeader>
-              <Title text={'Troop Calculation'} />
-              <Button
-                text={'x'}
-                buttonBgColor={'#ca1e1e'}
-                buttonWidth={'1.4rem'}
-                buttonHeight={'1.3rem'}
-                onClick={() => exitCalculation()}
-              />
-            </C.CalculateHeader>
-            <C.CalculateContent>{calculatedList}</C.CalculateContent>
-          </C.CalculateTerritoriesResult>
-          <C.ChangeTerritoriesAlert changeAlertActive={changeAlertActive}>
-            <C.ChangeTerritoriesAlertHeader>
-              <Title text={'⚠ You have pending changes...'} />
-              <Button
-                text={'x'}
-                buttonBgColor={'#ca1e1e'}
-                buttonWidth={'1.4rem'}
-                buttonHeight={'1.3rem'}
-                onClick={() => setChangeAlertActive(!changeAlertActive)}
-              />
-            </C.ChangeTerritoriesAlertHeader>
-            <C.ChangeTerritoriesAlertMessage>
+        <C.ContainerTerritories
+          editingActive={addTerritoryWindow || deleteItemActive}
+        >
+          <C.TerritoriesContent>
+            <C.AddAlert showAddAlert={showAddAlert}>
+              Territory Added!
+            </C.AddAlert>
+            <C.TerritoriesTitle>
               <Title
-                text={
-                  'Canceling will cause **all** the changes you have made to be lost. Do you want to save?'
+                text={`Available Territories | Count: ${availableTerritories(
+                  true
+                )}`}
+                titleWidth={'100%'}
+              />
+              <Title text={'Continent'} />
+              <Title text={'| Territory'} />
+            </C.TerritoriesTitle>
+            <C.TerritoriesItems>{availableTerritories()}</C.TerritoriesItems>
+            <C.TerritoriesAddWindow addTerritoryWindow={addTerritoryWindow}>
+              <C.InputAlert showInputAlert={showInputAlert}>
+                {inputAlertText}
+              </C.InputAlert>
+              <Input
+                label={'labelAddTerritoryName'}
+                text={"Territory's Name"}
+                placeholder={'Ex.: Canada'}
+                value={territoryName}
+                onChange={(e) => setTerritoryName(e.target.value)}
+                maxLength={14}
+              />
+              <Select
+                label={'labelAddTerritoryContinent'}
+                text={'Continent'}
+                options={[
+                  ['Africa', 'africa'],
+                  ['Asia', 'asia'],
+                  ['Europe', 'europe'],
+                  ['North America', 'northAmerica'],
+                  ['Oceania', 'oceania'],
+                  ['South America', 'southAmerica'],
+                ]}
+                onChange={(e) =>
+                  setTerritoryContinent(
+                    e.target.options[e.target.selectedIndex].text
+                  )
                 }
               />
-            </C.ChangeTerritoriesAlertMessage>
-            <C.ChangeTerritoriesAlertButtons>
               <Button
-                text={'Save Changes'}
-                buttonBgColor={'#2e8b2e'}
-                onClick={() => [saveTradesChanges(), setChangeActive(false)]}
+                text={'Add'}
+                buttonBgColor={'#228be6'}
+                buttonWidth={'100%'}
+                buttonHeight={'1.6rem'}
+                onClick={() => addTerritory(territoryName, territoryContinent)}
               />
-              <Button
-                text={'Exit'}
-                buttonBgColor={'#ca1e1e'}
-                onClick={() => cancelTradesChanges()}
-              />
-            </C.ChangeTerritoriesAlertButtons>
-          </C.ChangeTerritoriesAlert>
-          <C.ChangeTerritories
-            changeActive={changeActive}
-            changeAlertActive={changeAlertActive}
-          >
-            <C.ChangeTerritoriesHeader>
-              <Title text={'Change Territories'} fontSize={'1rem'} />
-              <C.ChangeTerritoriesButtons>
-                <Button
-                  text={saveTradesActive ? 'Save Changes*' : 'Save Changes'}
-                  buttonBgColor={'#2e8b2e'}
-                  buttonWidth={'120px'}
-                  buttonHeight={'1.3rem'}
-                  fontSize={'0.8rem'}
-                  disabled={!saveTradesActive}
-                  onClick={() => saveTradesChanges()}
-                />
-                <Button
-                  text={'x'}
-                  buttonBgColor={'#ca1e1e'}
-                  buttonWidth={'1.4rem'}
-                  buttonHeight={'1.3rem'}
-                  onClick={() => exitTradesWindow()}
-                />
-              </C.ChangeTerritoriesButtons>
-            </C.ChangeTerritoriesHeader>
-            <C.ChangeTerritoriesSelect>
-              <C.ChangeTerritoriesFrom>
-                <C.TerritoriesContainerTitle>
-                  <Title text={'From'} fontSize={'0.9rem'} />
-                </C.TerritoriesContainerTitle>
-                <C.TerritoriesFromContainer>
-                  {changeTerritoriesPlayers('from')}
-                </C.TerritoriesFromContainer>
-              </C.ChangeTerritoriesFrom>
-              <C.ChangeTerritoriesSwitch>
-                {changeTerritorieSwitch()}
-              </C.ChangeTerritoriesSwitch>
-              <C.ChangeTerritoriesTo>
-                <C.TerritoriesContainerTitle>
-                  <Title text={'To'} fontSize={'0.9rem'} />
-                </C.TerritoriesContainerTitle>
-                <C.TerritoriesToContainer>
-                  {changeTerritoriesPlayers('to')}
-                </C.TerritoriesToContainer>
-              </C.ChangeTerritoriesTo>
-            </C.ChangeTerritoriesSelect>
-            <C.ChangeTerritoriesList>
-              <C.TerritoriesListFrom>
-                {territoriesListItems('from')}
-                {updateTerritories}
-              </C.TerritoriesListFrom>
-              <C.TerritoriesListTools>
-                {changeTerritoriesAdd()}
-                {changeTerritoriesCancel()}
-                {changeTerritoriesSelectAll()}
-              </C.TerritoriesListTools>
-              <C.TerritoriesListTo>
-                {territoriesListItems('to')}
-              </C.TerritoriesListTo>
-            </C.ChangeTerritoriesList>
-          </C.ChangeTerritories>
-        </RemoveScroll>
+            </C.TerritoriesAddWindow>
+          </C.TerritoriesContent>
+          <C.TerritoriesButtons>
+            <Button
+              text={addTerritoryWindow ? 'Finish' : 'Add New Territory'}
+              buttonBgColor={'#2e8b2e'}
+              buttonWidth={'100%'}
+              disabled={deleteItemActive}
+              onClick={() => setAddTerritoryWindow(!addTerritoryWindow)}
+            />
+            <Button
+              text={deleteItemActive ? 'Cancel' : 'Delete Item'}
+              buttonBgColor={'#ca1e1e'}
+              buttonWidth={'100%'}
+              disabled={addTerritoryWindow}
+              onClick={() => setDeleteItemActive(!deleteItemActive)}
+            />
+          </C.TerritoriesButtons>
+        </C.ContainerTerritories>
+        <C.ContainerCalculate>
+          <C.ContainerCalculateItem>
+            <C.ContainerCalculateTitle>
+              Change Territories
+            </C.ContainerCalculateTitle>
+            <Button
+              text={'🖉'}
+              buttonBgColor={'#228be6'}
+              onClick={() => changeTerritories()}
+            />
+          </C.ContainerCalculateItem>
+          <C.ContainerCalculateItem>
+            <C.ContainerCalculateTitle>Calculate</C.ContainerCalculateTitle>
+            <Button
+              text={'✓'}
+              buttonBgColor={'#2e8b2e'}
+              onClick={() => [calculateTerritories(), setCalculateActive(true)]}
+            />
+          </C.ContainerCalculateItem>
+        </C.ContainerCalculate>
       </C.Main>
-      <C.ContainerPlayersCards>
-        {playersCards()}
-        {updateTerritories}
-      </C.ContainerPlayersCards>
+      <RemoveScroll enabled={removeScroll}>
+        <C.CalculateTerritoriesResult calculateActive={calculateActive}>
+          <C.CalculateHeader>
+            <Title text={'Troop Calculation'} />
+            <Button
+              text={'x'}
+              buttonBgColor={'#ca1e1e'}
+              buttonWidth={'1.4rem'}
+              buttonHeight={'1.3rem'}
+              onClick={() => exitCalculation()}
+            />
+          </C.CalculateHeader>
+          <C.CalculateContent>{calculatedList}</C.CalculateContent>
+        </C.CalculateTerritoriesResult>
+        <C.ChangeTerritoriesAlert changeAlertActive={changeAlertActive}>
+          <C.ChangeTerritoriesAlertHeader>
+            <Title text={'⚠ You have pending changes...'} />
+            <Button
+              text={'x'}
+              buttonBgColor={'#ca1e1e'}
+              buttonWidth={'1.4rem'}
+              buttonHeight={'1.3rem'}
+              onClick={() => setChangeAlertActive(!changeAlertActive)}
+            />
+          </C.ChangeTerritoriesAlertHeader>
+          <C.ChangeTerritoriesAlertMessage>
+            <Title
+              text={
+                'Canceling will cause **all** the changes you have made to be lost. Do you want to save?'
+              }
+            />
+          </C.ChangeTerritoriesAlertMessage>
+          <C.ChangeTerritoriesAlertButtons>
+            <Button
+              text={'Save Changes'}
+              buttonBgColor={'#2e8b2e'}
+              onClick={() => [saveTradesChanges(), setChangeActive(false)]}
+            />
+            <Button
+              text={'Exit'}
+              buttonBgColor={'#ca1e1e'}
+              onClick={() => cancelTradesChanges()}
+            />
+          </C.ChangeTerritoriesAlertButtons>
+        </C.ChangeTerritoriesAlert>
+        <C.ChangeTerritories
+          changeActive={changeActive}
+          changeAlertActive={changeAlertActive}
+        >
+          <C.ChangeTerritoriesHeader>
+            <Title text={'Change Territories'} fontSize={'1rem'} />
+            <C.ChangeTerritoriesButtons>
+              <Button
+                text={saveTradesActive ? 'Save Changes*' : 'Save Changes'}
+                buttonBgColor={'#2e8b2e'}
+                buttonWidth={'120px'}
+                buttonHeight={'1.3rem'}
+                fontSize={'0.8rem'}
+                disabled={!saveTradesActive}
+                onClick={() => saveTradesChanges()}
+              />
+              <Button
+                text={'x'}
+                buttonBgColor={'#ca1e1e'}
+                buttonWidth={'1.4rem'}
+                buttonHeight={'1.3rem'}
+                onClick={() => exitTradesWindow()}
+              />
+            </C.ChangeTerritoriesButtons>
+          </C.ChangeTerritoriesHeader>
+          <C.ChangeTerritoriesSelect>
+            <C.ChangeTerritoriesFrom>
+              <C.TerritoriesContainerTitle>
+                <Title text={'From'} fontSize={'0.9rem'} />
+              </C.TerritoriesContainerTitle>
+              <C.TerritoriesFromContainer>
+                {changeTerritoriesPlayers('from')}
+              </C.TerritoriesFromContainer>
+            </C.ChangeTerritoriesFrom>
+            <C.ChangeTerritoriesSwitch>
+              {changeTerritorieSwitch()}
+            </C.ChangeTerritoriesSwitch>
+            <C.ChangeTerritoriesTo>
+              <C.TerritoriesContainerTitle>
+                <Title text={'To'} fontSize={'0.9rem'} />
+              </C.TerritoriesContainerTitle>
+              <C.TerritoriesToContainer>
+                {changeTerritoriesPlayers('to')}
+              </C.TerritoriesToContainer>
+            </C.ChangeTerritoriesTo>
+          </C.ChangeTerritoriesSelect>
+          <C.ChangeTerritoriesList>
+            <C.TerritoriesListFrom>
+              {territoriesListItems('from')}
+              {updateTerritories}
+            </C.TerritoriesListFrom>
+            <C.TerritoriesListTools>
+              {changeTerritoriesAdd()}
+              {changeTerritoriesCancel()}
+              {changeTerritoriesSelectAll()}
+            </C.TerritoriesListTools>
+            <C.TerritoriesListTo>
+              {territoriesListItems('to')}
+            </C.TerritoriesListTo>
+          </C.ChangeTerritoriesList>
+        </C.ChangeTerritories>
+      </RemoveScroll>
     </>
   );
 }
