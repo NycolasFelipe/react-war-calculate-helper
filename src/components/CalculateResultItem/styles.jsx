@@ -43,6 +43,10 @@ export const SectionCountHeader = styled.div`
   text-align: center;
   height: 20%;
   font-size: 0.8rem;
+
+  @media (max-width: 580px) {
+    font-size: 0.6rem;
+  }
 `;
 export const SectionCountContent = styled.div`
   display: flex;
@@ -58,6 +62,10 @@ export const SectionCountContent = styled.div`
     color: #228be6;
     padding-left: 5px;
   }
+
+  @media (max-width: 580px) {
+    font-size: 1rem;
+  }
 `;
 //
 
@@ -70,6 +78,10 @@ export const SectionPlus = styled.div`
   height: 80%;
   color: #fff;
   font-size: 2rem;
+
+  @media (max-width: 580px) {
+    font-size: 1rem;
+  }
 `;
 //
 
@@ -84,6 +96,10 @@ export const SectionTotalityHeader = styled.div`
   text-align: center;
   height: 20%;
   font-size: 0.8rem;
+
+  @media (max-width: 580px) {
+    font-size: 0.6rem;
+  }
 `;
 export const SectionTotalityContent = styled.div`
   display: flex;
@@ -104,6 +120,10 @@ export const TotalityContentInfo = styled.div`
   width: 60%;
   color: #fff;
   font-size: 0.8rem;
+
+  @media (max-width: 580px) {
+    font-size: 0.5rem;
+  }
 `;
 export const TotalityContentSummation = styled.div`
   display: flex;
@@ -111,6 +131,7 @@ export const TotalityContentSummation = styled.div`
   align-items: center;
   width: 10%;
   color: #fff;
+  font-size: 0.6rem;
 `;
 export const TotalityContentResult = styled.div`
   display: flex;
@@ -120,6 +141,17 @@ export const TotalityContentResult = styled.div`
   width: 30%;
   color: #228be6;
   font-size: 1.6rem;
+
+  @media (max-width: 580px) {
+    font-size: 1rem;
+  }
+`;
+export const NoTotality = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  color: #aaa;
 `;
 //
 
@@ -132,6 +164,10 @@ export const SectionEqual = styled.div`
   height: 80%;
   color: #fff;
   font-size: 2rem;
+
+  @media (max-width: 580px) {
+    font-size: 1rem;
+  }
 `;
 
 //Section Result
@@ -155,5 +191,9 @@ export const SectionResultValue = styled.div`
   font-size: 2rem;
   font-weight: bold;
   height: 80%;
+
+  @media (max-width: 580px) {
+    font-size: 1rem;
+  }
 `;
 //#endregion

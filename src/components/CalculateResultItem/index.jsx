@@ -11,7 +11,7 @@ function CalculateResultItem({
   const { settings } = useContext(DataContext);
 
   //Returns a paragraph that contains information about total bonuses
-  const TotalityContinentItem = (continent, value, maxValue, bonus) => {
+  const totalityContinentItem = (continent, value, maxValue, bonus) => {
     if (continent === 'South America') continent = 'South. A.';
     if (continent === 'North America') continent = 'North. A.';
     return (
@@ -19,6 +19,21 @@ function CalculateResultItem({
         {continent} [{value}/{maxValue}] (+{bonus})
       </p>
     );
+  };
+
+  //Displays totality information only if the player has any totality
+  const totalityContentInfo = () => {
+    if (territoriesTotality.length < 1) {
+      return <C.NoTotality>No totality</C.NoTotality>;
+    } else {
+      return (
+        <>
+          <C.TotalityContentInfo>{infoTotality}</C.TotalityContentInfo>
+          <C.TotalityContentSummation>➾</C.TotalityContentSummation>
+          <C.TotalityContentResult>+{bonusByTotality}</C.TotalityContentResult>
+        </>
+      );
+    }
   };
 
   //#region Bonus by Totality
@@ -41,12 +56,12 @@ function CalculateResultItem({
     if (item['totality']) {
       bonusByTotality += totalBonus;
       infoTotality.push(
-        TotalityContinentItem(continent, totalValue, totalValue, totalBonus)
+        totalityContinentItem(continent, totalValue, totalValue, totalBonus)
       );
     } else if (item['minTotality']) {
       bonusByTotality += minBonus;
       infoTotality.push(
-        TotalityContinentItem(continent, minValue, totalValue, minBonus)
+        totalityContinentItem(continent, minValue, totalValue, minBonus)
       );
     }
   }
@@ -74,11 +89,7 @@ function CalculateResultItem({
             Troops by continent totality
           </C.SectionTotalityHeader>
           <C.SectionTotalityContent>
-            <C.TotalityContentInfo>{infoTotality}</C.TotalityContentInfo>
-            <C.TotalityContentSummation>➾</C.TotalityContentSummation>
-            <C.TotalityContentResult>
-              +{bonusByTotality}
-            </C.TotalityContentResult>
+            {totalityContentInfo()}
           </C.SectionTotalityContent>
         </C.SectionTotality>
         <C.SectionEqual>=</C.SectionEqual>

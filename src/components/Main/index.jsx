@@ -900,6 +900,16 @@ function Main() {
           </C.ContainerCalculateItem>
         </C.ContainerCalculate>
       </C.Main>
+      <C.ContainerPlayersCards>
+        <C.ContainerCards>
+          {playersCards()}
+          {updateTerritories}
+          <C.CardPlaceholder card={1} />
+          <C.CardPlaceholder card={2} />
+          <C.CardPlaceholder card={3} />
+          <C.CardPlaceholder card={4} />
+        </C.ContainerCards>
+      </C.ContainerPlayersCards>
       <C.ContainerBlur backgroundBlur={backgroundBlur} />
       <RemoveScroll enabled={removeScroll}>
         <C.CalculateTerritoriesResult calculateActive={calculateActive}>

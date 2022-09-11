@@ -12,7 +12,7 @@ export const Main = styled.div`
   padding: 0 100px;
   box-sizing: border-box;
 
-  @media (max-width: 1025px) {
+  @media (max-width: 1250px) {
     flex-wrap: nowrap;
     height: 900px;
     padding: 0;
@@ -64,7 +64,7 @@ export const ContainerBonus = styled.div`
   padding: 5px 10px;
   position: relative;
 
-  @media (max-width: 1025px) {
+  @media (max-width: 1250px) {
     width: 100%;
   }
 
@@ -148,7 +148,7 @@ export const TerritoryItems = styled.div`
 
   top: 62px;
 
-  @media (max-width: 1025px) {
+  @media (max-width: 1250px) {
     top: 52px;
   }
 `;
@@ -236,7 +236,7 @@ export const ContainerPlayers = styled.div`
   padding: 5px 2px 10px 10px;
   position: relative;
 
-  @media (max-width: 1025px) {
+  @media (max-width: 1250px) {
     width: 100%;
   }
 
@@ -349,7 +349,7 @@ export const ContainerTerritories = styled.div`
   border: 1px solid #424242;
   border-radius: 5px;
 
-  @media (max-width: 1025px) {
+  @media (max-width: 1250px) {
     width: 100%;
   }
 
@@ -504,7 +504,7 @@ export const ContainerCalculate = styled.div`
   border: 1px solid #424242;
   border-radius: 5px;
 
-  @media (max-width: 1025px) {
+  @media (max-width: 1250px) {
     height: 300px;
     width: 100%;
   }
@@ -524,7 +524,7 @@ export const ContainerCalculateItem = styled.div`
   padding: 8px;
   width: 50%;
 
-  @media (max-width: 1025px) {
+  @media (max-width: 1250px) {
     & > button {
       height: 60px;
       font-size: 1.3rem;
@@ -704,7 +704,7 @@ export const ChangeTerritories = styled.div`
     }
   }}
 
-  @media (max-width: 1025px) {
+  @media (max-width: 1250px) {
     position: fixed;
     top: 0;
     width: 100%;
@@ -878,10 +878,20 @@ export const TerritoriesListTools = styled.div`
 
 //#region Players Cards
 export const ContainerPlayersCards = styled.div`
+  width: 100%;
+`;
+
+export const ContainerCards = styled.div`
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: 0 auto;
+  width: 1060px;
   gap: 10px;
-  width: 100%;
+
+  @media (max-width: 1250px) {
+    width: auto;
+  }
 `;
 
 export const PlayerCardPlaceholder = styled.div`
@@ -891,7 +901,50 @@ export const PlayerCardPlaceholder = styled.div`
   border-radius: 5px;
   padding: 5px 10px;
   box-sizing: border-box;
-  border: 1px solid #424242;
+  border: 1px solid #161616;
+`;
+
+export const CardPlaceholder = styled.div`
+  flex-grow: 1;
+  flex-basis: 180px;
+  height: 300px;
+  border-radius: 5px;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  border: none;
+
+  ${(props) => {
+    switch (props.card) {
+      case 1: {
+        return `
+          @media (max-width: 790px) {
+            display: none;
+          }
+        `;
+      }
+      case 2: {
+        return `
+          @media (max-width: 790px) {
+            display: none;
+          }
+        `;
+      }
+      case 3: {
+        return `
+          @media (max-width: 990px) {
+            display: none;
+          }
+        `;
+      }
+      case 4: {
+        return `
+          @media (max-width: 990px) {
+            display: none;
+          }
+        `;
+      }
+    }
+  }}
 `;
 //#endregion
 
@@ -903,7 +956,7 @@ export const CalculateTerritoriesResult = styled.div`
   height: 30%;
   min-width: 580px;
   min-height: 500px;
-  position: absolute;
+  position: fixed;
 
   //Position
   top: 5%;
@@ -946,7 +999,7 @@ export const CalculateTerritoriesResult = styled.div`
     }
   }}
 
-  @media (max-width: 1025px) {
+  @media (max-width: 1250px) {
     position: fixed;
     top: 0;
     width: 100%;
