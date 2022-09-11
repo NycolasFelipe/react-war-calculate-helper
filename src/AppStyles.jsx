@@ -10,7 +10,6 @@ export const Container = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
   margin: 0 auto;
-  margin-top: 5vh;
   position: relative;
 `;
 
@@ -19,7 +18,10 @@ export const ContainerMain = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
-  width: 90%;
-  height: 70%;
+  width: 85%;
   margin: 0 auto;
+
+  @media (max-width: 1025px) {
+    width: 95%;
+  }
 `;

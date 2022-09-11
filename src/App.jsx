@@ -8,6 +8,7 @@ import Territories from './components/Classes/Territories';
 import TerritoriesTrade from './components/Classes/TerritoriesTrade';
 import Settings from './components/Classes/Settings';
 import Players from './components/Classes/Players';
+import Header from './components/Header';
 
 function App() {
   const territories = new Territories();
@@ -31,6 +32,7 @@ function App() {
     <C.Container>
       <DataContext.Provider value={providerValue}>
         <C.ContainerMain>
+          <Header />
           <Main />
           <Footer />
         </C.ContainerMain>

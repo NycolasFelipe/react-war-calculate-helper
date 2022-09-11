@@ -601,6 +601,8 @@ function Main() {
     setUpdateTerritories(!updateTerritories);
     setChangeAlertActive(false);
     setSaveTradesActive(false);
+    setBackgroundBlur(false);
+    setRemoveScroll(false);
   };
 
   const cancelTradesChanges = () => {
@@ -612,6 +614,8 @@ function Main() {
     setChangeAlertActive(false);
     setChangeActive(false);
     setSaveTradesActive(false);
+    setBackgroundBlur(false);
+    setRemoveScroll(false);
   };
 
   const exitTradesWindow = () => {
@@ -896,6 +900,7 @@ function Main() {
           </C.ContainerCalculateItem>
         </C.ContainerCalculate>
       </C.Main>
+      <C.ContainerBlur backgroundBlur={backgroundBlur} />
       <RemoveScroll enabled={removeScroll}>
         <C.CalculateTerritoriesResult calculateActive={calculateActive}>
           <C.CalculateHeader>

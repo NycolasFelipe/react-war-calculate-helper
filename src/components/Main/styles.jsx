@@ -42,7 +42,7 @@ export const ContainerBlur = styled.div`
   pointer-events: none !important;
 
   ${(props) => {
-    if (props.changeActive) {
+    if (props.backgroundBlur) {
       return `
       background: #000000a0;
       transition: all 0.2s ease;
@@ -57,7 +57,7 @@ export const ContainerBonus = styled.div`
   flex-direction: column;
   flex: 1;
   gap: 5px;
-  width: 700px;
+  width: 800px;
   background: transparent;
   border: 1px solid #424242;
   border-radius: 5px;
@@ -232,7 +232,7 @@ export const ContainerPlayers = styled.div`
   border: 1px solid #424242;
   border-radius: 5px;
   height: 40%;
-  width: 700px;
+  width: 800px;
   padding: 5px 2px 10px 10px;
   position: relative;
 
@@ -344,7 +344,7 @@ export const SavePlayersWarning = styled.span`
 
 //#region Territories Settings
 export const ContainerTerritories = styled.div`
-  width: 220px;
+  width: 250px;
   padding-bottom: 10px;
   border: 1px solid #424242;
   border-radius: 5px;
@@ -496,11 +496,11 @@ export const TerritoriesButtons = styled.div`
 `;
 //#endregion
 
-//#region Calculate/Change Territories
+//#region Calculate/Change Territories Buttons
 export const ContainerCalculate = styled.div`
   display: flex;
   height: 95px;
-  width: 220px;
+  width: 250px;
   border: 1px solid #424242;
   border-radius: 5px;
 
@@ -523,6 +523,13 @@ export const ContainerCalculateItem = styled.div`
   align-items: center;
   padding: 8px;
   width: 50%;
+
+  @media (max-width: 1025px) {
+    & > button {
+      height: 60px;
+      font-size: 1.3rem;
+    }
+  }
 `;
 //#endregion
 
@@ -696,6 +703,15 @@ export const ChangeTerritories = styled.div`
       `;
     }
   }}
+
+  @media (max-width: 1025px) {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+  }
 `;
 
 export const ChangeTerritoriesHeader = styled.div`
@@ -929,6 +945,15 @@ export const CalculateTerritoriesResult = styled.div`
       `;
     }
   }}
+
+  @media (max-width: 1025px) {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+  }
 `;
 
 export const CalculateHeader = styled.div`
