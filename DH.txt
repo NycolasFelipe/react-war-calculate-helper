@@ -1,2 +1,2 @@
-revisar deletar available territories
-revisar atualizacao de bonus ao deletar territorios
+- adicionar janela de confirmação de reset
+- adicionar verificar local storage, e carregá-lo caso exista

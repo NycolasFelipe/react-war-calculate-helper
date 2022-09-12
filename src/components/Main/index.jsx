@@ -606,8 +606,6 @@ function Main() {
     setUpdateTerritories(!updateTerritories);
     setChangeAlertActive(false);
     setSaveTradesActive(false);
-    setBackgroundBlur(false);
-    setRemoveScroll(false);
   };
 
   const cancelTradesChanges = () => {
@@ -1025,7 +1023,12 @@ function Main() {
             <Button
               text={'Save Changes'}
               buttonBgColor={'#2e8b2e'}
-              onClick={() => [saveTradesChanges(), setChangeActive(false)]}
+              onClick={() => [
+                saveTradesChanges(),
+                setChangeActive(false),
+                setBackgroundBlur(false),
+                setRemoveScroll(false),
+              ]}
             />
             <Button
               text={'Exit'}
