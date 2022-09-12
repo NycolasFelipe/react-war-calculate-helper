@@ -91,8 +91,8 @@ export const SaveSettingWarning = styled.span`
   font-size: 0.8rem;
   color: transparent;
   position: absolute;
-  right: 130px;
-  top: 10px;
+  right: 230px;
+  top: 9px;
   text-align: right;
   user-select: none;
 
@@ -106,10 +106,17 @@ export const SaveSettingWarning = styled.span`
 `;
 
 export const ButtonSaveSettings = styled.div`
+  display: flex;
+  gap: 5px;
   position: absolute;
   right: 5px;
   top: 8px;
-  width: 120px;
+  width: 220px;
+
+  & > button {
+    font-size: 0.8rem;
+    height: 20px;
+  }
 `;
 
 export const BonusSettings = styled.div`
@@ -435,8 +442,8 @@ export const TerritoriesAddWindow = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 5px;
-  width: 96%;
-  left: 5px;
+  width: 100%;
+  left: 0;
   bottom: 5px;
 
   background: #161616;

@@ -309,8 +309,8 @@ export default class Territories {
         return error.duplicatedName;
       } else {
         this.territoriesList.push({
-          territory: territoryName,
           continent: territoryContinent,
+          territory: territoryName,
           owner: 'none',
           selected: false,
         });

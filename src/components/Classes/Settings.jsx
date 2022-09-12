@@ -73,6 +73,96 @@ export default class Settings {
     ];
     //#endregion
 
+    //#region Default Settings
+    const defaultSettings = {
+      minBonus: {
+        active: false,
+        values: [
+          {
+            continent: 'Africa',
+            value: 4,
+            bonus: 2,
+          },
+          {
+            continent: 'Asia',
+            value: 7,
+            bonus: 4,
+          },
+          {
+            continent: 'Europe',
+            value: 4,
+            bonus: 2,
+          },
+          {
+            continent: 'North America',
+            value: 5,
+            bonus: 3,
+          },
+          {
+            continent: 'Oceania',
+            value: 2,
+            bonus: 1,
+          },
+          {
+            continent: 'South America',
+            value: 2,
+            bonus: 1,
+          },
+        ],
+      },
+      totalBonus: [
+        {
+          continent: 'Africa',
+          bonus: 3,
+        },
+        {
+          continent: 'Asia',
+          bonus: 7,
+        },
+        {
+          continent: 'Europe',
+          bonus: 5,
+        },
+        {
+          continent: 'North America',
+          bonus: 5,
+        },
+        {
+          continent: 'Oceania',
+          bonus: 2,
+        },
+        {
+          continent: 'South America',
+          bonus: 2,
+        },
+      ],
+    };
+
+    this.resetDefaultSettings = () => {
+      //Resetting Min Bonus
+      minBonus['active'] = defaultSettings['minBonus']['active'];
+      minBonus['values'] = defaultSettings['minBonus']['values'];
+
+      //Resetting Total Bonus
+      for (let item in totalBonus) {
+        let bonusContinent = totalBonus[item]['continent'];
+
+        for (let item in defaultSettings['totalBonus']) {
+          let defaultBonusContinent =
+            defaultSettings['totalBonus'][item]['continent'];
+
+          if (bonusContinent === defaultBonusContinent) {
+            totalBonus[item]['bonus'] =
+              defaultSettings['totalBonus'][item]['bonus'];
+          }
+        }
+      }
+
+      console.log(totalBonus);
+      console.log(minBonus);
+    };
+    //#endregion
+
     //#region Error Messages
     const error = {
       fieldEmpty: 'Field cannot be empty.',

@@ -88,18 +88,19 @@ function Main() {
       TitleCase(territory),
       continent
     );
-    //Caso tenha havido um erro, exibe uma mensagem
+    //If an error has occurred, displays a message
     if (error) {
       inputAlert(error);
     }
-    //Caso a adição tenha sucesso, exibe uma mensagem
+    //If the addition is successful, displays a message.
     else if (!error) {
-      //Exibe confirmação de que o território foi adicionado
+      //Shows confirmation that the territory has been added
       setTerritoryName('');
       setShowAddAlert(true);
-      //Depois de um tempo, esconde o alerta novamente
+      //After a while, hide the alert again
       setTimeout(() => setShowAddAlert(false), 3000);
       setBonusSettings(territoryContinent);
+      setLocalStorage('territories');
     }
   };
   //#endregion
@@ -143,6 +144,7 @@ function Main() {
       } else if (subtype === 'bonus') {
         return (
           <Input
+            label={`${type}-${subtype}-${index}`}
             defaultValue={totalBonus[index].bonus}
             text={text}
             type={'number'}
@@ -160,6 +162,7 @@ function Main() {
     } else if (type === 'minBonus') {
       return (
         <Input
+          label={`${type}-${subtype}-${index}`}
           defaultValue={minBonus[index][subtype]}
           text={text}
           type={'number'}
@@ -231,6 +234,7 @@ function Main() {
     } else if (!error) {
       setSaveSettingsActive(false);
       setSaveSettingsWarning(false);
+      setLocalStorage('settings');
     }
   };
   //#endregion
@@ -305,6 +309,7 @@ function Main() {
       else {
         setEditPlayersActive(false);
         setSavePlayersWarning(false);
+        setLocalStorage('players');
       }
     }
   };
@@ -687,6 +692,45 @@ function Main() {
   };
   //#endregion
 
+  //#region Local Storage
+  const setLocalStorage = (keyName) => {
+    let storageItem;
+    switch (keyName) {
+      case 'settings':
+        storageItem = {
+          minBonus: {
+            active: settings.minBonusActive(),
+            values: settings.getMinBonus(),
+          },
+          totalBonus: settings.getTotalBonus(),
+        };
+        break;
+
+      case 'players':
+        storageItem = {
+          players: players.getPlayers(),
+        };
+        break;
+
+      case 'territories':
+        storageItem = {
+          territories: currentTerritories.territoriesList,
+        };
+        break;
+    }
+    localStorage.setItem(keyName, JSON.stringify(storageItem));
+  };
+  //#endregion
+
+  //#region Reset Settings
+  const resetSettings = () => {
+    settings.resetDefaultSettings();
+    setMinBonus(settings.getMinBonus());
+    setMinBonusActive(settings.minBonusActive());
+    setTotalBonus(settings.getTotalBonus());
+  };
+  //#endregion
+
   const [removeScroll, setRemoveScroll] = useState(false);
   const [backgroundBlur, setBackgroundBlur] = useState(false);
 
@@ -699,6 +743,11 @@ function Main() {
             {settingsWarningMessage}
           </C.SaveSettingWarning>
           <C.ButtonSaveSettings>
+            <Button
+              text={'Reset'}
+              buttonBgColor={'#228be6'}
+              onClick={() => resetSettings()}
+            />
             <Button
               text={saveSettingsActive ? 'Save Settings*' : 'Save Settings'}
               fontSize={'0.8rem'}
@@ -875,7 +924,10 @@ function Main() {
               buttonBgColor={'#ca1e1e'}
               buttonWidth={'100%'}
               disabled={addTerritoryWindow}
-              onClick={() => setDeleteItemActive(!deleteItemActive)}
+              onClick={() => [
+                setDeleteItemActive(!deleteItemActive),
+                setLocalStorage('territories'),
+              ]}
             />
           </C.TerritoriesButtons>
         </C.ContainerTerritories>
