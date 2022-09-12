@@ -138,10 +138,20 @@ export default class Settings {
       ],
     };
 
+    //Parse and Stringify value
+    const parseStringify = (value) => {
+      return JSON.parse(JSON.stringify(value));
+    };
+
     this.resetDefaultSettings = () => {
       //Resetting Min Bonus
-      minBonus['active'] = defaultSettings['minBonus']['active'];
-      minBonus['values'] = defaultSettings['minBonus']['values'];
+      minBonus['active'] = parseStringify(
+        defaultSettings['minBonus']['active']
+      );
+
+      minBonus['values'] = parseStringify(
+        defaultSettings['minBonus']['values']
+      );
 
       //Resetting Total Bonus
       for (let item in totalBonus) {
@@ -152,14 +162,24 @@ export default class Settings {
             defaultSettings['totalBonus'][item]['continent'];
 
           if (bonusContinent === defaultBonusContinent) {
-            totalBonus[item]['bonus'] =
-              defaultSettings['totalBonus'][item]['bonus'];
+            totalBonus[item]['bonus'] = parseStringify(
+              defaultSettings['totalBonus'][item]['bonus']
+            );
           }
         }
       }
+    };
 
-      console.log(totalBonus);
-      console.log(minBonus);
+    this.getDefaultMinBonus = () => {
+      return defaultSettings['minBonus']['values'];
+    };
+
+    this.getDefaultMinBonusActive = () => {
+      return defaultSettings['minBonus']['active'];
+    };
+
+    this.getDefaultTotalBonus = () => {
+      return defaultSettings['totalBonus'];
     };
     //#endregion
 

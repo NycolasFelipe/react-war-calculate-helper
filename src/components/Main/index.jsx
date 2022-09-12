@@ -728,6 +728,31 @@ function Main() {
     setMinBonus(settings.getMinBonus());
     setMinBonusActive(settings.minBonusActive());
     setTotalBonus(settings.getTotalBonus());
+
+    //Reset Min Bonus Settings
+    for (let i = 0; i < 5; i++) {
+      document.getElementById(`minBonus-bonus-${i}`).value =
+        settings.getDefaultMinBonus()[i]['bonus'];
+    }
+
+    //Reset Min Bonus Values
+    for (let i = 0; i < 5; i++) {
+      document.getElementById(`minBonus-value-${i}`).value =
+        settings.getDefaultMinBonus()[i]['value'];
+    }
+
+    //Reset Total Bonus Values
+    for (let i = 0; i < 5; i++) {
+      document.getElementById(`totalBonus-bonus-${i}`).value =
+        settings.getDefaultTotalBonus()[i]['bonus'];
+    }
+
+    //Reset Min Bonus Active Checkbox
+    document.getElementById('minBonusCheckbox').checked =
+      settings.getDefaultMinBonusActive();
+
+    //Save Changes in the Local Storage
+    setLocalStorage('settings');
   };
   //#endregion
 
@@ -779,6 +804,7 @@ function Main() {
                     setMinBonusActive(!minBonusActive),
                     setSaveSettingsActive(true),
                   ]}
+                  id={'minBonusCheckbox'}
                 />
                 <ButtonInfo
                   text={
