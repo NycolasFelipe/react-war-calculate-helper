@@ -721,6 +721,9 @@ function Main() {
   //#endregion
 
   //#region Reset Settings
+  //Reset Settings Alert Window Flag
+  const [resetAlertActive, setResetAlertActive] = useState(false);
+
   const resetSettings = () => {
     settings.resetDefaultSettings();
     setMinBonus(settings.getMinBonus());
@@ -769,7 +772,11 @@ function Main() {
             <Button
               text={'Reset'}
               buttonBgColor={'#228be6'}
-              onClick={() => resetSettings()}
+              onClick={() => [
+                setResetAlertActive(true),
+                setBackgroundBlur(true),
+                setRemoveScroll(true),
+              ]}
             />
             <Button
               text={saveSettingsActive ? 'Save Settings*' : 'Save Settings'}
@@ -988,6 +995,49 @@ function Main() {
       </C.ContainerPlayersCards>
       <C.ContainerBlur backgroundBlur={backgroundBlur} />
       <RemoveScroll enabled={removeScroll}>
+        <C.ResetSettingsAlert resetAlertActive={resetAlertActive}>
+          <C.ResetSettingsAlertHeader>
+            <Title text={'⚠ Reset settings...'} />
+            <Button
+              text={'x'}
+              buttonBgColor={'#ca1e1e'}
+              onClick={() => [
+                setResetAlertActive(false),
+                setBackgroundBlur(false),
+                setRemoveScroll(false),
+              ]}
+            />
+          </C.ResetSettingsAlertHeader>
+          <C.ResetSettingsAlertMessage>
+            <Title
+              text={
+                'All changes made will be lost and replaced with default values.'
+              }
+            />
+          </C.ResetSettingsAlertMessage>
+          <C.ResetSettingsAlertButtons>
+            <Button
+              text={'Reset Default Settings'}
+              buttonBgColor={'#2e8b2e'}
+              onClick={() => [
+                resetSettings(),
+                setResetAlertActive(false),
+                setBackgroundBlur(false),
+                setRemoveScroll(false),
+              ]}
+            />
+            <Button
+              text={'Cancel'}
+              buttonBgColor={'#ca1e1e'}
+              onClick={() => [
+                setResetAlertActive(false),
+                setBackgroundBlur(false),
+                setRemoveScroll(false),
+              ]}
+            />
+          </C.ResetSettingsAlertButtons>
+        </C.ResetSettingsAlert>
+
         <C.CalculateTerritoriesResult calculateActive={calculateActive}>
           <C.CalculateHeader>
             <Title text={'Troop Calculation'} />

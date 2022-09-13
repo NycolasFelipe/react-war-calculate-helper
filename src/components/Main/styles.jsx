@@ -91,7 +91,7 @@ export const SaveSettingWarning = styled.span`
   font-size: 0.8rem;
   color: transparent;
   position: absolute;
-  right: 230px;
+  right: 235px;
   top: 9px;
   text-align: right;
   user-select: none;
@@ -109,7 +109,7 @@ export const ButtonSaveSettings = styled.div`
   display: flex;
   gap: 5px;
   position: absolute;
-  right: 5px;
+  right: 10px;
   top: 8px;
   width: 220px;
 
@@ -231,6 +231,99 @@ export const BonusTotalRight = styled.div`
   justify-content: flex-end;
   padding-bottom: 3px;
   width: 45%;
+`;
+
+//Reset Window Alert
+export const ResetSettingsAlert = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  background: black;
+  border-radius: 5px;
+  width: 25%;
+  height: 30%;
+  min-width: 300px;
+  min-height: 180px;
+  z-index: 6;
+  position: fixed;
+  padding: 6px 8px;
+  border-radius: 5px;
+
+  //Position
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  //Display/Hide
+  ${(props) => {
+    if (!props.resetAlertActive) {
+      return `
+        background: transparent !important;
+        border: transparent !important;
+        * {
+          background: transparent !important;
+          color: transparent !important;
+          border: transparent !important;
+        }
+        & > * {
+          height: 0 !important;
+          width: 0 !important;
+          overflow: hidden !important;
+        }
+        user-select: none;
+        pointer-events: none;
+        transition-duration: 0.1s !important;
+      `;
+    }
+  }}
+`;
+
+export const ResetSettingsAlertHeader = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 10%;
+  position: relative;
+
+  & > h1 {
+    width: 100%;
+    font-size: 0.8rem;
+    color: yellow;
+  }
+
+  & > button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 1.4rem;
+    height: 1.3rem;
+  }
+`;
+
+export const ResetSettingsAlertMessage = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 50%;
+  padding: 0 4px;
+
+  & > h1 {
+    width: 100%;
+    font-size: 1rem;
+  }
+`;
+export const ResetSettingsAlertButtons = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  width: 100%;
+  height: 40%;
+
+  & > button {
+    width: 100%;
+  }
 `;
 //#endregion
 
