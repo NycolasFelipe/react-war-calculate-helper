@@ -1,70 +1,33 @@
-# Getting Started with Create React App
+# RPG Dice Roller and Player Sheet Manager
+## Description
+...
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Screenshots
+![main](https://user-images.githubusercontent.com/71052352/190033021-0e5c4e01-4ba9-41df-b1e0-0b3d7fcde70b.jpg)
+![players](https://user-images.githubusercontent.com/71052352/190033200-8e23a4ad-4485-4719-bc0e-8f492fb6016a.jpg)
 
-## Available Scripts
 
-In the project directory, you can run:
+## Installing
+1. `$ npm install`
+2. `$ npm start`
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## How the app works
+### Game Settings:
+- In total bonus, the user can set the number of bonus troops received by the player when they has totality on each continent;
+- In minimum bonus, if active, the user can define the minimum number of territories per continent needed for the player to receive bonus troops, and how much this bonus will be on each continent.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Available Territories:
+- The user can add and remove territories from the available territories list;
+- When adding a territory, it is necessary to provide the name of the territory and its continent. The territory will only be added if its name is unique.
 
-### `npm test`
+### Players:
+- Up to 6 active players can be defined. Each player must have a unique name.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Players Cards:
+- Displays a list of territories owned by the corresponding player, as well as the number of territories.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Used Libraries
+`react-remove-scroll`
+`styled-components`
