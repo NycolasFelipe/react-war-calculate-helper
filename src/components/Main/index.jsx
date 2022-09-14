@@ -811,6 +811,7 @@ function Main() {
                     setSaveSettingsActive(true),
                   ]}
                   id={'minBonusCheckbox'}
+                  checked={minBonusActive}
                 />
                 <ButtonInfo
                   text={
