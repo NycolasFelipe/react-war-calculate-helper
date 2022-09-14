@@ -32,6 +32,9 @@ function App() {
   const loadApp = () => {
     //Load stored values, if any
     loadLocalStorage();
+
+    //Set Page Title
+    document.title = 'War Calculate Helper';
     return (
       <C.Container onLoad={() => loadLocalStorage()}>
         <DataContext.Provider value={providerValue}>
