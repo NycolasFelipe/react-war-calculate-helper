@@ -78,13 +78,12 @@ export default class Players {
       if (error) return error;
       else {
         for (let item in playersList) {
+          let playerListId = playersList[item]['playerId'];
           let playerListName = playersList[item]['playerName'];
           let playerListActive = playersList[item]['active'];
 
-          if (players[item]['playerName'] === playerListName) {
+          if (players[item]['playerId'] === playerListId) {
             players[item]['playerName'] = playerListName;
-          }
-          if (players[item]['active'] === playerListActive) {
             players[item]['active'] = playerListActive;
           }
         }

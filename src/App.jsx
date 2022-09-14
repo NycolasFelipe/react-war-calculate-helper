@@ -28,17 +28,58 @@ function App() {
     [territories, currentTerritories, territoriesTrade, settings, players]
   );
 
-  return (
-    <C.Container>
-      <DataContext.Provider value={providerValue}>
-        <C.ContainerMain>
-          <Header />
-          <Main />
-          <Footer />
-        </C.ContainerMain>
-      </DataContext.Provider>
-    </C.Container>
-  );
+  //Load App Components
+  const loadApp = () => {
+    //Load stored values, if any
+    loadLocalStorage();
+    return (
+      <C.Container onLoad={() => loadLocalStorage()}>
+        <DataContext.Provider value={providerValue}>
+          <C.ContainerMain>
+            <Header />
+            <Main />
+            <Footer />
+          </C.ContainerMain>
+        </DataContext.Provider>
+      </C.Container>
+    );
+  };
+
+  //#region Load local storage
+  const loadLocalStorage = () => {
+    //Get local stored values
+    let storedSettings = localStorage.getItem('settings');
+    let storedTerritories = localStorage.getItem('territories');
+    let storedPlayers = localStorage.getItem('players');
+
+    //#region Load local stored values
+    //Load Settings
+    if (storedSettings) {
+      let parsedMinBonus = JSON.parse(storedSettings)['minBonus'];
+      let parsedMinBonusActive = parsedMinBonus['active'];
+      let parsedMinBonusValues = parsedMinBonus['values'];
+      let parsedTotalBonus = JSON.parse(storedSettings)['totalBonus'];
+      settings.setBonus(
+        parsedMinBonusValues,
+        parsedTotalBonus,
+        parsedMinBonusActive
+      );
+    }
+    //Load Territories
+    if (storedTerritories) {
+      let parsedTerritories = JSON.parse(storedTerritories)['territories'];
+      territories.territoriesList = parsedTerritories;
+      currentTerritories.territoriesList = parsedTerritories;
+    }
+    //Load players
+    if (storedPlayers) {
+      let parsedPlayers = JSON.parse(storedPlayers)['players'];
+      players.setPlayers(parsedPlayers);
+    }
+  };
+  //#endregion
+
+  return <>{loadApp()}</>;
 }
 
 export default App;

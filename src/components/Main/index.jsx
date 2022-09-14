@@ -690,36 +690,6 @@ function Main() {
   };
   //#endregion
 
-  //#region Local Storage
-  const setLocalStorage = (keyName) => {
-    let storageItem;
-    switch (keyName) {
-      case 'settings':
-        storageItem = {
-          minBonus: {
-            active: settings.minBonusActive(),
-            values: settings.getMinBonus(),
-          },
-          totalBonus: settings.getTotalBonus(),
-        };
-        break;
-
-      case 'players':
-        storageItem = {
-          players: players.getPlayers(),
-        };
-        break;
-
-      case 'territories':
-        storageItem = {
-          territories: currentTerritories.territoriesList,
-        };
-        break;
-    }
-    localStorage.setItem(keyName, JSON.stringify(storageItem));
-  };
-  //#endregion
-
   //#region Reset Settings
   //Reset Settings Alert Window Flag
   const [resetAlertActive, setResetAlertActive] = useState(false);
@@ -755,6 +725,37 @@ function Main() {
     //Save Changes in the Local Storage
     setLocalStorage('settings');
   };
+  //#endregion
+
+  //#region Save Local Storage
+  const setLocalStorage = (keyName) => {
+    let storageItem;
+    switch (keyName) {
+      case 'settings':
+        storageItem = {
+          minBonus: {
+            active: settings.minBonusActive(),
+            values: settings.getMinBonus(),
+          },
+          totalBonus: settings.getTotalBonus(),
+        };
+        break;
+
+      case 'players':
+        storageItem = {
+          players: players.getPlayers(),
+        };
+        break;
+
+      case 'territories':
+        storageItem = {
+          territories: currentTerritories.territoriesList,
+        };
+        break;
+    }
+    localStorage.setItem(keyName, JSON.stringify(storageItem));
+  };
+  //#endregion
   //#endregion
 
   const [removeScroll, setRemoveScroll] = useState(false);
